@@ -10,6 +10,7 @@ def student(request):
   print("start",datetime.now())
   url = f"{API_URL}/Students/get_students_by_intitute/?institute_id=1"
   response = requests.get(url)
+  print(response)
   if response.status_code == 200:
     data = response.json()
     payload = {
