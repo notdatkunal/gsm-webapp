@@ -4,64 +4,90 @@ trigger:
 variables:
   azureServiceConnection: 'AlongX-Azure-Account-Development'
   webAppName: 'gsm-webapp'
+  resourceGroupName: 'Development'
   vmImageName: 'ubuntu-latest'
   environmentName: 'gsm-webapp'
+  projectRoot: $(System.DefaultWorkingDirectory)
   pythonVersion: '3.12'
   isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
-pool:
-  vmImage: $(vmImageName)
+stages:
+- stage: Build
+  displayName: Build Stage
+  jobs:
+  - job: BuildJob
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
 
-jobs:
-- job: BuildAndDeploy
-  displayName: 'Build and Deploy'
-  steps:
-  - task: UsePythonVersion@0
-    displayName: 'User Python Version'
-    inputs:
-      versionSpec: $(pythonVersion)  # Replace with your Python version
+    - script: |
+        python -m venv antenv
+        source antenv/bin/activate
+        python -m pip install --upgrade pip
+        pip install setup
+        pip install -r requirements.txt
+      workingDirectory: $(projectRoot)
+      displayName: "Install requirements"
 
-  - script: |
-      python -m venv env
-      source env/bin/activate
-      pip install -r requirements.txt
-    displayName: 'Install Dependencies'
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(projectRoot)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
 
-  - task: ArchiveFiles@2
-    displayName: 'Archive Files'
-    inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)'
-      includeRootFolder: false
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-      replaceExistingArchive: true
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        artifact: 'drop'
+        publishLocation: 'pipeline'
 
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Pipeline Artifact'
-    inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)'
-      artifact: 'drop'
-      publishLocation: 'pipeline'
-
-- deployment: DeployToAzureAppService
-  displayName: 'Deploy to Azure App Service'
-  environment: $(environmentName)  # Replace with your environment name
+- stage: Deploy
+  displayName: 'Deploy to Develop Environment'
+  dependsOn: Build
   condition: and(succeeded(), eq(variables.isRelease, true))
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - task: DownloadPipelineArtifact@2
-          displayName: 'Download Pipeline Artifact'
-          inputs:
-            buildType: 'current'
-            artifactName: 'drop'
-            downloadPath: '$(System.ArtifactsDirectory)'
+  jobs:
+  - deployment: DeploymentJob
+    pool:
+      vmImage: $(vmImageName)
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+            displayName: 'Use Python version'
+          
+          - task: AzureAppServiceSettings@1
+            inputs:
+              azureSubscription: '$(azureServiceConnection)'
+              appName: $(webAppName)
+              resourceGroupName: '$(resourceGroupName)'
+              appSettings: |
+                [
+                  {
+                    "name": "ENABLE_ORYX_BUILD",
+                    "value": 1
+                  },
+                  {
+                    "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+                    "value": 1
+                  }
+                ]
 
-        - task: AzureWebApp@1
-          displayName: 'Deploy to Azure App Service'
-          inputs:
-            azureSubscription: $(azureServiceConnection)
-            appType: 'webAppLinux'
-            appName: $(webAppName)
-            package: '$(System.ArtifactsDirectory)/**/*.zip'
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App : $(webAppName)'
+            inputs:
+              azureSubscription: '$(azureServiceConnection)'
+              appType: 'webAppLinux'
+              appName: '$(webAppName)'
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
