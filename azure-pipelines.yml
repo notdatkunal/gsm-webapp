@@ -17,8 +17,9 @@ jobs:
   displayName: 'Build and Deploy'
   steps:
   - task: UsePythonVersion@0
+    displayName: 'User Python Version'
     inputs:
-      versionSpec: '3.x'  # Replace with your Python version
+      versionSpec: $(pythonVersion)  # Replace with your Python version
 
   - script: |
       python -m venv env
@@ -27,39 +28,40 @@ jobs:
     displayName: 'Install Dependencies'
 
   - task: ArchiveFiles@2
+    displayName: 'Archive Files'
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       replaceExistingArchive: true
-    displayName: 'Archive Files'
 
   - task: PublishPipelineArtifact@1
+    displayName: 'Publish Pipeline Artifact'
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)'
       artifact: 'drop'
       publishLocation: 'pipeline'
-    displayName: 'Publish Pipeline Artifact'
 
 - deployment: DeployToAzureAppService
   displayName: 'Deploy to Azure App Service'
   environment: $(environmentName)  # Replace with your environment name
+  condition: and(succeeded(), eq(variables.isRelease, true))
   strategy:
     runOnce:
       deploy:
         steps:
         - task: DownloadPipelineArtifact@2
+          displayName: 'Download Pipeline Artifact'
           inputs:
             buildType: 'current'
             artifactName: 'drop'
             downloadPath: '$(System.ArtifactsDirectory)'
-          displayName: 'Download Pipeline Artifact'
 
         - task: AzureWebApp@1
+          displayName: 'Deploy to Azure App Service'
           inputs:
             azureSubscription: $(azureServiceConnection)
             appType: 'webAppLinux'
             appName: $(webAppName)
             package: '$(System.ArtifactsDirectory)/**/*.zip'
-          displayName: 'Deploy to Azure App Service'
