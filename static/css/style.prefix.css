@@ -112,7 +112,7 @@ body {
 .side-nav {
   list-style: none; }
   .side-nav__item {
-    padding: 1rem 0rem; }
+    padding: 0.5rem 0rem; }
     .side-nav__item:not(:first-child) {
       margin: 1rem 0rem; }
     .side-nav__item:hover {

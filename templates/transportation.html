@@ -1,12 +1,231 @@
 {% extends "index.html" %}
 {% block content %}
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-
+<div class="student_head">
     <div>
-        <h1>Transportion Page</h1>
+        <p class="heading__primary heading__primary--animation">Transportation</p>
     </div>
+    <div>
+        <button class="btn btn--create" onclick="openForm('registration')">Register Vechile </button>
+    </div>
+</div>
+<section class="form-section registration">
+    <div class="main-header">
+        <h1 class="header-form">Register Vechile</h1>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav('registration')">&times;</a>
+    </div>
+    <div class="container">
+        <form class="form">
+            <input type="hidden" name="id" id="id">
+            <div class="contents" id="form-field">
+                <div class="fields">
+                    <div class="input-field">
+                        <label class="labels">vechile number <span style="color: red;">*</span></label>
+                        <input ty="text" class="form-input">
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class="input-field">
+                        <label class="labels">vechile Details <span style="color: red;">*</span></label>
+                        <textarea class="text-field" rows="5" placeholder="Enter Description"></textarea>
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class="input-field">
+                        <label class="labels">datr of Registation<span style="color: red;">*</span></label>
+                        <input type="date" class="form-input">
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class="input-field">
+                        <label class="label">Driver and Conductor Info <span style="color: red;">*</span></label>
+                        <textarea class="text-field" rows="4" placeholder="Enter Details"></textarea>
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class="input-field">
+                        <label class="label">Route<span style="color: red;">*</span></label>
+                        <input type="text" class="form-input" placeholder="Add Route" required>
+                    </div>
+                </div>
+
+                <div class="input-field" style="width: 100%;">
+                    <label class="label">Stopage<span style="color: red;">*</span></label>
+                    <div class="input-field" id="stopages-container">
+                        <!-- <span id="error"></span> -->
+                        <!-- &nbsp;&nbsp; -->
+                        <input type="text" class="form-input" placeholder="Enter Stopages Name">
+                        <button type="button" class="add-stop" id="btnClick" class="btnClick" onclick="addMore()">Add
+                            Stops</button>
+                    </div>
+                </div>
+            </div>
+            <div class="sticky">
+                <a onclick="closeNav('registration')" class="btn btn--cancel"><span>Cancel</span></a>
+                <button type="submit" class="btn btn--save"><span>Save</span></button>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+
+<script>
+    // Function to close the form section side nav
+    function closeNav(formClass) {
+        console.log("done");
+        document.querySelector("." + formClass).classList.remove("form-show");
+    }
+
+    // Function to open the form section side nav
+    function openForm(formClass) {
+        document.querySelector("." + formClass).classList.add("form-show");
+    }
+    // Function to close the form section for stopages
+    function closestopDetails(formClass) {
+        console.log("done");
+        document.querySelector("." + formClass).classList.remove("form-show");
+    }
+
+    // Function to open the form section stopages
+    function openstopDetails(formClass) {
+        document.querySelector("." + formClass).classList.add("form-show");
+    }
+    function closestudentDetails(formClass) {
+        console.log("done");
+        document.querySelector("." + formClass).classList.remove("form-show");
+    }
+
+    // Function to open the form section stopages
+    function openstudentDetails(formClass) {
+        document.querySelector("." + formClass).classList.add("form-show");
+    }
+    openstaffDetails
+    function closestaffDetails(formClass) {
+        console.log("done");
+        document.querySelector("." + formClass).classList.remove("form-show");
+    }
+
+    // Function to open the form section stopages
+    function openstaffDetails(formClass) {
+        document.querySelector("." + formClass).classList.add("form-show");
+    }
+
+</script>
+
+<table class="tbl">
+    <thead>
+        <tr>
+            <th>Vehicle Number</th>
+            <th>Vehicle Details</th>
+            <th>Date of Register</th>
+            <th>Driver and Conductor Info</th>
+            <th>Route</th>
+            <th>Stoppage</th>
+            <th>Students</th>
+            <th>Staffs</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody class="tbl__bdy">
+        <tr>
+            <td>1001</td>
+            <td>bus</td>
+            <td>12-03-2022</td>
+            <td>jahnavi</td>
+            <td>hitech-gachiboli</td>
+            <td>
+                <button class="btn-view openBtn" onclick="openstopDetails('stopages')">View</button>
+            </td>
+            <td>
+                <button class="btn-view openBtn" onclick="openstudentDetails('student')">View</button>
+            </td>
+            <td>
+                <button class="btn-view openBtn" onclick="openstaffDetails('staff')">View</button>
+            </td>
+            <td>
+                <i class="fa-sharp fa-solid fa-pen"></i>
+
+                <i class="fa-solid fa-trash"></i>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<section class="form-section stopages">
+    <div class="main-header">
+        <h1 class="header-form">Pickup/Drop</h1>
+        <a href="javascript:void(0)" class="closebtn" onclick="closestopDetails('stopages')">&times;</a>
+    </div>
+    <div class="container">
+        <h1>
+        Stoppage in this Route
+    </h1>
+    </div>
+    <div id="stops_data"></div>
+
+</section>
+<section class="form-section student">
+    <div class="main-header">
+        <h1 class="header-form">Add Students To Vehicle</h1>
+        <a href="javascript:void(0)" class="closebtn" onclick="closestudentDetails('student')">&times;</a>
+    </div>
+    <form class="form">
+        <div class="input-field">
+            <input type="text" class="form-input" placeholder="Enter student number">
+            <input type="hidden" id="transportPk" name="transportPk">
+            <input type="button" class="btn btn--save" id="btnAssign" value="Assign">
+        </div>
+    </form>
+    <div>
+        <h2>assignments</h2>
+    </div>
+        <table class="tbl">
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Student Name</th>
+                </tr>
+
+                <tr>
+                    <thead>
+                    <tbody class="tbl__bdy"></tbody>
+                    </thead>
+                </tr>
+                    
+        </table>
+      
+</section>
+<section class="form-section staff">
+    <div class="main-header">
+        <h1 class="header-form">Add Staff To Vehicle</h1>
+        <a href="javascript:void(0)" class="closebtn" onclick="closestaffDetails('staff')">&times;</a>
+    </div>
+    <form class="form">
+        <div class="input-field">
+            <input type="text" class="form-input" placeholder="Enter staff Name">
+            <input type="hidden" id="transportPk" name="transportPk">
+            <input type="button" class="btn btn--save" id="btnAssign" value="Assign">
+        </div>
+    </form>
+    <div>
+        <h2>Assigned Staffs</h2>
+    </div>
+        <table class="tbl">
+            <thead>
+                <tr>
+                    <th>Staff ID</th>
+                    <th>Staff Name</th>
+                </tr>
+                <tr>
+                    <thead>
+                    <tbody class="tbl__bdy"></tbody>
+                    </thead>
+                </tr>
+        </table>
+        </div>
+      
+</section>
+
 {% endblock %}
