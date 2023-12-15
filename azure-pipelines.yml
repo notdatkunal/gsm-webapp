@@ -33,11 +33,10 @@ stages:
       workingDirectory: $(projectRoot)
       displayName: "Install requirements"
     - script: |
-      echo "Running collectstatic command"
-      antenv/bin/python manage.py collectstatic --noinput
-    workingDirectory: $(projectRoot)
-    displayName: 'Run collectstatic command'
-    
+        antenv/bin/python manage.py collectstatic --noinput
+      workingDirectory: $(projectRoot)
+      displayName: 'Run collectstatic command'
+
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
