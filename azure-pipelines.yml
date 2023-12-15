@@ -62,6 +62,19 @@ stages:
       runOnce:
         deploy:
           steps:
+          - task: AzureAppServiceSettings@1
+            inputs:
+              azureSubscription: '$(azureServiceConnection)'
+              appName: $(webAppName)
+              resourceGroupName: '$(resourceGroupName)'
+              appSettings: |
+                [
+                  {
+                    "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+                    "value": 1
+                  }
+                ]
+
           - task: AzureWebApp@1
             displayName: 'Deploy Azure Web App : $(webAppName)'
             inputs:
