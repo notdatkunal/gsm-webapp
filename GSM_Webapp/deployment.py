@@ -6,7 +6,7 @@ from .settings import BASE_DIR
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # setting DEBUG = False
-DEBUG = False
+DEBUG = True
 
 # setting ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['*']
