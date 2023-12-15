@@ -9,7 +9,7 @@ variables:
   environmentName: 'gsm-webapp'
   projectRoot: $(System.DefaultWorkingDirectory)
   pythonVersion: '3.12'
-  isDev: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 stages:
 - stage: Build
@@ -30,7 +30,6 @@ stages:
         python -m pip install --upgrade pip
         pip install setup
         pip install -r requirements.txt
-        python manage.py collectstatic
       workingDirectory: $(projectRoot)
       displayName: "Install requirements"
 
@@ -50,7 +49,7 @@ stages:
 - stage: Deploy
   displayName: 'Deploy to Develop Environment'
   dependsOn: Build
-  condition: and(succeeded(), eq(variables.isDev, true))
+  condition: and(succeeded(), eq(variables.isRelease, true))
   jobs:
   - deployment: DeploymentJob
     pool:
@@ -80,10 +79,6 @@ stages:
                   {
                     "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
                     "value": 1
-                  },
-                  {
-                    "name": "POST_BUILD_COMMAND",
-                    "value": "pip install -r ./requirements.txt"
                   }
                 ]
 
