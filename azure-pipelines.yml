@@ -9,56 +9,57 @@ variables:
   pythonVersion: '3.12'
   isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
-  jobs:
-  - job: BuildJob
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(pythonVersion)'
-      displayName: 'Use Python $(pythonVersion)'
+pool:
+  vmImage: $(vmImageName)
 
-    - script: |
-        python -m venv env
-        source env/bin/activate
-        pip install -r requirements.txt
-      displayName: 'Install Dependencies'
+jobs:
+- job: BuildAndDeploy
+  displayName: 'Build and Deploy'
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'  # Replace with your Python version
 
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-        replaceExistingArchive: true
-      displayName: 'Archive Files'
+  - script: |
+      python -m venv env
+      source env/bin/activate
+      pip install -r requirements.txt
+    displayName: 'Install Dependencies'
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifact: 'drop'
-        publishLocation: 'pipeline'
-      displayName: 'Publish Pipeline Artifact'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+    displayName: 'Archive Files'
 
-  - deployment: DeployToAzureAppService
-    displayName: 'Deploy to Azure App Service'
-    environment: $(environmentName)  # Replace with your environment name
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              buildType: 'current'
-              artifactName: 'drop'
-              downloadPath: '$(System.ArtifactsDirectory)'
-            displayName: 'Download Pipeline Artifact'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifact: 'drop'
+      publishLocation: 'pipeline'
+    displayName: 'Publish Pipeline Artifact'
 
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              appType: 'webAppLinux'
-              appName: $(webAppName)
-              package: '$(System.ArtifactsDirectory)/**/*.zip'
-            displayName: 'Deploy to Azure App Service'
+- deployment: DeployToAzureAppService
+  displayName: 'Deploy to Azure App Service'
+  environment: $(environmentName)  # Replace with your environment name
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            buildType: 'current'
+            artifactName: 'drop'
+            downloadPath: '$(System.ArtifactsDirectory)'
+          displayName: 'Download Pipeline Artifact'
+
+        - task: AzureWebApp@1
+          inputs:
+            azureSubscription: $(azureServiceConnection)
+            appType: 'webAppLinux'
+            appName: $(webAppName)
+            package: '$(System.ArtifactsDirectory)/**/*.zip'
+          displayName: 'Deploy to Azure App Service'
