@@ -83,7 +83,7 @@ stages:
                   },
                   {
                     "name": "POST_BUILD_COMMAND",
-                    "value": "pip install -r ./requirements.txt"
+                    "value": "pip install -r requirements.txt"
                   }
                 ]
 
