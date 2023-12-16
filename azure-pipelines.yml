@@ -63,6 +63,11 @@ stages:
       runOnce:
         deploy:
           steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+            displayName: 'Use Python version'
+          
           - task: AzureAppServiceSettings@1
             inputs:
               azureSubscription: '$(azureServiceConnection)'
@@ -71,8 +76,16 @@ stages:
               appSettings: |
                 [
                   {
+                    "name": "ENABLE_ORYX_BUILD",
+                    "value": 1
+                  },
+                  {
                     "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
                     "value": 1
+                  },
+                  {
+                    "name": "POST_BUILD_COMMAND",
+                    "value": "pip install -r requirements.txt"
                   }
                 ]
 
