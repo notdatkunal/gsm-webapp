@@ -1,5 +1,5 @@
 trigger:
-- master
+- develop
 
 variables:
   azureServiceConnection: 'AlongX-Azure-Account-Development'
@@ -9,7 +9,7 @@ variables:
   environmentName: 'gsm-webapp'
   projectRoot: $(System.DefaultWorkingDirectory)
   pythonVersion: '3.12'
-  isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/develop')]
 
 stages:
 - stage: Build
