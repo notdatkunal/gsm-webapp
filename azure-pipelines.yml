@@ -98,14 +98,14 @@ stages:
               appName: '$(webAppName)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
 
-          - task: AzureCLI@2
-            displayName: 'Restart App Service'
-            inputs:
-              azureSubscription: '$(azureServiceConnection)'
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                # Restart Azure App Service
-                resourceGroupName='Development'
-                webAppName='gsm-webapp'
-                az webapp restart --resource-group $resourceGroupName --name $webAppName
+          # - task: AzureCLI@2
+          #   displayName: 'Restart App Service'
+          #   inputs:
+          #     azureSubscription: '$(azureServiceConnection)'
+          #     scriptType: 'bash'
+          #     scriptLocation: 'inlineScript'
+          #     inlineScript: |
+          #       # Restart Azure App Service
+          #       resourceGroupName='Development'
+          #       webAppName='gsm-webapp'
+          #       az webapp restart --resource-group $resourceGroupName --name $webAppName

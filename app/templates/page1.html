@@ -3,6 +3,17 @@
 {% block title %} Page 1 {% endblock %}
 
 {% block content %}
+<link href="{% static 'app-css/page1.css' %}" rel="stylesheet">
+<script src="{% static 'app-js/page1.js' %}"></script>
+
     <p>This is the page #1 content.</p>
     <img src="{% static 'img/dance1.gif' %}" alt="Example Image">
+    <br>
+    <a href="/app/page2">Navigate to Next Page</a>
+    <br>
+
+    <input type="button" id="btnCreateStudent" value="Create Student">
+    <input type="button" id="btnGetStudent" value="Get Students">
+    <input type="button" id="btnUpdateStudent" value="Update Student">
+    <input type="button" id="btnDeleteStudent" value="Delete Student">
 {% endblock %}
