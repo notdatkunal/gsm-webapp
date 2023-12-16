@@ -28,6 +28,7 @@ secret_key.txt
 # VSCode
 .vscode/
 *.code-workspace
+.vs
 
 # PyCharm
 .idea/
