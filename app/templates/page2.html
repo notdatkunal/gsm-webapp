@@ -3,11 +3,18 @@
 {% block title %} Page 2 {% endblock %}
 
 {% block content %}
-<link href="{% static 'app-css/page2.css' %}" rel="stylesheet">
+<link href="{% static 'app-css/page2.css' %}" rel="stylesheet"/>
 <script src="{% static 'app-js/page2.js' %}"></script>
 
     <p>This is the page #2 content.</p>
     <img src="{% static 'img/dance2.gif' %}" alt="Example Image">
-    <br>
-    <a href="/app/page1">Navigate to Previous Page</a>
+    
+    <p><a href="/app/page1">Navigate to Previous Page</a></p>
+
+    <h4 class="classlibrary">{{ result }}</h4>
+    <input type="button" id="btnCreateStaff" value="Create Staff">
+    <input type="button" id="btnGetStaff" value="Get Staff">
+    <input type="button" id="btnUpdateStaff" value="Update Staff">
+    <input type="button" id="btnDeleteStaff" value="Delete Staff">
+    <input type="button" id="btnCommon" value="Common">
 {% endblock %}

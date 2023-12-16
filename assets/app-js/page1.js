@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
     $("#btnCreateStudent").click(function(){
-        CreateSutudent();
+        CreateStudent();
     });
 
     $("#btnGetStudent").click(function(){
@@ -15,20 +15,24 @@ $(document).ready(function(){
     $("#btnDeleteStudent").click(function(){
         DeleteStudent();
     });
+
+    $("#btnCommon").click(function(){
+        SweetAlert("Student","Student Success Message");
+    });
 })
 
-function CreateSutudent(){
-    alert("Created Student Called !");
+function CreateStudent(){
+    alert("Created Student Called ! "+API_ENDPOINT);
 }
 
 function GetStudents(){
-    alert("Get Student Called !");
+    alert("Get Student Called ! "+API_ENDPOINT);
 }
 
 function UpdateStudent(){
-    alert("Update Student Called !");
+    alert("Update Student Called ! "+API_ENDPOINT);
 }
 
 function DeleteStudent(){
-    alert("Delete Student Called !");
+    alert("Delete Student Called ! "+API_ENDPOINT);
 }

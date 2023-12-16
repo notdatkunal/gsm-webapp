@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Default Title{% endblock %}</title>
-    <link href="{% static 'lib-css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'lib-css/bootstrap.css' %}" rel="stylesheet"/>
     <script src="{% static 'lib-js/jquery.min.js' %}"></script>
+
+    <link href="{% static 'app-css/common.css' %}" rel="stylesheet"/>
+    <script src="{% static 'app-js/common.js' %}"></script>
 </head>
 <body>
     <div id="header">

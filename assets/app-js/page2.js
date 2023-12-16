@@ -1,34 +1,37 @@
 $(document).ready(function(){
 
-    $("#btnCreateStudent").click(function(){
-        CreateSutudent();
+    $("#btnCreateStaff").click(function(){
+        CreateStaff();
     });
 
-    $("#btnGetStudent").click(function(){
-        GetStudents();
+    $("#btnGetStaff").click(function(){
+        GetStaffs();
     });
 
-    $("#btnUpdateStudent").click(function(){
-        UpdateStudent();
+    $("#btnUpdateStaff").click(function(){
+        UpdateStaff();
     });
 
-    $("#btnDeleteStudent").click(function(){
-        DeleteStudent();
+    $("#btnDeleteStaff").click(function(){
+        DeleteStaff();
+    });
+    $("#btnCommon").click(function(){
+        SweetAlert("Staff","Staff Success Message");
     });
 })
 
-function CreateSutudent(){
-    alert("Created Student Called !");
+function CreateStaff(){
+    alert("Created Staff Called ! "+API_ENDPOINT);
 }
 
-function GetStudents(){
-    alert("Get Student Called !");
+function GetStaffs(){
+    alert("Get Staff Called ! "+API_ENDPOINT);
 }
 
-function UpdateStudent(){
-    alert("Update Student Called !");
+function UpdateStaff(){
+    alert("Update Staff Called ! "+API_ENDPOINT);
 }
 
-function DeleteStudent(){
-    alert("Delete Student Called !");
+function DeleteStaff(){
+    alert("Delete Staff Called ! "+API_ENDPOINT);
 }
