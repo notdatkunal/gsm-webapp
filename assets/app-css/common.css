@@ -1,3 +1,16 @@
+body{
+    text-align: center;
+}
+img{
+    width: 300px;
+}
+#header{
+    background-color: bisque;
+}
+#footer{
+    background-color: bisque;
+}
+
 .classlibrary{
     color:red;
     font-weight: bold;

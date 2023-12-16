@@ -1,0 +1,12 @@
+{% extends '_layout.html' %}
+{% load static %}
+{% block title %} Page 3 {% endblock %}
+
+{% block content %}
+<link href="{% static 'app-css/page1.css' %}" rel="stylesheet"/>
+<script src="{% static 'app-js/page3.js' %}"></script>
+
+<input type="text" id="txtName">
+<input type="button" id="btnShow" value="Show">
+   
+{% endblock %}
