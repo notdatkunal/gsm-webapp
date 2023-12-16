@@ -19,12 +19,15 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(pythonVersion)'
-      displayName: 'Use Python $(pythonVersion)'
+    # - task: UsePythonVersion@0
+    #   inputs:
+    #     versionSpec: '$(pythonVersion)'
+    #   displayName: 'Use Python $(pythonVersion)'
 
     - script: |
+        sudo apt install python3-venv
+        python3 -m venv djangoenv
+        source djangoenv/bin/activate
         python -m pip install --upgrade pip
         pip install setup
         pip install -r requirements.txt
