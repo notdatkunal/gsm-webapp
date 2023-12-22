@@ -4,8 +4,21 @@ from django.urls import reverse
 import requests
 
 class Login:
-    def __init__(self, api_link) -> None:
+    def __init__(self, api_link,access_token) -> None:
         self.api_url = api_link  # Basic FastApi url 
+        self.access_token = access_token  # Access token for authentication
+
+    def set_institute_id(self,user_email):
+        self.end_point =f'/Users/get_users_by_field/user_email/{user_email}'
+        self.total_url = self.api_url + self.end_point
+        self.headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + self.access_token
+            }
+        self.response = requests.get(self.total_url, headers=self.headers)
+        if self.response.status_code == 200:
+            self.institute_id = self.response_json()["responce"]["institute_id"]
+            return self.institute_id
 
     def authenticate_user(self, email, password):
         end_point = '/Login/token'  # FastApi end point for login
@@ -22,6 +35,7 @@ class Login:
             response = HttpResponseRedirect(reverse('dashboard'))
             # Set the access token in the cookie
             response.set_cookie(key='access_token', value=auth_response.json().get('access_token'))
+
             return response
         else:
             # Authentication failed
@@ -30,12 +44,3 @@ class Login:
             messages.error(response,"API NOT WORKING")
             return response
 
-
-def login(request):
-    if request.method == 'POST':
-        phone_number = request.POST.get('phone_number')
-        password = request.POST.get('password')
-        login_instance = Login(API_URL)
-        response = login_instance.authenticate_user(phone_number, password)
-        return response
-    return render(request, 'registration.html')
