@@ -15,3 +15,6 @@ img{
     color:red;
     font-weight: bold;
 }
+.main-content,.wrapper{
+    background-color: var(--tb-header-bg);
+}

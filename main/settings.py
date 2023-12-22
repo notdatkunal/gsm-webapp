@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.middleware.AuthenticateUserMiddleware'
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -114,7 +115,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-API_ENDPOINT="https://gsm-fastapi.azurewebsites.net/"
+API_ENDPOINT="https://gsm-fastapi.azurewebsites.net"
+SWAGGER_URL = "https://subscription-management-api.azurewebsites.net/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -123,3 +125,15 @@ API_ENDPOINT="https://gsm-fastapi.azurewebsites.net/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AZURE_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=gsmstore;AccountKey=tKc6zDb61jnf7GSHQWwX6S5Uz83twOtNczf6GUhq/1S0mBixn/Qx2Mwh6QibQSSYaKv/iRd2zS24+AStTtOf5g==;EndpointSuffix=core.windows.net"
+AZURE_CONTAINERS = {
+    "student_documents": "student-documents",
+    "student_profile": "student-profile-pictures",
+    "student_assignment_document": "student-assignment-documents",
+    "staff_documents": "staff-documents",
+    "staff_profile": "staff-profile-pictures",
+    "user_profile": "user-profile",
+    "institute_logo": "institute-logo",
+    "fav_icon": "fav-icon",
+}
