@@ -10,47 +10,7 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   pythonVersion: '3.12'
   isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/develop')]
-
 stages:
-- stage: Build
-  displayName: Build Stage
-  jobs:
-  - job: BuildJob
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(pythonVersion)'
-      displayName: 'Use Python $(pythonVersion)'
-
-    - script: |
-        sudo apt install python3-venv
-        python3 -m venv djangoenv
-        source djangoenv/bin/activate
-        python -m pip install --upgrade pip
-        pip install setup
-        pip install -r requirements.txt
-        python manage.py collectstatic --no-input
-      workingDirectory: $(projectRoot)
-      displayName: "Install requirements"
-
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(projectRoot)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Pipeline Artifact'
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-        artifact: 'drop'
-        publishLocation: 'pipeline'
-
 - stage: Deploy
   displayName: 'Deploy to Develop Environment'
   dependsOn: Build
@@ -90,6 +50,18 @@ stages:
                   }
                 ]
 
+          - script: |
+              # Activate the virtual environment
+              source djangoenv/bin/activate
+
+              # Install dependencies
+              pip install -r requirements.txt
+
+              # Run collectstatic if needed
+              python manage.py collectstatic --no-input
+            workingDirectory: $(projectRoot)
+            displayName: 'Activate virtual environment and install dependencies'
+
           - task: AzureWebApp@1
             displayName: 'Deploy Azure Web App : $(webAppName)'
             inputs:
@@ -97,6 +69,7 @@ stages:
               appType: 'webAppLinux'
               appName: '$(webAppName)'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+
 
           # - task: AzureCLI@2
           #   displayName: 'Restart App Service'

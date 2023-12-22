@@ -33,8 +33,10 @@ class Login:
         if auth_response.status_code == 200:
             # Authentication successful, set the cookie
             response = HttpResponseRedirect(reverse('dashboard'))
+            institute_id = self.set_institute_id(email)
             # Set the access token in the cookie
             response.set_cookie(key='access_token', value=auth_response.json().get('access_token'))
+            response.set_cookie(key='institute_id', value=institute_id)
 
             return response
         else:
