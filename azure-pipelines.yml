@@ -11,6 +11,7 @@ variables:
   pythonVersion: '3.12'
   isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/develop')]
 
+
 stages:
 - stage: Build
   displayName: Build Stage
