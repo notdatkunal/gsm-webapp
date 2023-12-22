@@ -42,7 +42,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,9 +98,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # STATIC_URL = '/assets/'
 # STATIC_ROOT =  os.path.join(BASE_DIR, 'assets')
 
-STATIC_URL = '/assets/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets_dyn')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
+# STATIC_URL = '/assets/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'assets_dyn')
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
+
+STATIC_URL = os.environ.get("DJANGO_STATIC_URL", "/assets/")
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets_dy')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'assets'),
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 API_ENDPOINT = "https://gsm-fastapi.azurewebsites.net/"
 
