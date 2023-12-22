@@ -83,6 +83,7 @@ def logout(request):
     # Clear the access token from the cookie
     response = HttpResponseRedirect(reverse('login'))
     response.delete_cookie('access_token')
+    response.delete_cookie('institute_id')
 
     # Optionally, you can add a message to inform the user about the logout
     messages.success(request, 'You have been successfully logged out.')
