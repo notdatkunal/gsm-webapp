@@ -22,7 +22,7 @@ class Login:
             response = HttpResponseRedirect(reverse('dashboard'))
             # Set the access token in the cookie
             response.set_cookie(key='access_token', value=auth_response.json().get('access_token'))
-            response.set_cookie(key='institution_id', value=auth_response.json().get('institution_id'))
+            response.set_cookie(key='institute_id', value=auth_response.json().get('institution_id'))
             return response
         else:
             # Authentication failed

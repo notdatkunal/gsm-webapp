@@ -18,8 +18,9 @@ def dashboard(request):
 
 def students(request):
     student_obj = Data(API_URL)
+    institite_id = request.COOKIES.get('institute_id')
     student_url = "/Students/get_students_by_intitute/"
-    params = {'institute_id': 1010}
+    params = {'institute_id': institite_id}
     access_token = request.COOKIES.get('access_token')
     student_data = student_obj.get_data_by_institute_id(url=student_url,params = params,jwt=access_token)
     payload = {
@@ -31,7 +32,7 @@ def students(request):
 def staffs(request):
     staff_obj = Data(API_URL)
     institite_id = request.COOKIES.get('institute_id')
-    staff_url = f"/StaffS/get_staffs_by_institute/?institute_id={institite_id}"
+    staff_url = f"/StaffS/get_staffs_by_institute/"
     params = {'institute_id': institite_id}
     access_token = request.COOKIES.get('access_token')
     
@@ -98,8 +99,9 @@ def logout(request):
 
 def classes(request):
     class_obj = Data(API_URL)
-    class_url = "/Classes/get_classes_by_institute/?institite_id=1010"
-    params = {'institute_id': 1010}
+    institite_id = request.COOKIES.get('institute_id')
+    class_url = f"/Classes/get_classes_by_institute/?institite_id={institite_id}"
+    params = {'institute_id': institite_id}
     access_token = request.COOKIES.get('access_token')
     class_data = class_obj.get_data_by_institute_id(url=class_url,params = params,jwt=access_token)
     payload = {
@@ -166,10 +168,10 @@ def user(request):
         "jwtToken": access_token
     }
     return render(request, 'user.html',payload)    
- 
 
 def assignments(request):
-    assignments_url = f"{API_URL}/Assignment/get_assignments_institute/?institution_id=1010"
+    institite_id = request.COOKIES.get('institute_id')
+    assignments_url = f"{API_URL}/Assignment/get_assignments_institute/?institution_id={institite_id}"
     access_token = request.COOKIES.get('access_token')
     header ={
             'accept': 'application/json',
@@ -208,5 +210,24 @@ def transportation(request):
             'jwt_token':access_token 
         }
         return render(request, 'transport.html', payload)
+    else:
+        return HttpResponse("Reload the page")
+    
+def notice(request):
+    institute_id = request.COOKIES.get('institute_id')
+    url=f"https://gsm-fastapi.azurewebsites.net/Notice/get_notices_institute/?institute_id={institute_id}"
+    access_token = request.COOKIES.get('access_token')
+    header ={
+            'accept': 'application/json',
+            'Authorization': f'Bearer {access_token}'
+    }
+    notice_data=requests.get(url=url,headers=header)
+    if notice_data.status_code==200:
+
+        payload={
+            'notices':notice_data.json(),
+            'jwt_token':access_token
+        }
+        return render(request,'notice.html', payload)
     else:
         return HttpResponse("Reload the page")
