@@ -20,11 +20,9 @@ class Login:
         if auth_response.status_code == 200:
             # Authentication successful, set the cookie
             response = HttpResponseRedirect(reverse('dashboard'))
-            access_token = auth_response.json().get('access_token')
             # Set the access token in the cookie
             response.set_cookie(key='access_token', value=auth_response.json().get('access_token'))
-            response.set_cookie(key='institute_id', value=auth_response.json().get('institute_id'))
-
+            response.set_cookie(key='institution_id', value=auth_response.json().get('institution_id'))
             return response
         else:
             # Authentication failed
@@ -33,3 +31,12 @@ class Login:
             messages.error(response,"API NOT WORKING")
             return response
 
+
+def login(request):
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        password = request.POST.get('password')
+        login_instance = Login(API_URL)
+        response = login_instance.authenticate_user(phone_number, password)
+        return response
+    return render(request, 'registration.html')

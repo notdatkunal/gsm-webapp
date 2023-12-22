@@ -4,7 +4,7 @@
 <html lang="en" data-layout="horizontal" data-sidebar="dark" data-sidebar-size="lg" data-preloader="disable"
     data-theme="creative" data-bs-theme="light">
 
-<head>
+<>
 
     <meta charset="utf-8">
     <title>Gurukul - {% block title %}School Automation{% endblock %}</title>
@@ -24,6 +24,12 @@
     <link href="{% static 'theme/css/app.min.css' %}" rel="stylesheet" type="text/css">
     <!-- custom Css-->
     <link href="{% static 'theme/css/custom.min.css' %}" rel="stylesheet" type="text/css">
+
+
+    <link rel="stylesheet" href="{% static 'app-css/common.css' %}">
+    <script src="{% static 'app-js/common.js' %}"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 </head>
 
@@ -85,32 +91,32 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="apps-chat.html" class="nav-link menu-link"> <i class="ti ti-messages"></i> <span
+                            <a href="/app/classes" class="nav-link menu-link"> <i class="ti ti-messages"></i> <span
                                     data-key="t-chat">Class</span> </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="apps-email.html" class="nav-link menu-link"> <i class="ti ti-mail"></i> <span
+                            <a href="/app/calendar" class="nav-link menu-link"> <i class="ti ti-mail"></i> <span
                                     data-key="t-email">Calendar</span> </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="apps-file-manager.html" class="nav-link menu-link"> <i class="ti ti-folders"></i>
+                            <a href="/app/assignments" class="nav-link menu-link"> <i class="ti ti-folders"></i>
                                 <span data-key="t-file-manager">Assignment</span> </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="apps-to-do.html" class="nav-link menu-link"> <i class="ti ti-list"></i> <span
+                            <a href="/app/notice" class="nav-link menu-link"> <i class="ti ti-list"></i> <span
                                     data-key="t-to-do">Notice</span> </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="apps-contacts.html" class="nav-link menu-link"> <i class="ti ti-address-book"></i>
+                            <a href="/app/transportation" class="nav-link menu-link"> <i class="ti ti-address-book"></i>
                                 <span data-key="t-contacts">Transportation</span> </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="apps-kanbanboard.html" class="nav-link menu-link"> <i class="ti ti-subtask"></i>
+                            <a href="/app/user" class="nav-link menu-link"> <i class="ti ti-subtask"></i>
                                 <span data-key="t-kanaban-board">User</span> </a>
                         </li>
 
