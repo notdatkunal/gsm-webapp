@@ -1,4 +1,6 @@
-
+body{
+    background-color: #fcf5dc !important;
+}
 .form_section{
     display: none;
     position:absolute;

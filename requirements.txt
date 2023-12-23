@@ -1,5 +1,7 @@
 Django==4.2.3
-whitenoise == 5.3.0
+whitenoise 
+Faker==20.1.0
+python-dotenv==1.0.0
 Requests==2.31.0
 psycopg2==2.9.7
-django-logging-json
+
