@@ -16,7 +16,7 @@
     <div class="col-sm-12 col-md-7 col-xl-4" style="padding: 1rem;">
         <div class="row">
             <div class="col text-end">
-                <a class="btn btn-success rounded-pill" onclick="showtransportForm()"><i class="bi bi-plus-circle me-2"></i>Register vechile</a>
+                <a class="btn btn-success rounded-pill" onclick="showtransportForm()"><i class="bi bi-plus-circle me-2"></i>Register Vehicle</a>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
             <div class="col-xl-4 form_div">
                 <div class="row">
                     <div class="col-xl-6">
-                        <h3>Add transport</h3>
+                        <h3>Add Transport</h3>
                     </div>
                     <div class="col-xl-6 text-end">
                         <a class="btn-close" onclick="closetransportForm()" aria-label="Close"></a>
@@ -40,11 +40,11 @@
                         <input type="hidden" id="id" name="id">
                         <div class="col-md-12">
                             <label class="form-label">Vehicle Number </label>
-                            <input type="text" class="form-control" id="vehicle_number" name="vehicle_number" placeholder=" Enter vechile number">
+                            <input type="text" class="form-control" id="vehicle_number" name="vehicle_number" placeholder=" Enter Vehicle number">
                         </div>
                         <div class="col-md-12">
                             <label for="vehicleDetails" class="form-label">Vehicle Details</label>
-                            <textarea class="form-control" id="vehicle_details" name="vehicle_details" placeholder="Enter vehicle name and driver/conductor"></textarea>
+                            <textarea class="form-control" id="vehicle_details" name="vehicle_details" placeholder="Driver & Conductor Details"></textarea>
                         </div>
                         <div class="col-md-12">
                             <label for="inputAddress2" class="form-label">Date of Registation</label>
@@ -52,12 +52,12 @@
                         </div>
                         <div class="col-md-12">
                             <label for="inputCity" class="form-label">Route</label>
-                            <input type="text" class="form-control" id="transport_name" name="transport_name" placeholder="route name">
+                            <input type="text" class="form-control" id="transport_name" name="transport_name" placeholder="Enter Route name">
                         </div>
                         <div class="col-md-12  btn-action">
                         <div class="d-flex justify-content-end" style="margin-top:14rem;">
-                            <a onclick="closetransportForm()" class="btn btn-light" style="margin-right: 10px;">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a onclick="closetransportForm()" class="btn btn-danger rounded-pill" style="margin-right: 10px;">Cancel</a>
+                            <button type="submit" class="btn btn-success rounded-pill">Save</button>
                         </div>
                     </div>
                     </form>
@@ -75,7 +75,7 @@
         <th>Vehicle Number</th>
         <th>Vehicle Details</th>
         <th>Date of Register</th>
-        <th>transport name</th>
+        <th>Route Name</th>
         <th>Stoppage</th>
         <th>Students</th>
         <th>Staffs</th>
@@ -94,7 +94,8 @@
                 <button class="btn btn-sm btn-dark rounded-pill" onclick="openstopDetails('stopForm','{{ transport.transport_name }}','{{transport.transport_id}}')" data-id="{{transport.transport_id}}">View</button>
             </td>
             <td>
-                <button class="btn btn-sm btn-dark rounded-pill openBtn" onclick="showStudentDetails()">View</button>
+                <button class="btn btn-sm btn-dark rounded-pill openBtn" onclick="showStudentDetails()" data-id="{{transport.transport_id}}"><span id="studentCount">0</span></button>
+
 
             </td>
             <td>
@@ -102,9 +103,9 @@
             </td>
             <td>
                 <button type="button" class="btn  btn-sm btn-info" onclick="EditButton(this)" data-id="{{transport.transport_id}}">
-                    <i class="bi bi-pencil-square"></i>
+                    <i class="bi bi-pencil-square"></i></button>
                 <button type="button" class="btn btn-sm btn-danger" onclick="DeleteButton(this)" data-id="{{transport.transport_id}}">
-                    <i class="bi bi-trash3"></i>
+                    <i class="bi bi-trash3"></i></button>
             </td>
         </tr>
         {% endfor %}
@@ -150,6 +151,7 @@
 
 <section data-jwt-tokens="{{ jwt_token }}" id="jwt_card"></section>
 
+<!-- Student form -->
 <section class="form_section bg-grey" id="studentdetailsForm">
     <article class="container-fluid">
         <div class="row">
@@ -157,7 +159,7 @@
             <div class="col-xl-4 form_div">
                 <div class="row">
                     <div class="col-xl-6">
-                        <h4>student details</h4>
+                        <h4>Student Details</h4>
                     </div>
                     <div class="col-xl-6 text-end">
                         <a class="btn-close" onclick="closeStudentDetails()" aria-label="Close"></a>
@@ -165,15 +167,14 @@
                 </div>
                 <form class="form" id="student-form">
                     <div class="input-field">
-                        <input type="text" class="form-input" placeholder="Enter student number"  id="roll_number">
+                        <input type="text" class="form-input" placeholder="Enter Roll Number"  id="roll_number">
                         <button type="button" class="btnAssign" id="btnAssign" onclick="fetchStudentDetails()">Assign</button>
                     </div>
                 </form>
-                <table class="tbl">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>Roll Number</th>
-                            <th>Student Name</th>
+                            <th>Roll Number</th> <span> </span> <th>Student Name</th>
                         </tr>
                     </thead>
                     <tbody id="assignedStudents" class="tbl__bdy">

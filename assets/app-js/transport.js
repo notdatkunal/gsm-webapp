@@ -403,47 +403,69 @@ function deleteStoppage(element) {
         });
 }
 
-// Function to fetch student details
-function fetchStudentDetails() {
+function fetchStudentDetails(transport_id) {
     var rollNumber = document.getElementById('roll_number').value;
     var endpoint = `https://gsm-fastapi.azurewebsites.net/Students/get_students_by_field/roll_number/${rollNumber}/`;
-
+    const jwtToken = document.querySelector('#jwt_card').getAttribute('data-jwt-tokens')
+ 
     // Use fetch to make the API call
-    fetch(endpoint)
+    fetch(endpoint,{
+        headers:{
+            'accept': 'application/json ',
+            'Authorization': `Bearer ${jwtToken}`
+        }
+    })
         .then(response => response.json())
         .then(data => {
-            // Display the retrieved student details in the table
+            // Retrieve existing assigned students from local storage
+            var storedStudents = localStorage.getItem('assignedStudents');
+            var existingStudents = storedStudents ? JSON.parse(storedStudents) : [];
+ 
+            // Combine existing students with the newly fetched data
+            var allStudents = existingStudents.concat(data.map(student => ({ roll_number: student.roll_number, student_name: student.student_name })));
+ 
+            // Display the combined student details in the table
             var tableBody = document.getElementById('assignedStudents');
-            tableBody.innerHTML = ""; // Clear previous data
-
-            if (data.length > 0) {
-                data.forEach(student => {
+            tableBody.innerHTML = "";
+ 
+            if (allStudents.length > 0) {
+                allStudents.forEach(student => {
                     var row = tableBody.insertRow();
                     var cell1 = row.insertCell(0);
                     var cell2 = row.insertCell(1);
                     cell1.textContent = student.roll_number;
                     cell2.textContent = student.student_name;
                 });
-
-                // Store the assigned students in local storage
-                var assignedStudents = data.map(student => ({ roll_number: student.roll_number, student_name: student.student_name }));
-                localStorage.setItem('assignedStudents', JSON.stringify(assignedStudents));
+                // Update the student count
+                updateStudentCount(allStudents.length);
+ 
+ 
+                // Store the combined student details in local storage
+                localStorage.setItem('assignedStudents', JSON.stringify(allStudents));
             } else {
-                // Handle case when no student is found
+                // Handle case when no student   is found
                 // Display a message or take appropriate action
                 console.log('No student found with the given roll number.');
             }
         })
         .catch(error => console.error('Error fetching student details:', error));
 }
-
+ 
+// Function to update the student count
+function updateStudentCount(count) {
+    var studentCountElement = document.getElementById('studentCount');
+    if (studentCountElement) {
+        studentCountElement.textContent = count;
+    }
+}
+ 
 // Function to retrieve assigned students from local storage on page load
 window.onload = function () {
     var storedStudents = localStorage.getItem('assignedStudents');
     if (storedStudents) {
         var parsedStudents = JSON.parse(storedStudents);
         var tableBody = document.getElementById('assignedStudents');
-
+ 
         parsedStudents.forEach(student => {
             var row = tableBody.insertRow();
             var cell1 = row.insertCell(0);
@@ -451,14 +473,15 @@ window.onload = function () {
             cell1.textContent = student.roll_number;
             cell2.textContent = student.student_name;
         });
+        updateStudentCount(parsedStudents.length);
     }
 }
-
+ 
 // Function to open and close student details form
 function closeStudentDetails() {
     document.getElementById('studentdetailsForm').style.display = "none";
 }
-
+ 
 function showStudentDetails() {
     document.getElementById('studentdetailsForm').style.display = "block";
 }
