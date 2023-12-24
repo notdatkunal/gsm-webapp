@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import dashboard, students, staffs, login, logout, registration, classes, classinfo, user, assignments, transportation, notice
+from .views import dashboard, students, staffs, login, logout, registration, classes, classinfo, user, assignments, transportation, notice, calendar
 from . import views
 
 urlpatterns = [
@@ -15,5 +15,6 @@ urlpatterns = [
     path('assignments/', assignments, name='assignments'),
     path('transportation/', transportation, name='transportation'),
     path('notice/', notice, name='notice'), 
+    path('calendar/', calendar, name='calendar'), 
 
 ]
