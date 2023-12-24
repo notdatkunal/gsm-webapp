@@ -51,19 +51,27 @@ def staffs(request):
 def registration(request):
     if request.method == 'POST':
         form_data = request.POST.dict()
-        if(form_data['institute_password'] == form_data['confirm_password']):
+
+        # Check if passwords match
+        if form_data['institute_password'] == form_data['confirm_password']:
             institute_instance = Institute(API_URL)
             institute_result = institute_instance.create_institute_in_swagger(form_data, "/create_institute/")
-        
-            if(institute_result['status_code'] == 200):
-                messages.success(request, institute_result['msg'])
-                return HttpResponseRedirect(reverse("registration"))
+
+            if institute_result["status"]:
+                create_instance = institute_instance.create_institute(end_point="/Institute", data=institute_result["data"])
+
+                if create_instance["status"]:
+                    messages.success(request, 'Institute created successfully')
+                    return HttpResponseRedirect(reverse("registration"))
+                else:
+                    messages.error(request, create_instance.get('error', 'Error in creating institute'))
+                    return render(request, 'registration.html')
+
             else:
-                print("fail")
-                print("institute_result['detail']", institute_result['detail'])
-                messages.error(request, institute_result['detail'])
+                messages.error(request, institute_result.get('error', 'Error in creating institute'))
                 return render(request, 'registration.html')
-    return render(request, 'registration.html') 
+
+    return render(request, 'registration.html')
 
 
 
@@ -164,6 +172,7 @@ def classinfo(request, slug):
                 }
 
             return render(request, 'classinfo.html', payload)
+        return render(request, 'classinfo.html', payload)
 
 def user(request):
     user_obj = Data(API_URL)
