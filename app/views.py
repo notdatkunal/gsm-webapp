@@ -31,6 +31,9 @@ def students(request):
     }
     return render(request, 'students.html',payload)
 
+def register_student(request):
+    return render(request, 'register_student.html')
+
 def staffs(request):
     staff_obj = Data(API_URL)
     institite_id = request.COOKIES.get('institute_id')

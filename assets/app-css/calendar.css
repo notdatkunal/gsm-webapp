@@ -56,10 +56,20 @@ tr {
     flex: wrap;
     column-gap: 0.8rem;
     width: 100%;
-    
-    
+    padding-top: 10px;
 }
 .butn {
     border-radius: 15%;
     background-color: rgb(144, 215, 130);
+}
+
+.filter
+{
+    width: 8rem; height: 1.5rem; border-radius: 18px; text-align: center; 
+}
+.filter-btn
+{
+    width: 5rem; height: 1.5rem; border-radius: 18px; text-align: center; 
+    padding-top: 0;
+    padding-bottom: 0;
 }

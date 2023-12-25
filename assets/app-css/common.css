@@ -50,5 +50,19 @@ body{
     border: 1px solid #ddd;
     height: 30vh !important;
     overflow:auto !important;
-    /* background-color: #9b9898c8 !important; */
+    background-color: #fff !important;
+}
+.page-content{
+    margin-top: 1rem;
+}
+.organization_name{
+    height: 1rem !important;
+    color: var(--tb-vertical-menu-bg);
+}
+.tripledots-dropdown-toggle{
+    height: 1.9rem;
+    width: 1.9rem;
+}
+.tripledots-dropdown-toggle::after{
+    content: "" !important;
 }
