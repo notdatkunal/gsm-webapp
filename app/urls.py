@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import dashboard, students, staffs, login, logout, registration, classes, classinfo, user, assignments, transportation, notice, calendar
+from .views import dashboard, students, register_student, staffs, login, logout, registration, classes, classinfo, user, assignments, transportation, notice, calendar
 from . import views
 
 urlpatterns = [
@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', logout, name='logout'),
     path('dashboard/', dashboard, name='dashboard'),
     path('students/', students, name='students'),
+    path('register_student/', register_student, name='register_student'),
     path('staffs/', staffs, name='staffs'),
     path('classes/', classes, name='classes'),
     path('classinfo/<slug:slug>/', classinfo, name='classinfo'),
