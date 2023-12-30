@@ -2,25 +2,52 @@ let apiUrl = ""
 let jwtToken = ""
 let instituteId = 0
 $(document).ready(()=>{
-    apiUrl = $("#apiUrl").val()
-    jwtToken = $("#jwtToken").val()
-    instituteId = $("#instituteId").val()    
+    apiUrl = $("#apiUrl").val();
+    jwtToken = $("#jwtToken").val();
+    instituteId = $("#instituteId").val();
 })
 function raiseErrorAlert(msg) {
-    Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: msg,
-    });
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "timeOut": "5000",
+        "extendedTimeOut": "2000"
+    };
+    toastr.error(msg, 'Error');
 }
 function raiseSuccessAlert(msg) {
-    Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: msg,
-    });
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "timeOut": "5000",
+        "extendedTimeOut": "2000"
+    };
+    toastr.success(msg, 'Success');
 }
 
+function raiseWarningAlert(msg) {
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "timeOut": "5000",
+        "extendedTimeOut": "2000"
+    };
+    toastr.warning(msg, 'Warning !');
+}
+
+function raiseInfoAlert(msg) {
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "timeOut": "5000",
+        "extendedTimeOut": "2000"
+    };
+    toastr.info(msg, 'Information');
+}
 // form reset
 function resetForm(fields) {
     for (const field of fields) {

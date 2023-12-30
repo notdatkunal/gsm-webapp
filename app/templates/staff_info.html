@@ -1,12 +1,12 @@
 {% extends '_layout.html' %} 
-{% block title %} Staff Info {% endblock %} 
+{% block title %} Staff Selection {% endblock %} 
 {% load static %} 
 {% block content %}
 <link rel="stylesheet" href="{% static 'app-css/common.css' %}" />
 
 <div class="row" id="heading-row">
   <div class="col-sm-12 col-md-12 col-xl-12" style="padding: 1rem">
-    <h5>Staff Information</h5>
+    <h5>Staff</h5>
     <quote
       >Teachers illuminate the path to knowledge, guiding minds to brilliance
       with each lesson they share.
@@ -143,7 +143,7 @@
           <div class="tab-content text-muted">
             <div class="tab-pane active" id="Basic" role="tabpanel">
               <h6>List of Subjects of this class</h6>
-              <div class="mb-0">
+              <div class="text-center">
                 <div class="container">
                     <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
                 </div>
@@ -159,7 +159,7 @@
             <div class="tab-pane" id="calendar" role="tabpanel">
               <h6>Calendar/Time Table of this class</h6>
               <div class="mb-0">dynamic code goes here</div>
-              <div class="container">
+              <div class="container text-center">
                 <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
             </div>
             </div>

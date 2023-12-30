@@ -115,21 +115,13 @@ async function openParentForm(element){
 async function deleteParent(element){
     var parentId = $(element).attr("data-parent_id");
     await Swal.fire({
-        title: 'Are you sure?',
-        text: 'You won\'t be able to revert this!',
+        title: 'Are you sure, you want to delete this Record?',
+        text: 'This can\'t be reverted!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel',
-        reverseButtons: true,
-        customClass: {
-            title: 'swal-title',
-            content: 'swal-text',
-            confirmButton: 'swal-confirm-button',
-            cancelButton: 'swal-cancel-button',
-        },
+        confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
             $(`#parent-card-${parentId}`).remove()

@@ -1,22 +1,14 @@
 $("document").ready(function(){
     $('#studentsTable').on('click', '.btnStudentDelete', async function() {
     await Swal.fire({
-        title: 'Are you sure?',
-        text: 'You won\'t be able to revert this!',
+        title: 'Are you sure, you want to delete this Record?',
+        text: 'This can\'t be reverted!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel',
-        reverseButtons: true,
-        customClass: {
-            title: 'swal-title',
-            content: 'swal-text',
-            confirmButton: 'swal-confirm-button',
-            cancelButton: 'swal-cancel-button',
-        },
-        }).then((result) => {
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
         if (result.isConfirmed) {
             var studentId = $(this).attr("data-student-id");
             deleteStudent(studentId);

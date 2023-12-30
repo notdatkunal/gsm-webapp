@@ -9,8 +9,8 @@ async function deleteStaff(staffId) {
     const staffRow = `.tr-staff-${staffId}`;
     // confirm alert
     Swal.fire({
-        title: 'Are you sure?',
-        text: 'You won\'t be able to revert this!',
+        title: 'Are you sure, you want to delete this Record?',
+        text: 'This can\'t be reverted!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

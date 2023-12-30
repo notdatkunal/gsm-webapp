@@ -129,13 +129,13 @@ function DeleteButton(element) {
     const jwtToken = document.querySelector('#jwt_card').getAttribute('data-jwt-tokens');
     console.log(jwtToken, "fff");
     Swal.fire({
-        title: 'Are you sure you want to delete this user?',
-        text: "This action cannot be undone.",
+        title: 'Are you sure, you want to delete this Record?',
+        text: 'This can\'t be reverted!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Delete'
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
             const id = element.getAttribute('data-id');

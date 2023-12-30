@@ -70,12 +70,10 @@
         width: 90%;
     }
 }
-.no_data_found {
-    width: 48rem;
-    text-align: center;
-    margin-left: 8rem;
-} 
 
 #tabContent {
    display: none;
+}
+#class_list{
+    min-width: 250px !important;
 }

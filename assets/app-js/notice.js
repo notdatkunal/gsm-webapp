@@ -22,7 +22,7 @@ async function deleteNotice(noticeId) {
     const noticeRow = `.tr-notice-${noticeId}`;
     // confirm alert
     Swal.fire({
-        title: 'Are you sure, you want to delete this Notice?',
+        title: 'Are you sure, you want to delete this Record?',
         text: 'This can\'t be reverted!',
         icon: 'warning',
         showCancelButton: true,

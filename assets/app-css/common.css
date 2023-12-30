@@ -147,13 +147,14 @@ body{
     margin-right: 5rem; 
 }
 .no_data_found {
-    width: 48rem;
-    text-align: center;
-    margin-left: 8rem;
+    width: 400px;
 }
 .transport-details {
     margin-top: 1rem;
 }
 .info-header{
     text-align: center;
+}
+#sidebarMore{
+    background: var(--tb-vertical-menu-bg) !important;
 }

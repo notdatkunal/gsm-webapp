@@ -144,13 +144,13 @@ async function deleteTransport(recordId, jwtToken) {
     const deleteUrl = `${apiUrl}${deleteEndpoint}`;
     try {
         const confirmation = await Swal.fire({
-            title: 'Are you sure you want to delete this Transport?',
-            text: "This action cannot be undone.",
+            title: 'Are you sure, you want to delete this Record?',
+            text: 'This can\'t be reverted!',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Delete'
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
         });
         if (confirmation.isConfirmed) {
             const response = await $.ajax({

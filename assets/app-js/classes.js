@@ -75,13 +75,13 @@ $(document).ready(function () {
       return;
     }
     Swal.fire({
-      title: "Are you sure you want to delete this Class?",
-      text: "This action cannot be undone.",
-      icon: "warning",
+      title: 'Are you sure, you want to delete this Record?',
+      text: 'This can\'t be reverted!',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Delete",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
     }).then(async(result) => {
       if (result.isConfirmed) {
       const response=await $.ajax({
@@ -193,6 +193,8 @@ async function addClass() {
       showLoader("class-form-area", "sm");
     },
     success: async function (data) {
+      $("#class_creation_modal").modal("hide");
+      raiseSuccessAlert("Class Added Successfully.");
       if (data) {
         const responseData = data["response"];
         const $dropdown = $("#class_list");
@@ -229,15 +231,14 @@ async function addClass() {
             },
           });
           resetFormFields("class");
-          raiseSuccessAlert("Class Added Successfully.");
         }
-        $("#class_creation_modal").modal("hide");
+        
       }
     },
     error: (error) => {
       console.log("done error");
       console.log(error.responseJSON.detail);
-       raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error["responseJSON"]["detail"]);
     },
     complete: (e) => {
       removeLoader("class-form-area", "sm");
@@ -324,12 +325,12 @@ async function loadSectionDetails(selectedClassId) {
         section.section_name +
         "</div>" +
         '<div class="d-flex gap-2 actions">' +
-        '<a class="btnSectionEdit" onclick="editSection(this)" data-section-id="' +
+        '<a href="#" class="btnSectionEdit" onclick="editSection(this)" data-section-id="' +
         section.section_id +
         '">' +
         '<i class="bi bi-pencil-square text-primary"></i>' +
         "</a>" +
-        '<a class="btnSectionDelete" onclick="deleteSection(this)" data-section-id="' +
+        '<a href="#" class="btnSectionDelete" onclick="deleteSection(this)" data-section-id="' +
         section.section_id +
         '">' +
         '<i class="bi bi-trash-fill text-danger"></i>' +
@@ -376,17 +377,17 @@ async function addSection() {
     },
     success: async function (data) {
       if (data) {
+        $("#section_creation_modal").modal("hide");
         const responseData = data["response"];
         if (isUpdate) {
-         await loadSectionDetails(responseData.class_id);
-          $("#section_id").val("");
           raiseSuccessAlert("Section Updated Successfully");
+          await loadSectionDetails(responseData.class_id);
+          $("#section_id").val("");
         } else {
-         await loadSectionDetails(responseData.class_id);
           raiseSuccessAlert("Section Added Successfully.");
+          await loadSectionDetails(responseData.class_id);
         }
         resetFormFields("section");
-        $("#section_creation_modal").modal("hide");
       }
     },
     error: (error) => {
@@ -443,13 +444,13 @@ async function deleteSection(element) {
   const deleteSectionUrl = apiUrl + "/Sections/delete_section_id/" + sectionId;
   const class_Id=$("#classes_id").val();
   Swal.fire({
-    title: "Are you sure you want to delete this Section?",
-    text: "This action cannot be undone.",
-    icon: "warning",
+    title: 'Are you sure, you want to delete this Record?',
+    text: 'This can\'t be reverted!',
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-    confirmButtonText: "Delete",
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
   }).then(async(result) => {
     if (result.isConfirmed) {
    const data = await $.ajax({
@@ -468,7 +469,7 @@ async function deleteSection(element) {
           var parentDiv = $(element).closest(`#section-${sectionId}`);
           parentDiv.remove();
           raiseSuccessAlert("Section Deleted Successfully.");
-         await loadSectionDetails(class_Id);
+          await loadSectionDetails(class_Id);
         },
         error: (xhr, status, error) => {
            raiseErrorAlert(error["responseJSON"]["detail"]);
@@ -571,16 +572,16 @@ async function addSubject() {
     success: async function (data) {
       if (data) {
         const subjectData = data["response"];
+        $("#subject_creation_modal").modal("hide");
         if (isEdit) {
-         await loadSubjectDetails(subjectData.class_id);
-          $("#subject_id").val("");
           raiseSuccessAlert("Subject Updated Successfully");
+          await loadSubjectDetails(subjectData.class_id);
+          $("#subject_id").val("");
         } else {
-         await loadSubjectDetails(subjectData.class_id);
           raiseSuccessAlert("Subject Added Successfully.");
+          await loadSubjectDetails(subjectData.class_id);
         }
         resetFormFields("subject");
-        $("#subject_creation_modal").modal("hide");
       }
     },
     error: (xhr, status, error) => {
@@ -635,13 +636,13 @@ async function deleteSubject(element) {
   const deleteSubUrl = apiUrl + "/Subjects/delete_subject_id/" + subjectId;
   const classsId=$("#classes_id").val();
   Swal.fire({
-    title: "Are you sure you want to delete this Subject?",
-    text: "This action cannot be undone.",
-    icon: "warning",
+    title: 'Are you sure, you want to delete this Record?',
+    text: 'This can\'t be reverted!',
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-    confirmButtonText: "Delete",
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
   }).then(async(result) => {
     if (result.isConfirmed) {
     const data= await $.ajax({
@@ -660,7 +661,7 @@ async function deleteSubject(element) {
           var parentDiv = $(element).closest(`#subject-${subjectId}`);
           parentDiv.remove();
           raiseSuccessAlert("Subject Deleted Successfully.");
-         await loadSubjectDetails(classsId);
+          await loadSubjectDetails(classsId);
         },
         error: (xhr, status, error) => {
            raiseErrorAlert(error["responseJSON"]["detail"]);
@@ -828,16 +829,16 @@ async function addGrade() {
     },
     success: async function (data) {
       if (data) {
+        $("#grade_creation_modal").modal("hide");
         const responseData = data["response"];
         if (editGrade) {
-         await loadGradeDetails(responseData.class_id);
           raiseSuccessAlert("Grade Updated Successfully");
-        } else {
          await loadGradeDetails(responseData.class_id);
+        } else {
           raiseSuccessAlert("Grade Added Successfully.");
+         await loadGradeDetails(responseData.class_id);
         }
         resetGradeForm();
-        $("#grade_creation_modal").modal("hide");
       }
     },
     error: (xhr, status, error) => {
@@ -861,8 +862,8 @@ function validateGradeForm() {
       raiseErrorAlert("Fill all the fields");
     }
   }
-  if($("#percent_from").val() < $("#percent_upto").val()){
-    raiseErrorAlert("Percentage From should be less than Percentage Upto");
+  if($("#percent_from").val() > $("#percent_upto").val()){
+    raiseErrorAlert("Minimum Percentage should be less than Maximum Percentage");
     isValid = false;
   }
   return isValid;
@@ -923,13 +924,13 @@ async function deleteGrading(element) {
   const deleteGrdUrl = apiUrl + "/Grades/delete_grade/?grade_id=" + gradeId;
   const classsesId=$("#classes_id").val();
   Swal.fire({
-    title: "Are you sure you want to delete this Grade?",
-    text: "This action cannot be undone.",
-    icon: "warning",
+    title: 'Are you sure, you want to delete this Record?',
+    text: 'This can\'t be reverted!',
+    icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-    confirmButtonText: "Delete",
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
   }).then(async(result) => {
     if (result.isConfirmed) {
      const data=await $.ajax({
@@ -945,9 +946,9 @@ async function deleteGrading(element) {
           showLoader("body", "sm");
         },
         success: async function (data) {
+          raiseSuccessAlert("Grade Deleted Successfully.");
           var parentDiv = $(element).closest(`#grade-${gradeId}`);
           parentDiv.remove();
-          raiseSuccessAlert("Grade Deleted Successfully.");
           await loadGradeDetails(classsesId);
         },
         error: (xhr, status, error) => {

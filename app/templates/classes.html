@@ -36,15 +36,16 @@
         </div>
         <div class="input-field">
           <button type="button" class="btn btn-info btn-label rounded-pill right" id="btnEdit" data-class-id="0">
-          <i class="bi bi-pencil-square label-icon align-middle fs-lg ms-2"></i>Edit</button>
+            <i class="bi bi-pencil-square label-icon align-middle fs-lg ms-2"></i>Edit</button>
         </div>
         <div class="input-field">
           <button type="button" class="btn btn-danger btn-label rounded-pill right" id="btnDelete" data-class-id="0">
-          <i class="bi bi-trash3-fill label-icon align-middle fs-lg ms-2"></i>Delete</button>
+            <i class="bi bi-trash3-fill label-icon align-middle fs-lg ms-2"></i>Delete</button>
         </div>
         </h5>
       </div>
-      <p class="text-muted mt-1">Records below are specific to the selected <code id="selected_class_name">None</code>.</p>
+      <p class="text-muted mt-1">Records below are specific to the selected <code id="selected_class_name">None</code>.
+      </p>
       <ul class="nav nav-pills arrow-navtabs nav-success bg-light mb-3 mt-2" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" data-bs-toggle="tab" href="#sections" role="tab">
@@ -93,17 +94,17 @@
       <div class="tab-content text-muted" id="tabContent">
         <div class="tab-pane active" id="sections" role="tabpanel">
           <div class="row">
-          <h6 class="col-sm-12 col-md-6 col-xl-8">List of Sections of this class</h6>
-          <div class="col-sm-12 col-md-6 col-xl-4">
-            <div class="col text-end">
-              <button type="button" class="btn btn-success btn-label rounded-pill right" data-bs-toggle="modal"
-                data-bs-target="#section_creation_modal">
-                <i class="bi bi-plus-circle label-icon align-middle fs-lg ms-2"></i>Create Section</button>
+            <h6 class="col-sm-12 col-md-6 col-xl-8">List of Sections of this class</h6>
+            <div class="col-sm-12 col-md-6 col-xl-4">
+              <div class="col text-end">
+                <button type="button" class="btn btn-success btn-label rounded-pill right" data-bs-toggle="modal"
+                  data-bs-target="#section_creation_modal">
+                  <i class="bi bi-plus-circle label-icon align-middle fs-lg ms-2"></i>Create Section</button>
+              </div>
             </div>
-        </div>
           </div>
-          <div class="mb-0" id="tabSection">
-   
+          <div class="text-center" id="tabSection">
+
           </div>
         </div>
         <div class="tab-pane" id="subjects" role="tabpanel">
@@ -115,11 +116,11 @@
                   data-bs-target="#subject_creation_modal">
                   <i class="bi bi-plus-circle label-icon align-middle fs-lg ms-2"></i>Create Subject</button>
               </div>
-          </div>
             </div>
-          <div class="mb-0" id="tabSubject">
+          </div>
+          <div class="text-center" id="tabSubject">
 
-        </div>
+          </div>
         </div>
         <div class="tab-pane" id="calendar" role="tabpanel">
           <div class="row">
@@ -128,117 +129,119 @@
               <div class="col text-end">
 
               </div>
-          </div>
-            </div>          
-            <div class="mb-0" id="tabCalender">
-              <div class="container">
-                <table class="styled-table" id="calenderTable">
-                      <tr>
-                        <td colspan="7" class="col" id="column"><center><b>Class 10 Section A</b></center></td>
-                      </tr>
-                      <tr class="col" id="column">
-                        <th >Time</th>
-                        <th>Monday</th>
-                        <th>Tuesday</th>
-                        <th>Wednesday</th>
-                        <th>Thursday</th>
-                        <th>Friday</th>
-                        <th>Saturday</th>
-          
-                      </tr>
-                      <tr class="rowData">
-                        <td class="mod" id="tdData">9:30 AM-10:15 AM</td>
-                        <td id="tableData">English<br>(Mr.Rizwan)</td>
-                        <td id="tableData">Math<br>(Ms.Rupa)</td>
-                        <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
-                        <td id="tableData">Computer<br>(Mr.Murli)</td>
-                        <td id="tableData">biology<br>(Ms.sandhya)</td>
-                        <td id="tableData">Physics<br>(Ms.Haritha)</td>
-                      </tr>
-                      <tr class="rowData">
-                        <td class="mod" id="tdData">10:15 AM-11:00 AM</td>
-                        <td id="tableData">English<br>(Mr.Rizwan)</td>
-                        <td id="tableData">Math<br>(Ms.Jeshi)</td>
-                        <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
-                        <td id="tableData">Computer<br>(Mr.Murli)</td>
-                        <td id="tableData">biology<br>(Ms.sandhya)</td>
-                        <td id="tableData">Physics<br>(Ms.Haritha)</td>
-                      </tr>
-                      <tr class="rowData">
-                        <td class="mod" id="tdData">11:15 AM-12:00 PM</td>
-                        <td id="tableData">English<br>(Mr.Rizwan)</td>
-                        <td id="tableData">Math<br>(Mr.Abhishek)</td>
-                        <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
-                        <td id="tableData">Computer<br>(Mr.Murli)</td>
-                        <td id="tableData">biology<br>(Ms.janvi)</td>
-                        <td id="tableData">Physics<br>(Mr.Fasi)</td>
-                      </tr>
-                      <tr class="rowData">
-                        <td class="mod" id="tdData">12:00 PM-12:45 PM</td>
-                        <td id="tableData">English<br>(Mr.Rizwan)</td>
-                        <td id="tableData">Math<br>(Ms.Jeshi)</td>
-                        <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
-                        <td id="tableData">Computer<br>(Mr.Murli)</td>
-                        <td id="tableData">biology<br>(Ms.sandhya)</td>
-                        <td id="tableData">Physics<br>(Ms.Haritha)</td>
-                      </tr>
-                      <tr class="rowData">
-                        <td class="mod" id="tdData">01:30 PM-02:15 PM</td>
-                        <td id="tableData">English<br>(Mr.Abhishek)</td>
-                        <td id="tableData">Math<br>(Ms.sandhya)</td>
-                        <td id="tableData">Chemistry<br>(Mr.Murli)</td>
-                        <td id="tableData">Computer<br>(Mr.Rizwan)</td>
-                        <td id="tableData">biology<br>(Ms.jeshi)</td>
-                        <td id="tableData">Physics<br>(Ms.Haritha)</td>
-                      </tr>
-                      <tr class="rowData">
-                        <td class="mod" id="tdData">02:15 PM-03:00 PM</td>
-                        <td id="tableData">English<br>(Mr.Rizwan)</td>
-                        <td id="tableData">Math<br>(Ms.Jeshi)</td>
-                        <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
-                        <td id="tableData">Computer<br>(Mr.Murli)</td>
-                        <td id="tableData">biology<br>(Ms.sandhya)</td>
-                        <td id="tableData">Physics<br>(Ms.Haritha)</td>
-                      </tr>
-                      <tr class="rowData">
-                        <td class="mod" id="tdData">3:00 PM-03:30 PM</td>
-                        <td id="tableData">English<br>(Mr.Rizwan)</td>
-                        <td id="tableData">Math<br>(Mr.Abhishek)</td>
-                        <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
-                        <td id="tableData">Computer<br>(Mr.Murli)</td>
-                        <td id="tableData">biology<br>(Ms.janvi)</td>
-                        <td id="tableData">Physics<br>(Mr.Fasi)</td>
-                      </tr>
-                    </table>
-              </div>          
             </div>
+          </div>
+          <div class="text-center" id="tabCalender">
+            <div class="container">
+              <table class="styled-table" id="calenderTable">
+                <tr>
+                  <td colspan="7" class="col" id="column">
+                    <center><b>Class 10 Section A</b></center>
+                  </td>
+                </tr>
+                <tr class="col" id="column">
+                  <th>Time</th>
+                  <th>Monday</th>
+                  <th>Tuesday</th>
+                  <th>Wednesday</th>
+                  <th>Thursday</th>
+                  <th>Friday</th>
+                  <th>Saturday</th>
+
+                </tr>
+                <tr class="rowData">
+                  <td class="mod" id="tdData">9:30 AM-10:15 AM</td>
+                  <td id="tableData">English<br>(Mr.Rizwan)</td>
+                  <td id="tableData">Math<br>(Ms.Rupa)</td>
+                  <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
+                  <td id="tableData">Computer<br>(Mr.Murli)</td>
+                  <td id="tableData">biology<br>(Ms.sandhya)</td>
+                  <td id="tableData">Physics<br>(Ms.Haritha)</td>
+                </tr>
+                <tr class="rowData">
+                  <td class="mod" id="tdData">10:15 AM-11:00 AM</td>
+                  <td id="tableData">English<br>(Mr.Rizwan)</td>
+                  <td id="tableData">Math<br>(Ms.Jeshi)</td>
+                  <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
+                  <td id="tableData">Computer<br>(Mr.Murli)</td>
+                  <td id="tableData">biology<br>(Ms.sandhya)</td>
+                  <td id="tableData">Physics<br>(Ms.Haritha)</td>
+                </tr>
+                <tr class="rowData">
+                  <td class="mod" id="tdData">11:15 AM-12:00 PM</td>
+                  <td id="tableData">English<br>(Mr.Rizwan)</td>
+                  <td id="tableData">Math<br>(Mr.Abhishek)</td>
+                  <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
+                  <td id="tableData">Computer<br>(Mr.Murli)</td>
+                  <td id="tableData">biology<br>(Ms.janvi)</td>
+                  <td id="tableData">Physics<br>(Mr.Fasi)</td>
+                </tr>
+                <tr class="rowData">
+                  <td class="mod" id="tdData">12:00 PM-12:45 PM</td>
+                  <td id="tableData">English<br>(Mr.Rizwan)</td>
+                  <td id="tableData">Math<br>(Ms.Jeshi)</td>
+                  <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
+                  <td id="tableData">Computer<br>(Mr.Murli)</td>
+                  <td id="tableData">biology<br>(Ms.sandhya)</td>
+                  <td id="tableData">Physics<br>(Ms.Haritha)</td>
+                </tr>
+                <tr class="rowData">
+                  <td class="mod" id="tdData">01:30 PM-02:15 PM</td>
+                  <td id="tableData">English<br>(Mr.Abhishek)</td>
+                  <td id="tableData">Math<br>(Ms.sandhya)</td>
+                  <td id="tableData">Chemistry<br>(Mr.Murli)</td>
+                  <td id="tableData">Computer<br>(Mr.Rizwan)</td>
+                  <td id="tableData">biology<br>(Ms.jeshi)</td>
+                  <td id="tableData">Physics<br>(Ms.Haritha)</td>
+                </tr>
+                <tr class="rowData">
+                  <td class="mod" id="tdData">02:15 PM-03:00 PM</td>
+                  <td id="tableData">English<br>(Mr.Rizwan)</td>
+                  <td id="tableData">Math<br>(Ms.Jeshi)</td>
+                  <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
+                  <td id="tableData">Computer<br>(Mr.Murli)</td>
+                  <td id="tableData">biology<br>(Ms.sandhya)</td>
+                  <td id="tableData">Physics<br>(Ms.Haritha)</td>
+                </tr>
+                <tr class="rowData">
+                  <td class="mod" id="tdData">3:00 PM-03:30 PM</td>
+                  <td id="tableData">English<br>(Mr.Rizwan)</td>
+                  <td id="tableData">Math<br>(Mr.Abhishek)</td>
+                  <td id="tableData">Chemistry<br>(Ms.Lipi)</td>
+                  <td id="tableData">Computer<br>(Mr.Murli)</td>
+                  <td id="tableData">biology<br>(Ms.janvi)</td>
+                  <td id="tableData">Physics<br>(Mr.Fasi)</td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
         <div class="tab-pane" id="students" role="tabpanel">
           <div class="row">
             <h6 class="col-sm-12 col-md-6 col-xl-8">List of Students of this class</h6>
-            </div>          
-            <div class="mb-0" id="tabStudent">
-              <table class="table table-striped table-hover table-sticky table_students">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>S.No</th>
-                        <th>Student Name</th>
-                        <th>Roll Number</th>
-                        <th>Class </th>
-                        <th>Section</th>
-                        <th>Gender</th>
-                        <th>Blood Group</th>
-                    </tr>
-                </thead>
-                <tbody class="tbl__bdy" id="classStudentTable">
+          </div>
+          <div class="text-center" id="tabStudent">
+            <table class="table table-striped table-hover table-sticky table_students">
+              <thead class="thead-dark">
+                <tr>
+                  <th>S.No</th>
+                  <th>Student Name</th>
+                  <th>Roll Number</th>
+                  <th>Class </th>
+                  <th>Section</th>
+                  <th>Gender</th>
+                  <th>Blood Group</th>
+                </tr>
+              </thead>
+              <tbody class="tbl__bdy" id="classStudentTable">
 
-                </tbody>
-            </table>          
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="tab-pane" id="examinations" role="tabpanel">
           <h6>Past and Upcoming Examinations of this class</h6>
-          <div class="mb-0">
+          <div class="text-center">
             <img src="/assets/img/no_data_found.png" class="no_data_found">
           </div>
         </div>
@@ -251,15 +254,15 @@
                   data-bs-target="#grade_creation_modal">
                   <i class="bi bi-plus-circle label-icon align-middle fs-lg ms-2"></i>Add New Grade</button>
               </div>
-          </div>
-            </div>          
-            <div class="mb-0" id="tabGrading">
-
             </div>
+          </div>
+          <div class="text-center" id="tabGrading">
+
+          </div>
         </div>
         <div class="tab-pane" id="fees" role="tabpanel">
           <h6>Fees structure configuration of this class</h6>
-          <div class="mb-0">
+          <div class="text-center">
             <img src="/assets/img/no_data_found.png" class="no_data_found">
           </div>
         </div>
@@ -268,173 +271,175 @@
   </div><!-- end card -->
 </div>
 <!-- ______AddClass Form_____-->
-<div class="modal fade bs-example-modal-sm" id="class_creation_modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content" id="class-form-area">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mySmallModalLabel">Save Class</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-                <div class="modal-body">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <i class="ri-checkbox-circle-fill text-success"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <p class="text-muted mb-0">A class in an educational institution is the dynamic canvas where
-                                curiosity is nurtured, knowledge is painted, and futures are crafted.</p>
-                        </div>
-                    </div>
-                    <div class="d-flex mt-2" id="AddClass">
-                        <div class="col-md-12 form-content">
-                            <input type="hidden" name="class_id" id="class_id">
-                            <label for="class_name" class="form-label">Class Name</label>
-                            <input type="text" class="form-control class_name" id="class_name" name="class_name"
-                                placeholder="Enter a Class Name"  maxlength="1000">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
-                            class="ri-close-line me-1 align-middle"></i> Close</a>
-                    <button type="submit" class="btn btn-primary" id="btnSave">Save
-                        changes</button>
-                </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+<div class="modal fade bs-example-modal-sm" id="class_creation_modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" id="class-form-area">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mySmallModalLabel">Save Class</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <i class="ri-checkbox-circle-fill text-success"></i>
+          </div>
+          <div class="flex-grow-1 ms-2">
+            <p class="text-muted mb-0">A class in an educational institution is the dynamic canvas where
+              curiosity is nurtured, knowledge is painted, and futures are crafted.</p>
+          </div>
+        </div>
+        <div class="d-flex mt-2" id="AddClass">
+          <div class="col-md-12 form-content">
+            <input type="hidden" name="class_id" id="class_id">
+            <label for="class_name" class="form-label">Class Name</label>
+            <input type="text" class="form-control class_name" id="class_name" name="class_name"
+              placeholder="Enter a Class Name" maxlength="1000">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
+            class="ri-close-line me-1 align-middle"></i> Close</a>
+        <button type="submit" class="btn btn-primary" id="btnSave" data-bs-dismiss="modal">Save
+          changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 
 <!-- ______AddSection Form_____-->
-<div class="modal fade bs-example-modal-sm" id="section_creation_modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content" id="section-form-area">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mySmallModalLabel">Save Section</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-                <div class="modal-body">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <i class="ri-checkbox-circle-fill text-success"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <p class="text-muted mb-0">A section serves as a distinct segment within a course or grade, providing a dynamic environment
-                               where students explore their interests, acquire knowledge, and shape their future paths.</p>
-                        </div>
-                    </div>
-                    <div class="d-flex mt-2" id="AddSection">
-                        <div class="col-md-12 form-content">
-                            <input type="hidden" name="class_id" id="classes_id" value={{class_id}}>
-                            <input type="hidden" name="section_id" id="section_id">
-                            <label for="section_name" class="form-label">Section Name</label>
-                            <input type="text" class="form-control section_name" id="section_name" name="section_name"
-                                placeholder="Enter a Section Name" maxlength="1000">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
-                            class="ri-close-line me-1 align-middle"></i> Close</a>
-                    <button type="submit" class="btn btn-primary" id="btnSectionSave">Save
-                        changes</button>
-                </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+<div class="modal fade bs-example-modal-sm" id="section_creation_modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" id="section-form-area">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mySmallModalLabel">Save Section</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <i class="ri-checkbox-circle-fill text-success"></i>
+          </div>
+          <div class="flex-grow-1 ms-2">
+            <p class="text-muted mb-0">A section serves as a distinct segment within a course or grade, providing a
+              dynamic environment
+              where students explore their interests, acquire knowledge, and shape their future paths.</p>
+          </div>
+        </div>
+        <div class="d-flex mt-2" id="AddSection">
+          <div class="col-md-12 form-content">
+            <input type="hidden" name="class_id" id="classes_id" value={{class_id}}>
+            <input type="hidden" name="section_id" id="section_id">
+            <label for="section_name" class="form-label">Section Name</label>
+            <input type="text" class="form-control section_name" id="section_name" name="section_name"
+              placeholder="Enter a Section Name" maxlength="1000">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
+            class="ri-close-line me-1 align-middle"></i> Close</a>
+        <button type="submit" class="btn btn-primary" id="btnSectionSave">
+          Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 
 <!-- ______AddSubject Form_____-->
-<div class="modal fade bs-example-modal-sm" id="subject_creation_modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content" id="subject-form-area">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mySmallModalLabel">Save Subject</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-                <div class="modal-body">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <i class="ri-checkbox-circle-fill text-success"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <p class="text-muted mb-0">A subject refers to a specific field of study or discipline that is taught as part of a curriculum. It serves as a fundamental unit of organization
-                               for academic content, representing a distinct area of knowledge or skill development.</p>
-                        </div>
-                    </div>
-                    <div class="d-flex mt-2" id="AddSubject">
-                        <div class="col-md-12 form-content">
-                            <input type="hidden" name="subject_id" id="subject_id">
-                            <label for="subject_name" class="form-label">Subject Name</label>
-                            <input type="text" class="form-control subject_name" id="subject_name" name="subject_name"
-                                placeholder="Enter a Subject Name" maxlength="1000">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
-                            class="ri-close-line me-1 align-middle"></i> Close</a>
-                    <button type="submit" class="btn btn-primary" id="btnSujectSave">Save
-                        changes</button>
-                </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+<div class="modal fade bs-example-modal-sm" id="subject_creation_modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" id="subject-form-area">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mySmallModalLabel">Save Subject</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <i class="ri-checkbox-circle-fill text-success"></i>
+          </div>
+          <div class="flex-grow-1 ms-2">
+            <p class="text-muted mb-0">A subject refers to a specific field of study or discipline that is taught as
+              part of a curriculum. It serves as a fundamental unit of organization
+              for academic content, representing a distinct area of knowledge or skill development.</p>
+          </div>
+        </div>
+        <div class="d-flex mt-2" id="AddSubject">
+          <div class="col-md-12 form-content">
+            <input type="hidden" name="subject_id" id="subject_id">
+            <label for="subject_name" class="form-label">Subject Name</label>
+            <input type="text" class="form-control subject_name" id="subject_name" name="subject_name"
+              placeholder="Enter a Subject Name" maxlength="1000">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
+            class="ri-close-line me-1 align-middle"></i> Close</a>
+        <button type="submit" class="btn btn-primary" id="btnSujectSave">Save
+          changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 
-<div class="modal fade bs-example-modal-sm" id="grade_creation_modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content" id="grade-form-area">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mySmallModalLabel">Save Grading</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-            </div>
-                <div class="modal-body" id="AddGrade">
-                    <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <i class="ri-checkbox-circle-fill text-success"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-2">
-                            <p class="text-muted mb-0"> Grades are used to organize students into
-                               cohorts, each following a curriculum appropriate for their developmental stage. </p>
-                        </div>
-                    </div>
-                    <div class="d-flex mt-2">
-                      <div class="col-md-12 form-content">
-                        <label for="percent_from" class="form-label">Minimum Percent(%)</label>
-                        <input type="number" class="form-control percent_from" id="percent_from" name="percent_from"
-                            placeholder="Enter minimum percentage" min="0" max="100">
-                      </div>
-                    </div>
-                            <div class="d-flex mt-2">
-                              <div class="col-md-12 form-content">
-                        <label for="percent_upto" class="form-label">Maximum Percent(%)</label>
-                        <input type="number" class="form-control percent_upto" id="percent_upto" name="percent_upto"
-                             placeholder="Enter maximum percentage" min="0" max="100">    
-                    </div>
-                    </div>
-                    <div class="d-flex mt-2">
-                        <div class="col-md-12 form-content">
-                            <input type="hidden" name="grade_id" id="grade_id">
-                            <input type="hidden" name="id" id="applicable_id">
-                            <label for="grade_name" class="form-label">Grade Name</label>
-                            <input type="text" class="form-control grade_name" id="grade_name" name="grade_name"
-                                placeholder="Enter a Subject Name" maxlength="1000">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
-                            class="ri-close-line me-1 align-middle"></i> Close</a>
-                    <button type="submit" class="btn btn-primary" id="btnGradeSave">Save
-                        changes</button>
-                </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+<div class="modal fade bs-example-modal-sm" id="grade_creation_modal" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" id="grade-form-area">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mySmallModalLabel">Save Grading</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body" id="AddGrade">
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <i class="ri-checkbox-circle-fill text-success"></i>
+          </div>
+          <div class="flex-grow-1 ms-2">
+            <p class="text-muted mb-0"> Grades are used to organize students into
+              cohorts, each following a curriculum appropriate for their developmental stage. </p>
+          </div>
+        </div>
+        <div class="d-flex mt-2">
+          <div class="col-md-6 form-content">
+            <label for="percent_from" class="form-label">Minimum Percent(%)</label>
+            <input type="number" class="form-control percent_from" id="percent_from" name="percent_from"
+              placeholder="Enter minimum percentage" min="0" max="100">
+          </div>
+        </div>
+        <div class="d-flex mt-2">
+          <div class="col-md-12 form-content">
+            <label for="percent_upto" class="form-label">Maximum Percent(%)</label>
+            <input type="number" class="form-control percent_upto" id="percent_upto" name="percent_upto"
+              placeholder="Enter maximum percentage" min="0" max="100">
+          </div>
+        </div>
+        <div class="d-flex mt-2">
+          <div class="col-md-12 form-content">
+            <input type="hidden" name="grade_id" id="grade_id">
+            <input type="hidden" name="id" id="applicable_id">
+            <label for="grade_name" class="form-label">Grade Name</label>
+            <input type="text" class="form-control grade_name" id="grade_name" name="grade_name"
+              placeholder="Enter a Subject Name" maxlength="1000">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
+            class="ri-close-line me-1 align-middle"></i> Close</a>
+        <button type="submit" class="btn btn-primary" id="btnGradeSave">Save
+          changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
-  {% endblock %}
+{% endblock %}
