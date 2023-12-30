@@ -3,9 +3,6 @@
 {% block title %} Transport{% endblock %}
 
 {% block content %}
-<link href="{% static 'app-css/transport.css' %}" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <div class="row" id="heading-row">
     <div class="col-sm-12 col-md-8 col-xl-8" style="padding: 1rem">
         <h5>Transportation</h5>
@@ -14,16 +11,14 @@
     <div class="col-sm-12 col-md-4 col-xl-4" style="padding: 1rem">
         <div class="row">
             <div class="col text-end">
-      <button type="button" class="btn btn-success btn-label rounded-pill right" data-bs-toggle="modal"
-    data-bs-target="#editModal">
-    <i class="bi bi-plus-circle label-icon align-middle fs-lg ms-2"></i>Register Vehicle
-</button>
+                <button type="button" class="btn btn-success btn-label rounded-pill right" data-bs-toggle="modal"
+                    data-bs-target="#editModal">
+                    <i class="bi bi-plus-circle label-icon align-middle fs-lg ms-2"></i>Register Vehicle
+                </button>
             </div>
         </div>
-
     </div>
 </div>
-
 <!--  Small modal example -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="mysmallModalLabel"
     aria-hidden="true">
@@ -40,7 +35,8 @@
                         <i class="ri-checkbox-circle-fill text-success"></i>
                     </div>
                     <div class="flex-grow-1 ms-2">
-                        <p class="text-muted mb-0">Ensuring that every student's journey to success is paved with accessibility and opportunity.</p>
+                        <p class="text-muted mb-0">Ensuring that every student's journey to success is paved with
+                            accessibility and opportunity.</p>
                     </div>
                 </div>
                 <div class="d-flex mt-2">
@@ -68,13 +64,12 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
-                    class="ri-close-line me-1 align-middle"></i> Close</a>
+                        class="ri-close-line me-1 align-middle"></i> Close</a>
                 <button type="button" class="btn btn-primary" id="saveBtn" name="saveBtn">Save Transport</button>
             </div>
         </div>
     </div>
 </div>
-
 
 <div class="row">
     <div class="col-md-12">
@@ -126,11 +121,7 @@
         </table>
     </div>
 </div>
-
-
-
 <!-- Student form -->
-
 <div class="modal fade" tabindex="-1" id="studentModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content" id="studentformModal">
@@ -164,8 +155,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- stopage form -->
 <div class="modal fade bs-example-modal-sm" id="stopFormModal" tabindex="-1" role="dialog"
     aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -205,10 +194,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 <!-- Staff Modal -->
 <div class="modal fade" tabindex="-1" id="staffModal">
     <div class="modal-dialog modal-md">
@@ -243,11 +228,5 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 <script src="{% static 'app-js/transport.js' %}"></script>
-
 {% endblock %}
