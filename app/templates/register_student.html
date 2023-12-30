@@ -3,7 +3,8 @@
 {% block title %} Student Registration{% endblock %}
 
 {% block content %}
-<script src="{% static 'app-js/register_student.js.js' %}"></script>
+<link rel="stylesheet" href="{% static 'app-css/common.css' %}">
+<script src="{% static 'app-js/register_student.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -12,10 +13,17 @@
     <div class="col-sm-12 col-md-6 col-xl-7.5" style="padding: 1rem">
         <div class="card">
             <form id="student-form" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
+                <input type="hidden" name="" id="isEdit" value="{{is_edit}}">
+                <input type="hidden" name="" id="studentId" value="{{student_data.student_id}}">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">Student Registration</h4>
-                   
+                    <h4 class="card-title mb-0">
+                        {% if is_edit %}
+                            Student Updation
+                        {% else %}
+                            Student Registration
+                        {% endif %}
+                    </h4>
+                
                 </div><!-- end card header -->
                 <div class="card-body" style="padding-bottom: 0px;">
                     <div class="row">
@@ -26,7 +34,7 @@
                             </p>
                         </div>
                         <div class="col-6">
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" style="float:right">
+                            <button type="submit" id="btnStudentForm" class="btn btn-primary" data-bs-dismiss="modal" style="float:right">
                                 <i class="bi bi-save"></i>&nbsp;Save changes</button>
                         </div>
                     </div>
@@ -49,7 +57,7 @@
                                         <div class="col-md-6">
                                             <label for="admission_date" class="form-label">Registration Date</label>
                                             <input type="date" class="form-control" id="admission_date"
-                                                name="admission_date" required>
+                                                name="admission_date" value="{{student_data.admission_date}}">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="photo" class="form-label">Photo</label>
@@ -60,35 +68,35 @@
                                     <div class="col-md-12">
                                         <label for="student_name" class="form-label">Name</label>
                                         <input type="text" class="form-control" id="student_name" name="student_name"
-                                            required>
+                                        value="{{student_data.student_name}}" >
                                     </div>
                                     <div class="row">
 
                                         <div class="col-md-5">
                                             <label for="date_of_birth" class="form-label">Date of Birth</label>
                                             <input type="date" class="form-control" id="date_of_birth"
-                                                name="date_of_birth" required>
+                                                name="date_of_birth" value="{{student_data.date_of_birth}}">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="blood_group" class="form-label">Blood Group</label>
                                             <select id="blood_group" class="form-select" name="blood_group">
-                                                <option disabled>Choose...</option>
-                                                <option value="A+">A+</option>
-                                                <option value="A-">A-</option>
-                                                <option value="B+">B+</option>
-                                                <option value="B-">B-</option>
-                                                <option value="AB+">AB+</option>
-                                                <option value="O+">O+</option>
-                                                <option value="O-">O-</option>
+                                                <option value="" selected>Choose...</option>
+                                                <option value="A+" {% if student_data.blood_group == 'A+' %} selected {% endif %}>A+</option>
+                                                <option value="A-" {% if student_data.blood_group == 'A-' %} selected {% endif %}>A-</option>
+                                                <option value="B+" {% if student_data.blood_group == 'B+' %} selected {% endif %}>B+</option>
+                                                <option value="B-" {% if student_data.blood_group == 'B-' %} selected {% endif %}>B-</option>
+                                                <option value="AB+" {% if student_data.blood_group == 'AB+' %} selected {% endif %}>AB+</option>
+                                                <option value="O+" {% if student_data.blood_group == 'O+' %} selected {% endif %}>O+</option>
+                                                <option value="O-" {% if student_data.blood_group == 'O-' %} selected {% endif %}>O-</option>
                                             </select>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="gender" class="form-label">Gender</label>
                                             <select id="gender" class="form-select" name="gender">
-                                                <option selected disabled>Choose...</option>
-                                                <option value="Male">Male</option>
-                                                <option value="FeMale">Female</option>
-                                                <option value="Other">Other</option>
+                                                <option selected value="">Choose...</option>
+                                                <option value="Male" {% if student_data.gender == 'Male'%} selected {% endif %}>Male</option>
+                                                <option value="FeMale"{% if student_data.gender == 'FeMale'%} selected {% endif %}>Female</option>
+                                                <option value="Other" {% if student_data.gender == 'Other'%} selected {% endif %}>Other</option>
                                             </select>
                                         </div>
                                     </div>
@@ -108,12 +116,12 @@
                                 <div class="accordion-body">
                                     <div class="col-md-12">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="text" class="form-control" id="email" name="email" required>
+                                        <input type="text" class="form-control" id="email" name="email" value="{{student_data.email}}">
                                     </div>
                                     <div class="col-md-12">
                                         <label for="phone_number" class="form-label">Phone</label>
                                         <input type="text" class="form-control" id="phone_number" name="phone_number"
-                                            minlength="10" maxlength="10" required>
+                                            minlength="10" maxlength="10" value="{{student_data.phone_number}}">
                                     </div>
                                 </div>
                             </div>
@@ -132,14 +140,14 @@
                                     <div class="col-md-12">
                                         <label for="parent_name" class="form-label">Parent Name</label>
                                         <input type="text" class="form-control" id="parent_name" name="parent_name"
-                                            required>
+                                            >
                                     </div>
                                     <div class="col-md-12">
                                         <label for="relation_with_student" class="form-label">Relation with
                                             student</label>
                                         <select id="relation_with_student" class="form-select"
-                                            name="relation_with_student" required>
-                                            <option selected disabled>Choose...</option>
+                                            name="relation_with_student" >
+                                            <option selected value="">Choose...</option>
                                             <option value="Father">Father</option>
                                             <option value="Mother">Mother</option>
                                             <option value="Guardian">Guardian</option>
@@ -148,12 +156,12 @@
                                     <div class="col-md-12">
                                         <label for="parent_phone" class="form-label">Parent phone</label>
                                         <input type="text" class="form-control" id="parent_phone" name="parent_phone"
-                                            required>
+                                            >
                                     </div>
                                     <div class="col-md-12">
                                         <label for="parent_email" class="form-label">Parent Email</label>
                                         <input type="text" class="form-control" id="parent_email" name="parent_email"
-                                            required>
+                                            >
                                     </div>
                                 </div>
                             </div>
@@ -172,29 +180,29 @@
                                     <div class="col-md-12">
                                         <label for="Address" class="form-label">Address Line</label>
                                         <textarea class="form-control" id="address" rows="3" name="address"
-                                            required></textarea>
+                                        value="{{student_data.address.0}}"></textarea>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="city" class="form-label">City</label>
-                                            <input type="text" class="form-control" id="city" name="city">
+                                            <input type="text" class="form-control" id="city" name="city" value="{{student_data.address.1}}">
                                         </div>
                                         <!-- state -->
                                         <div class="col-md-6">
                                             <label for="state" class="form-label">State</label>
-                                            <input type="text" class="form-control" id="state" name="state">
+                                            <input type="text" class="form-control" id="state" name="state" value="{{student_data.address.2}}">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <!-- country -->
                                         <div class="col-md-6">
                                             <label for="country" class="form-label">Country</label>
-                                            <input type="text" class="form-control" id="country" name="country">
+                                            <input type="text" class="form-control" id="country" name="country" value="{{student_data.address.3}}">
                                         </div>
                                         <!-- pincode -->
                                         <div class="col-md-6">
                                             <label for="pincode" class="form-label">Pincode</label>
-                                            <input type="text" class="form-control" id="pincode" name="pincode">
+                                            <input type="text" class="form-control" id="pincode" name="pincode" value="{{student_data.address.4}}">
                                         </div>
                                     </div>
                                 </div>
@@ -213,14 +221,19 @@
                                 <div class="accordion-body">
                                     <div class="col-md-12">
                                         <label for="class_id" class="form-label">Class</label>
-                                        <select id="class_id" class="form-select" name="class_id" required>
-
+                                        <select id="class_id" class="form-select" name="class_id" data-class-id="{{student.class_id}}">
+                                            <option selected value="">Choose...</option>
+                                            {% for class in class_data %}
+                                                <option value="{{class.class_id}}">{{class.class_name}}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <div class="col-md-12">
                                         <label for="section_id" class="form-label">Section</label>
-                                        <select id="section_id" class="form-select" name="section_id" required>
-                                            <option>Select class first</option>
+                                        <select id="section_id" class="form-select" name="section_id" data-section-id ="{{student.section_id}}">
+                                            <option value="">Select class first</option>
+                                            <option value="1">Section A</option>
+                                            <option value="2">Section B</option>
                                         </select>
                                     </div>
                                 </div>
