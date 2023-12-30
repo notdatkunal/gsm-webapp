@@ -137,7 +137,7 @@ async function addParent(studentId){
         succes:(response) => {
         },
         error:(error) => {
-            console.log(error.responseJSON.detail);
+            raiseErrorAlert(error.responseJSON.detail);
         },
         complete:(e) => {
         }

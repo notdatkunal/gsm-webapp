@@ -17,14 +17,19 @@ API_URL = settings.API_ENDPOINT
 Subscription_URL = settings.SUBSCRIPTION_URL
 
 def calendar(request):
-    return render(request, "calendar.html")
-
-def dashboard(request):
-    context = {
+    payload = {
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
     }
-    return render(request, "dashboard.html", context)
+    
+    return render(request, "calendar.html",payload)
+
+def dashboard(request):
+    payload = {
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
+    }
+    return render(request, "dashboard.html", payload)
 
 def students(request):
     student_obj = Data(API_URL)
@@ -37,6 +42,8 @@ def students(request):
     )
 
     payload = {
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
         "student_data": student_data,
         "url": API_URL,
         "jwt_token": access_token,
@@ -56,6 +63,8 @@ def register_student(request):
         params=params,
     )
     payload = {
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
         "class_data": class_data["data"],
         "url": API_URL,
         "jwt_token": request.COOKIES.get("access_token"),
@@ -194,6 +203,8 @@ def classes(request):
         "institute_id": institite_id,
         "class_name": class_name,
         "class_id": class_id,
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
     }
     return render(request, "classes.html", payload)
 
@@ -205,7 +216,12 @@ def user(request):
     user_data = user_obj.get_data_by_institute_id(
         url=user_url, params=params, jwt=access_token
     )
-    payload = {"user_data": user_data, "jwtToken": access_token}
+    payload = {
+        "user_data": user_data, 
+        "jwtToken": access_token,
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
+        }
     return render(request, "user.html", payload)
 
 def assignments(request):
@@ -222,7 +238,13 @@ def assignments(request):
             for assignment in assignment_data.json()
             if not assignment.get("is_deleted", False)
         ]
-        payload = {"assignment": assignments, "URL": API_URL, "jwt_token": access_token}
+        payload = {
+            "assignment": assignments, 
+            "URL": API_URL, 
+            "jwt_token": access_token,
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
+            }
         return render(request, "assignments.html", payload)
     else:
         return HttpResponse("Reload the page")
@@ -239,10 +261,12 @@ def transportation(request):
             "url": API_URL,
             "jwt_token": access_token,
             "institute_id": institute_id,
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
         }
         return render(request, "transport.html", payload)
     else:
-        return HttpResponseRedirect(reverse("transportation"))
+        return render(request, "transport.html", {})
 
 def notice(request):
     institute_id = request.COOKIES.get('institute_id')
@@ -250,7 +274,9 @@ def notice(request):
     access_token = request.COOKIES.get('access_token')
     header ={
             'accept': 'application/json',
-            'Authorization': f'Bearer {access_token}'
+            'Authorization': f'Bearer {access_token}',
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
     }
     notice_data=requests.get(url=url,headers=header)
     if notice_data.status_code==200:
@@ -259,6 +285,8 @@ def notice(request):
             'jwt_token':request.COOKIES.get('access_token'),
             'institute_id':institute_id,
             'url':API_URL,
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
         }
         return render(request,'notice.html', payload)
     
@@ -267,7 +295,9 @@ def notice_create(request):
     payload = {
         'url': API_URL,
         'jwt_token': request.COOKIES.get('access_token'),
-        'institute_id': request.COOKIES.get('institute_id')
+        'institute_id': request.COOKIES.get('institute_id'),
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
     }
     return render(request, 'notice_create.html', payload)
 
@@ -283,7 +313,9 @@ def notice_edit(request,notice_id):
             "notice_id": notice_data['data']['notice_id'],
             'url': API_URL,
             'jwt_token': access_token,
-            'institute_id': institute_id
+            'institute_id': institute_id,
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
         }
     return render(request, 'notice_create.html', payload)
 
@@ -303,6 +335,8 @@ def edit_student(request, student_slug):
             "url": API_URL,
             "jwt_token": access_token,
             "institute_id": institute_id,
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
         }
     return render(request, "register_student.html", payload)
 
@@ -326,7 +360,9 @@ def student_info(request, student_slug):
             "institute_id": institute_id,
             "student_data":student_data,
             "parent_data": parent_data,
-            "transport_data": transport_data
+            "transport_data": transport_data,
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
         }
     return render(request, "student_info.html", payload)
 
@@ -350,6 +386,8 @@ def edit_staff(request, staff_slug):
             "url": API_URL,
             "jwt_token": access_token,
             "institute_id": institute_id,
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
         }
     return render(request, "register_staff.html", payload)
 
@@ -361,5 +399,7 @@ def staff_info(request, staff_slug):
         payload = {
             "staff_data": staff_data["staff_data"],
             "transport_data": staff_data["staff_transport_data"],
+            "organization_name": request.COOKIES.get("organization_name"),
+            "message": request.COOKIES.get("message"),
         }
     return render(request, "staff_info.html", payload)

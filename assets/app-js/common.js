@@ -24,20 +24,28 @@ function raiseSuccessAlert(msg) {
 // form reset
 function resetForm(fields) {
     for (const field of fields) {
+        try{
         const element = $(`#${field}`);
         const value = element.val(""); 
+        }
+        catch(e){
+        }
     }
 }
 // form validation
 function validateForm(fields) {
     var isValid = true;
     for (const field of fields) {
-        const element = $(`#${field}`);
-        const value = element.val().trim();
-        if (value === '') {
-            element.focus().addClass('is-invalid');
-            isValid = false;
-        }
+        try{
+            const element = $(`#${field}`);
+            const value = element.val().trim();
+            if (value === '') {
+                element.focus().addClass('is-invalid');
+                isValid = false;
+            }
+        }  
+        catch(e){
+        } 
     }
     return isValid;
 }

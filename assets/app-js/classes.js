@@ -21,6 +21,7 @@ $(document).ready(function () {
     $("#AddClass").removeClass("btn-shake");
     e.preventDefault();
     if (validateClassModuleForm("class") === false) {
+
       return false;
     } else {
      await addClass();
@@ -57,7 +58,7 @@ $(document).ready(function () {
         }
       },
       error: (xhr, status, error) => {
-        raiseErrorAlert(error.detail);
+         raiseErrorAlert(error["responseJSON"]["detail"]);
       },
       complete: (e) => {
         removeLoader("body", "sm");
@@ -105,7 +106,7 @@ $(document).ready(function () {
             raiseSuccessAlert("Class Deleted Successfully.");
           },
           error: (xhr, status, error) => {
-            raiseErrorAlert(error.detail);
+             raiseErrorAlert(error["responseJSON"]["detail"]);
           },
           complete: (e) => {
             removeLoader("body", "sm");
@@ -213,7 +214,7 @@ async function addClass() {
             class_id: responseData.class_id,
             section_name: "Section A",
           };
-         await $.ajax({
+          await $.ajax({
             type: requestType,
             url: sectionsUrl,
             mode: "cors",
@@ -233,8 +234,10 @@ async function addClass() {
         $("#class_creation_modal").modal("hide");
       }
     },
-    error: (xhr, status, error) => {
-      raiseErrorAlert(error.detail);
+    error: (error) => {
+      console.log("done error");
+      console.log(error.responseJSON.detail);
+       raiseErrorAlert(error["responseJSON"]["detail"]);
     },
     complete: (e) => {
       removeLoader("class-form-area", "sm");
@@ -303,6 +306,7 @@ async function loadSectionDetails(selectedClassId) {
     });
 
     var sectionDetailsContainer = $("#tabSection");
+    sectionDetailsContainer.empty();
     if (sectionData.length === 0) {
       sectionDetailsContainer.html('<img src="/assets/img/no_data_found.png" class="no_data_found">');
   } else {
@@ -385,8 +389,10 @@ async function addSection() {
         $("#section_creation_modal").modal("hide");
       }
     },
-    error: (xhr, status, error) => {
-      raiseErrorAlert(error.detail);
+    error: (error) => {
+      console.log("done error");
+      console.log(error.responseJSON.detail);
+       raiseErrorAlert(error["responseJSON"]["detail"]);
     },
     complete: (e) => {
       removeLoader("section-form-area", "sm");
@@ -422,7 +428,7 @@ async function editSection(element) {
       }
     },
     error: (xhr, status, error) => {
-      raiseErrorAlert(error.detail);
+       raiseErrorAlert(error["responseJSON"]["detail"]);
     },
     complete: (e) => {
       removeLoader("body", "sm");
@@ -465,7 +471,7 @@ async function deleteSection(element) {
          await loadSectionDetails(class_Id);
         },
         error: (xhr, status, error) => {
-          raiseErrorAlert(error.detail);
+           raiseErrorAlert(error["responseJSON"]["detail"]);
         },
         complete: (e) => {
           removeLoader("body", "sm");
@@ -495,6 +501,7 @@ async function loadSubjectDetails(selectedClassId) {
     });
 
     var subjectContainer = $("#tabSubject");
+    subjectContainer.empty();
     if (subjectData.length === 0) {
       subjectContainer.html('<img src="/assets/img/no_data_found.png" class="no_data_found">');
   } else {
@@ -577,7 +584,7 @@ async function addSubject() {
       }
     },
     error: (xhr, status, error) => {
-      raiseErrorAlert(error.detail);
+       raiseErrorAlert(error["responseJSON"]["detail"]);
     },
     complete: (e) => {
       removeLoader("subject-form-area", "sm");
@@ -613,7 +620,7 @@ async function editSubject(element) {
       }
     },
     error: (xhr, status, error) => {
-      raiseErrorAlert(error.detail);
+       raiseErrorAlert(error["responseJSON"]["detail"]);
     },
     complete: (e) => {
       removeLoader("body", "sm");
@@ -656,7 +663,7 @@ async function deleteSubject(element) {
          await loadSubjectDetails(classsId);
         },
         error: (xhr, status, error) => {
-          raiseErrorAlert(error.detail);
+           raiseErrorAlert(error["responseJSON"]["detail"]);
         },
         complete: (e) => {
           removeLoader("body", "sm");
@@ -749,6 +756,7 @@ async function loadGradeDetails(selectedClassId) {
     });
 
     var gradingDetailsContainer = $("#tabGrading");
+    gradingDetailsContainer.empty();
     if (gradeData.length === 0) {
       gradingDetailsContainer.html('<img src="/assets/img/no_data_found.png" class="no_data_found">');
   } else {
@@ -833,7 +841,7 @@ async function addGrade() {
       }
     },
     error: (xhr, status, error) => {
-      raiseErrorAlert(error.detail);
+       raiseErrorAlert(error["responseJSON"]["detail"]);
     },
     complete: (e) => {
       removeLoader("grade-form-area", "sm");
@@ -852,6 +860,10 @@ function validateGradeForm() {
       isValid = false;
       raiseErrorAlert("Fill all the fields");
     }
+  }
+  if($("#percent_from").val() < $("#percent_upto").val()){
+    raiseErrorAlert("Percentage From should be less than Percentage Upto");
+    isValid = false;
   }
   return isValid;
 }
@@ -896,7 +908,7 @@ async function editGrading(element) {
       }
     },
     error: (xhr, status, error) => {
-      raiseErrorAlert(error.detail);
+       raiseErrorAlert(error["responseJSON"]["detail"]);
     },
     complete: (e) => {
       removeLoader("body", "sm");
@@ -939,7 +951,7 @@ async function deleteGrading(element) {
           await loadGradeDetails(classsesId);
         },
         error: (xhr, status, error) => {
-          raiseErrorAlert(error.detail);
+           raiseErrorAlert(error["responseJSON"]["detail"]);
         },
         complete: (e) => {
           removeLoader("body", "sm");

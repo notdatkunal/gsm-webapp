@@ -46,10 +46,10 @@ function validateForm() {
     for (const field of fields) {
         const element = $(`#${field}`);
         const value = element.val().trim();
-        if (value === '') {
+        if (value === '' || value.length < 3 || value.length > 200 ) {
             element.focus().addClass('is-invalid');
             isValid = false;
-            raiseErrorAlert("Fill the all details");
+            raiseErrorAlert("Fill the all details or check the length of the field");
         }
     }
     return isValid;
@@ -130,7 +130,7 @@ function addTransport() {
             }
         },
         error: function (xhr, status, error) {
-            raiseErrorAlert(error.responseJSON.detail);
+            raiseErrorAlert(error);
         },
         complete: (e) => {
             removeLoader("transport", "lg");

@@ -31,11 +31,20 @@ function validateNoticeForm() {
         if (element.length === 0) {
             continue;
         }
-        const value = element.val();
-        if (value === '') {
-            element.focus().addClass('is-invalid');
-            isValid = false;
+        try{
+            const value = element.val();
+            console.log(value);
+            if (value === '') {
+                element.focus().addClass('is-invalid');
+                isValid = false;
+            }
         }
+        catch(e){
+        }
+    }
+    var content = $(".ck-content").html();
+    if (content === '') {
+        isValid = false;
     }
     return isValid;
 }
@@ -79,6 +88,7 @@ async function noticeSubmitForm() {
             if (isEdit === "1") {
                 raiseSuccessAlert("Notice Updated Successfully");
                 resetForm(fields);
+                editorInstance.setData('');
                 window.location.href = `/app/notice/`;
             } else {
                 
