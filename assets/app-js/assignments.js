@@ -5,7 +5,6 @@ function openForm() {
     assignmentForm.style.display = "block";
 }
 
-
 function openAssignmentDetails(formId, assignmentName) {
     // Set the content dynamically
     document.getElementById("assignmentDetailsContent").innerHTML = `<p>${assignmentName}</p>`;
@@ -19,12 +18,9 @@ function closeAssignmentDetails() {
     document.getElementById('assignmentviewForm').style.display = "none";
 }
 
-
 // create and edit
 const URL="https://gsm-fastapi.azurewebsites.net"
-
 let isEditMode = false;
-
 document.addEventListener("DOMContentLoaded", () => {
     let form = document.getElementById('assignment-form');
     form.addEventListener('submit', function (event) {
@@ -42,11 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "assignment_due_date": formData.get("assignment_due_date"),
             "assignment_details": formData.get("assignment_details"),
         };
-
         console.log("data from form:", data);
-        
         console.log('updated id', data);
-
         const url = isEditMode ? `${URL}/Assignment/update_assignment/?assignment_id=${data.id}` : `${URL}/Assignment/create_assignment/`;
         const method = isEditMode ? 'PUT' : 'POST';
         console.log(url);

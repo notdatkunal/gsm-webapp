@@ -11,7 +11,6 @@
     <meta content="Themesbrand" name="author">
     <!-- App favicon -->
     <link rel="shortcut icon" href="{% static 'theme/images/favicon.ico' %}">
-
     <!-- Layout config Js -->
     <script src="{% static 'theme/js/layout.js' %}"></script>
     <!-- Bootstrap Css -->
@@ -22,16 +21,28 @@
     <link href="{% static 'theme/css/app.min.css' %}" rel="stylesheet" type="text/css">
     <!-- custom Css-->
     <link href="{% static 'theme/css/custom.min.css' %}" rel="stylesheet" type="text/css">
-
-
+    <!--Jqurey-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static 'app-css/common.css' %}">
+    <!---comman css -->
     <script src="{% static 'app-js/common.js' %}"></script>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
+    <!--Sweet Alert-->
+    <script src="{% static 'app-js/sweetalert.js' %}"></script>
 </head>
-
 <body class="dashboard-topbar-wrapper">
+    <div id="spinner-element-lg">
+        <div class="spinner-element-lg-overlay">
+            <img src="{% static 'img/loader.gif' %}" alt="">
+        </div>
+    </div>
+    <div id="spinner-element-sm">
+        <div class="spinner-element-sm-overlay">
+            <img src="{% static 'img/loader.gif' %}" alt="">
+        </div>
+    </div>
+    <input type="hidden" name="" id="apiUrl" value='{{url}}'>
+    <input type="hidden" name="" id="jwtToken" value='{{jwt_token}}'>
+    <input type="hidden" name="" id="instituteId" value='{{institute_id}}'>
     <!-- Begin page -->
     <div id="layout-wrapper">
 
@@ -77,6 +88,11 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="/app/classes" class="nav-link menu-link"> <i class="bi bi-bookmark-check"></i> <span
+                                    data-key="t-chat">Classes</span> </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link menu-link collapsed" href="#studentLayout" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="studentLayout">
                                 <i class="bi bi-person-badge"></i> <span data-key="t-layouts">Students</span>
                             </a>
@@ -109,28 +125,59 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="/app/classes" class="nav-link menu-link"> <i class="bi bi-bookmark-check"></i> <span
-                                    data-key="t-chat">Classes</span> </a>
-                        </li>
-
-                        <li class="nav-item">
                             <a href="/app/calendar" class="nav-link menu-link"> <i class="bi bi-calendar-week"></i> <span
                                     data-key="t-email">Calendar</span> </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="/app/assignments" class="nav-link menu-link"> <i class="bi bi-journal-richtext"></i>
+                            <a href="#" class="nav-link menu-link"> <i class="bi bi-card-checklist"></i>
+                                <span data-key="t-file-manager">Attendance</span> </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link menu-link"> <i class="bi bi-journal-richtext"></i>
                                 <span data-key="t-file-manager">Assignments</span> </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="/app/notice" class="nav-link menu-link"> <i class="bi bi-broadcast-pin"></i> <span
-                                    data-key="t-to-do">Notice</span> </a>
+                            <a href="#" class="nav-link menu-link"> <i class="bi bi-card-heading"></i>
+                                <span data-key="t-file-manager">Examinations</span> </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link menu-link"> <i class="bi bi-star-fill"></i>
+                                <span data-key="t-file-manager">Gradings</span> </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="#" class="nav-link menu-link"> <i class="bi bi-cash-coin"></i>
+                                <span data-key="t-file-manager">Fees</span> </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link menu-link collapsed" href="#noticeLayout" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="noticeLayout">
+                                <i class="bi bi-broadcast-pin"></i> <span data-key="t-layouts">Notice</span>
+                            </a>
+                            <div class="collapse menu-dropdown" id="noticeLayout" style="background: var(--tb-vertical-menu-bg)">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a href="/app/notice_create" class="nav-link" data-key="t-horizontal">New Notice</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/app/notice" class="nav-link" data-key="t-detached">Notice Records</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
 
                         <li class="nav-item">
                             <a href="/app/transportation" class="nav-link menu-link"> <i class="bi bi-bus-front"></i>
                                 <span data-key="t-contacts">Transportation</span> </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link menu-link"> <i class="bi bi-cash-stack"></i>
+                                <span data-key="t-file-manager">Accounts</span> </a>
                         </li>
 
                         <li class="nav-item">
@@ -183,7 +230,7 @@
                         </button>
 
                         <div>
-                           <h4 class="organization_name">Oakridge International</h4>
+                           <h4 class="organization_name">{{ organization_name }}</h4>
                         </div>
                     </div>
 
@@ -191,7 +238,7 @@
 
                         <div class="dropdown topbar-head-dropdown ms-1 header-item">
                             
-                                <p>Your subscription is Active</p>
+                                <p>{{ message }}</p>
                         </div>
 
                         
