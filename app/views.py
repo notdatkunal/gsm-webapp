@@ -225,29 +225,22 @@ def user(request):
     return render(request, "user.html", payload)
 
 def assignments(request):
-    institite_id = request.COOKIES.get("institute_id")
-    assignments_url = (
-        f"{API_URL}/Assignment/get_assignments_institute/?institution_id={institite_id}"
-    )
     access_token = request.COOKIES.get("access_token")
-    header = {"accept": "application/json", "Authorization": f"Bearer {access_token}"}
-    assignment_data = requests.get(url=assignments_url, headers=header)
-    if assignment_data.status_code == 200:
-        assignments = [
-            assignment
-            for assignment in assignment_data.json()
-            if not assignment.get("is_deleted", False)
-        ]
-        payload = {
-            "assignment": assignments, 
-            "URL": API_URL, 
-            "jwt_token": access_token,
-            "organization_name": request.COOKIES.get("organization_name"),
-            "message": request.COOKIES.get("message"),
-            }
-        return render(request, "assignments.html", payload)
-    else:
-        return HttpResponse("Reload the page")
+    institute_id = request.COOKIES.get("institute_id")
+    assignment_obj = Data(API_URL)
+    assignment_url = f"/Assignments/get_assignments_institute/?institution_id={institute_id}"
+    params = {"institute_id": 1010}
+    assignment_data = assignment_obj.get_data_by_institute_id(
+        url=assignment_url, params=params, jwt=access_token
+    )
+    payload = {
+        "assignment_data": assignment_data,
+        "jwtToken": access_token,
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
+    }
+    print(assignment_data)
+    return render(request, "assignments.html", payload)
 
 def transportation(request):
     access_token = request.COOKIES.get("access_token")
@@ -392,12 +385,17 @@ def edit_staff(request, staff_slug):
     return render(request, "register_staff.html", payload)
 
 def staff_info(request, staff_slug):
+    institute_id = request.COOKIES.get("institute_id")
     access_token = request.COOKIES.get("access_token")
     if staff_slug:
         staff = StaffInfo(api_url=API_URL, slug=staff_slug, jwt=access_token)
         staff_data = asyncio.run(staff.get_all_data(staff_slug))
+        print("payroll_data", staff_data["staff_payroll_data"])
         payload = {
+            "url": API_URL,
+            "jwt_token": access_token,
             "staff_data": staff_data["staff_data"],
+            "payroll_data" : staff_data["staff_payroll_data"],
             "transport_data": staff_data["staff_transport_data"],
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),

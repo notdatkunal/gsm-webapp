@@ -3,6 +3,7 @@
 {% load static %} 
 {% block content %}
 <link rel="stylesheet" href="{% static 'app-css/common.css' %}" />
+<script src="{% static 'app-js/staffInfo.js' %}"></script>
 
 <div class="row" id="heading-row">
   <div class="col-sm-12 col-md-12 col-xl-12" style="padding: 1rem">
@@ -142,7 +143,9 @@
           <!-- Tab panes -->
           <div class="tab-content text-muted">
             <div class="tab-pane active" id="Basic" role="tabpanel">
-              <h6>List of Subjects of this class</h6>
+              <div class="col-md-6">
+                  <h5 class="my-2">Calendar Details</h5>
+              </div>
               <div class="text-center">
                 <div class="container">
                     <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
@@ -150,23 +153,85 @@
               </div>
             </div>
             <div class="tab-pane" id="Exam" role="tabpanel">
-              <h6>List of Subjects of this class</h6>
-              <div class="mb-0">dynamic code goes here</div>
+              <div class="col-md-6">
+                  <h5 class="my-2">Attendace Details</h5>
+              </div>
               <div class="container">
                 <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
             </div>
             </div>
             <div class="tab-pane" id="calendar" role="tabpanel">
-              <h6>Calendar/Time Table of this class</h6>
-              <div class="mb-0">dynamic code goes here</div>
-              <div class="container text-center">
+              <div class="row">
+                <div class="col-md-6">
+                    <h5 class="my-2">Payroll Details</h5>
+                </div>
+                <div class="col-md-6">
+                    <button type="button"  data-bs-toggle="modal"
+                        data-bs-target="#payroll_form" class="btn btn-success btn-label rounded-pill right float-end">
+                        <i class="bi bi-plus-circle label-icon align-middle fs-lg ms-2"></i>Add Payroll</button>
+                </div>
+                <div class="row mx-0 my-2" id="parentRow">
+                  <table class="table table-striped table-hover table-sticky">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>S.No</th>
+                        <th>Date Of Payment </th>
+                        <th>Employement Type</th>
+                        <th>Salary</th>
+                        <th>Payment Mode</th>
+                        <th>Transaction Details</th>
+                        <th>Action</th>
+            
+                      </tr>
+                    </thead>
+                    <tbody class="tbl__bdy" id="payroll_detail">
+                        {% for payroll in payroll_data %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td class="payment_date">{{payroll.payment_date}}</td>
+                          <td class="payroll_type">{{payroll.payroll_type}}</td>
+                          <td class="salary_amount">{{payroll.salary_amount}}</td>
+                          <td class="payment_mode">{{payroll.payment_mode}}</td>
+                          <td class="payroll_details">{{payroll.payroll_details}}</td>
+                          <td>
+                            <a href="#"  data-payroll-id="{{payroll.payroll_id}}"
+                                class="btn btn-sm btn-info" onclick="openPayrollForm(this)">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a href="#" data-id="{{payroll.payroll_id}}"
+                                class="dltBtn btn btn-sm btn-danger">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </td>
+                        </tr>
+                        {% endfor %} 
+                    </tbody>
+                  </table>
+                    {% comment %} {% if parent_data %}
+                        {% for data in parent_data %} {% endcomment %}
+                        
+                        {% comment %} {% endfor %}
+                    {% else %}
+                    <div class="text-center" id="no_data_found">
+                        <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
+                    </div>
+                    {% endif %} {% endcomment %}
+                </div>
+              </div>
+
+
+              {% comment %} <div class="container text-center">
                 <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
+              </div> {% endcomment %}
             </div>
-            </div>
+
+            {% comment %} Transportation {% endcomment %}
             <div class="tab-pane" id="students" role="tabpanel">
-              <h6 class="info-header">Transportation details here</h6>
               <div class="mb-0">
                 <div class="row">
+                  <div class="col-md-6">
+                      <h5 class="my-2">Transportation Details</h5>
+                  </div>
                   <div class="col-md-12 text-center">
                     {% if transport_data %}
                     <div class="">
@@ -202,8 +267,9 @@
             </div>
 
             <div class="tab-pane" id="examinations" role="tabpanel">
-              <h6>Past and Upcoming Examinations of this class</h6>
-              <div class="mb-0">dynamic code goes here</div>
+              <div class="col-md-6">
+                  <h5 class="my-2">Document Details</h5>
+              </div>
               <div class="container">
                 <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
             </div>
@@ -215,4 +281,82 @@
     </div>
   </div>
 </div>
+
+
+<!-- modelform form payroll start -->
+<div class="modal fade bs-example-modal-md" id="payroll_form" tabindex="-1" role="dialog" aria-labelledby="myMediumModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myMediumModalLabel">
+                    Save Payroll</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" name="staff_id" id="staff_id" value="{{staff_data.staff_id}}">
+                    <input type="hidden" name="payroll_id" id="payroll_id" value="">
+                    <div class="col-md-12 flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">
+                            <label class="form-label">Date Of Payment</label>
+                            <input type="date" class="form-control" id="payment_date" name="payment_date">
+                        </p>
+                    </div>
+                    
+                    <div class=" col-md-4 flex-grow-1 ">
+                        <p class="text-muted mb-0">
+                            <label class="form-label">Employee Type</label>
+                            <select id="payroll_type" class="form-select" name="payroll_type">
+                                <option selected value="">Choose...</option>
+                                <option value="Full Time">Full Time</option>
+                                <option value="Part Time">Part Time</option>
+                                <option value="Contract">Contract</option>
+                            </select>
+                        </p>
+                    </div>
+                    <div class="col-md-12 flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">
+                            <label class="form-label" for="parent_email">Salary Amount</label>
+                            <input type="text" class="form-control" id="salary_amount" name="salary_amount">
+                        </p>
+                    </div>
+                    <div class=" col-md-4 flex-grow-1 ">
+                        <p class="text-muted mb-0">
+                            <label class="form-label">Transaction Mode</label>
+                            <select class="form-select" name="payment_mode" id="payment_mode">
+                                <option selected value="">Select Payment Mode</option>
+                                <option value="Bank Transfer" {% if payroll_data.payment_mode == 'Bank Transfer'%} selected {% endif %}>Bank Transfer</option>
+                                <option value="UPI" {% if payroll_data.payment_mode == 'UPI'%} selected {% endif %}>UPI</option>
+                                <option value="Cheque" {% if payroll_data.payment_mode == 'Cheque'%} selected {% endif %}>Cheque</option>
+                                <option value="Cash" {% if payroll_data.payment_mode == 'Cash'%} selected {% endif %}>Cash</option>
+                                <option value="Demand Draft" {% if payroll_data.payment_mode == 'Demand Draft'%}  {% endif %}>Demand Draft</option>
+                                <option value="Other" {% if payroll_data.payment_mode == 'Other'%} selected {% endif %}>Other</option>
+                            </select>
+                        </p>
+                    </div>
+                    <div class="col-md-12 flex-grow-1 ms-2">
+                        <p class="text-muted mb-0">
+                            <label class="form-label">Transaction Details</label>
+                            <textarea type="text" class="form-control" id="payroll_details" name="payroll_details"
+                                placeholder="Enter Transaction Details Here"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i
+                        class="ri-close-line me-1 align-middle"></i> Close</a>
+                <button type="submit" class="btn btn-primary"  id="btnPayrollForm">Save
+                    changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modelform form payroll end -->
+
 {% endblock %}
+
+
+
+

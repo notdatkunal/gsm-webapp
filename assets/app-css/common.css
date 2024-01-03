@@ -158,3 +158,11 @@ body{
 #sidebarMore{
     background: var(--tb-vertical-menu-bg) !important;
 }
+#attendance-tab {
+    margin: 20px;
+}
+
+#AttendanceCalendar{
+    max-width: 600px;
+    /* background-color: red; */
+}

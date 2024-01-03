@@ -1,14 +1,18 @@
 $(document).ready(e => {
     $("#btnParentForm").on('click', e => {
-        if(validateForm(parentFieldNames) === true){
+        if (validateForm(parentFieldNames) === true) {
             addParent();
         }
-    })
+    });
 
     $("#parent_phone").on('input', function () {
         phoneNumber($(this).attr('id'));
     });
-})
+
+    let studentData = new StudentData();
+    studentData.getAssignmentData(1,1);
+    calendar()
+});
 
 let parentFieldNames = [
     'parent_name','parent_age','parent_email','parent_phone',
@@ -173,3 +177,83 @@ async function ajaxRequest(type, url, data, successCallback) {
         }
     });
 }
+
+// geting all student data
+class StudentData {
+    async ajaxCall(type, url, data, loaderId,loaderSize ,successCallback) {
+        await $.ajax({
+            type: type,
+            url: url,
+            data: JSON.stringify(data),
+            mode: "cors",
+            crossDomain: true,
+            headers: {
+                "Authorization": `Bearer ${jwtToken}`,
+                "Content-Type": "application/json",
+            },
+            contentType: "application/json",
+            dataType: "json",
+            beforeSend: () => {
+                showLoader(loaderId, loaderSize);
+            },
+            success: (response) => {
+                successCallback(response);
+            },
+            error: (error) => {
+                raiseErrorAlert(error.responseJSON.detail);
+            },
+            complete: () => {
+                removeLoader(loaderId, loaderSize);
+            }
+        });
+    }
+
+    async getAssignmentData(classId, sectionId) {
+        var endPoint = `/Assignments/get_assignment_for_student_tab/?class_id=${classId}&section_id=${sectionId}`;
+        var totalUrl = apiUrl + endPoint;
+        console.log("tottal url", totalUrl);
+        await this.ajaxCall("GET", totalUrl, "", "assignments", "lg",(response) => {
+            this.displayAssignmentData(response);
+        });
+    }
+
+    async displayAssignmentData(response){
+        this.tBody = $("#assignments_details")
+        this.tBody.empty();
+        for (const assignment of response) {
+            console.log("assignment",assignment.assignment_details);
+            var desc = assignment.assignment_details
+            var row = `
+            <tr>
+                <td class="w-25 text-wrap" >${assignment.assignment_title}</td>
+                <td>${assignment.assignment_Date}</td>
+                <td>${assignment.assignment_due_date}</td>
+                <td>    
+                    <button onClick="openAssignmentDetails('${desc}')"  class="btn btn-dark btn-label right rounded-pill">
+                        <i class="ri-eye-line label-icon align-middle rounded-pill fs-lg ms-2"></i>
+                        See
+                    </button>
+                </td>
+                <td>
+                    <span class="bg-danger p-2">Not Submited</span>
+                </td>
+                <td>
+                <button onclick="editAssignment(this)" data-assignment_id="{{data.assignment_id}}" class="btn btn-primary btn-label right rounded-pill">
+                    <i class="ri-check-double-line label-icon align-middle rounded-pill fs-lg ms-2"></i>
+                    Submit
+                </button>
+            </td>
+            </tr>
+            `;
+            this.tBody.append(row);
+        }
+    }
+}
+
+function openAssignmentDetails(response) {
+    var assignmentModel =  $("#assignmentDetailse")
+    assignmentModel.modal('show')
+    assignmentModel.find(".modal-title").text("Assignment Details")
+    assignmentModel.find(".modal-desc").text(response)
+}
+// geting all student data

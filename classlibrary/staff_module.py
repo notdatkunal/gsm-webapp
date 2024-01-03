@@ -72,12 +72,27 @@ class StaffInfo:
         else:
             return []
 
+    async def get_staff_payroll_data(self, staff_id=0):
+        self.total_url = (
+            self.api_url + f"/StaffPayrole/get_payroll_data_by_staff/?staff_id={staff_id}"
+        )
+        response = requests.get(url=self.total_url, headers=self.headers)
+        if response.status_code == 200:
+            data = response.json()["response"]
+            return data
+        else:
+            return []
+
     async def get_all_data(self, staff_slug):
         staff_data = await asyncio.gather(self.get_staff_data(staff_slug))
         staff_transport_data = await asyncio.gather(
             self.get_transport_details_by_id(staff_data[0]["transport_id"])
         )
+        staff_payroll_data = await asyncio.gather(
+            self.get_staff_payroll_data(staff_data[0]["staff_id"])
+        )
         return {
             "staff_data": staff_data[0],
             "staff_transport_data": staff_transport_data[0],
+            "staff_payroll_data": staff_payroll_data[0],
         }
