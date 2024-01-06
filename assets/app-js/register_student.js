@@ -2,15 +2,14 @@ $(document).ready(() => {
 
     // student form validation
     $("#btnStudentForm").on("click", async (e) => {
-        $("#btnStudentForm").removeClass("btn-shake")
         e.preventDefault();
+        $("#btnStudentForm").removeClass("btn-shake")
         if (validateForm(fields) === false) {
             $("#btnStudentForm").addClass("btn-shake");
             return false;
         } else {
             await submitStudentForm();
             await resetForm()
-            // await resetForm();
         }
     });
 
@@ -27,7 +26,7 @@ $(document).ready(() => {
 });
 
 let fields = [
-    'admission_date', 'student_name', 'date_of_birth', 'blood_group', 'gender',
+    'admission_date', 'student_name', 'date_of_birth', 'blood_group', 'gender','roll_number','studentPhoto',
     // contact Details
     'email', 'phone_number',
     // parent Details
@@ -45,12 +44,11 @@ async function resetForm() {
     }
 }
 
-
-
 // formSubmit
 async function submitStudentForm() {
     const totalAddress = `${$("#address").val()}, ${$("#city").val()}, ${$("#state").val()}, ${$("#country").val()}, ${$("#pincode").val()}`
     const studentData = {
+        "photo":await uploadFile("studentPhoto","student_profile"),
         "institute_id": instituteId,
         "student_name": $("#student_name").val(),
         "gender": $("#gender").val(),
@@ -60,8 +58,7 @@ async function submitStudentForm() {
         "phone_number": $("#phone_number").val(),
         "email": $("#email").val(),
         "admission_date": $("#admission_date").val(),
-        "photo": "string",
-        "roll_number": 0,
+        "roll_number": $("#roll_number").val(),
         "class_id": $("#class_id").val(),
         "section_id": $("#section_id").val(),
     };
@@ -70,7 +67,6 @@ async function submitStudentForm() {
     var studentId = $("#studentId").val();  // Make sure studentId is defined
     var endPoint = isEdit === "1" ? `/Students/update_student/${studentId}` : `/Students/create_student/`;
     var studentUrl = `${apiUrl}${endPoint}`;
-    console.log(method, studentUrl, studentData);
     await $.ajax({
         type: method,
         url: studentUrl,
@@ -82,18 +78,13 @@ async function submitStudentForm() {
         contentType: "application/json",
         dataType: "json",
         beforeSend: (e) => {
-            console.log("beforeSend");
             showLoader("body", "lg")
         },
         succes:(response) => {
-            console.log(response);
-            // caling addParent function
-            addParent(response.id);
-            
+            resetForm()            
             if(isEdit === "1"){
                 window.location.href = `/app/students/`;
             }
-            // window.location.href = "/Students/";
         },
         error:(error) => {
             raiseErrorAlert(error.responseJSON.detail);
@@ -104,6 +95,7 @@ async function submitStudentForm() {
             if(isEdit === "1"){
                 window.location.href = `/app/students/`;
             }
+            resetForm()
         }
     });
 }
@@ -151,7 +143,7 @@ async function addParent(studentId){
 async function getSectionsByClass(classId) {
     const classEndPoint = `/Sections/get_sections_by_class/?class_id=${classId}`;
     const classUrl = `${apiUrl}${classEndPoint}`;
-    const response = await $.ajax({
+    await $.ajax({
         type: "GET",
         url: classUrl,
         headers: {
@@ -161,18 +153,22 @@ async function getSectionsByClass(classId) {
         contentType: "application/json",
         dataType: "json",
         beforeSend: (e) => {
-            
+            showLoader("accor_borderedExamplecollapse5","sm")
         },
-        succes:(response) => {
+        success:(response) => {
+            var sections = $("#section_id");
             for (const section of response) {
-                $("#section_id").append(`<option value="${section.id}">${section.section_name}</option>`);
+                var option = `<option value="${section.section_id}">${section.section_name}</option>`;
+                sections.append(option);
             }
         },
         error:(error) => {
             raiseErrorAlert(error.responseJSON.detail);
         },
         complete:(e) => {
-            
+            removeLoader("accor_borderedExamplecollapse5","sm")
         },
     });
 }
+
+

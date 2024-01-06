@@ -1,7 +1,7 @@
 $(document).ready(() => {
     $("#saveBtn").on("click", async (e) => {
         $("#saveBtn").removeClass("btn-shake");
-        if (validateForm() === false) {
+        if (validateForm(fields) === false) {
             $("#saveBtn").addClass("btn-shake");
             return false;
         } else {
@@ -13,8 +13,8 @@ $(document).ready(() => {
 
 function bindGridButtonEvents() {
     $(".btnEdit").off("click");
-    $(".btnEdit").each(function() {
-        $(this).click(function() {
+    $(".btnEdit").each(function () {
+        $(this).click(function () {
             const transportId = $(this).attr("data-id");
             if (transportId) {
                 const response = editTransport(transportId, jwtToken);
@@ -40,20 +40,6 @@ function bindGridButtonEvents() {
 let fields = [
     'vehicle_number', 'vehicle_details', 'register_date', 'transport_name',
 ];
-
-function validateForm() {
-    var isValid = true;
-    for (const field of fields) {
-        const element = $(`#${field}`);
-        const value = element.val().trim();
-        if (value === '' || value.length < 3 || value.length > 200 ) {
-            element.focus().addClass('is-invalid');
-            isValid = false;
-            raiseErrorAlert("Fill the all details or check the length of the field");
-        }
-    }
-    return isValid;
-}
 
 function addTransport() {
     let isUpdate = $("#id").val() !== "";
@@ -92,17 +78,17 @@ function addTransport() {
                         try {
                             tr.querySelector(`.${key}`).textContent = responseData[key];
                         } catch (error) {
-                            raiseErrorAlert("error")
                         }
                     }
+                    $("#id").val("");
                     $('#editModal').addClass("model fade");
                     raiseSuccessAlert("Transport Record Updated Successfully");
                 } else {
                     const newRow = `
                         <tr class="tr-transport-${responseData.transport_id}">
                             <td>${$("#transport_details tr").length + 1}</td>
-                            <td class="vehicle_number">${responseData.vehicle_number}</td>
-                            <td class="vehicle_details w-25">${responseData.vehicle_details}</td>
+                            <td class="text-break vehicle_number">${responseData.vehicle_number}</td>
+                            <td class="text-break vehicle_details">${responseData.vehicle_details}</td>
                             <td class="register_date">${responseData.register_date}</td>
                             <td class="transport_name">${responseData.transport_name}</td>
                             <td>
@@ -125,12 +111,13 @@ function addTransport() {
                     `;
                     $("#transport_details").append(newRow)
                     bindGridButtonEvents();
+                    $('#no_data_found').hide();
                     raiseSuccessAlert("Transport Record Added Successfully");
                 }
             }
         },
         error: function (xhr, status, error) {
-            raiseErrorAlert(error);
+            raiseErrorAlert(error.responseJSON.detail);
         },
         complete: (e) => {
             removeLoader("transport", "lg");
@@ -175,14 +162,18 @@ async function deleteTransport(recordId, jwtToken) {
                     title: 'Deleted!',
                     text: 'Transport data deleted Successfully',
                 });
-            } return response;
+            }
+            if ($('#transport_details tr').length === 0) {
+                $('#no_data_found').show();
+            }
+            
+            return response;
         } else {
-           raiseErrorAlert("Deleted Cancelled")
+            
         }
     } catch (error) {
-        raiseErrorAlert("error")
+        raiseErrorAlert("Error during deletion");
     }
-
 }
 
 function editTransport(transportId) {
@@ -268,6 +259,7 @@ function addMore(element) {
         raiseErrorAlert(" Enter the stop name")
     }
 }
+
 function displayStopages(transport_id) {
     const url = `${apiUrl}/Stops/get_all_stopages_by_transport/?transport_id=${transport_id}`;
     $.ajax({
@@ -332,6 +324,7 @@ function deleteStoppage(element) {
         }
     });
 }
+
 function showStudentDetails(button) {
     var assignButton = $('#trns-std-id');
     var id = $(button).attr("data-trans-id");
@@ -339,9 +332,11 @@ function showStudentDetails(button) {
     $('#studentModal').css("display", "block");
     displayAssignedStudents(id)
 }
+
 function closeStudentDetails() {
     $('#studentModal').css("display", "none");
 }
+
 function fetchStudentDetails() {
     var rollNumber = $('#roll_number').val();
     var transportId = $('#trns-std-id').attr('data-transport-id');
@@ -373,16 +368,17 @@ function fetchStudentDetails() {
             }
         },
         error: function (error) {
-            raiseErrorAlert(" Enter the student roll number")
+            raiseErrorAlert(" Enter the student valid roll number")
         },
         complete: (e) => {
-            removeLoader("studentformModal", "sm")  
+            removeLoader("studentformModal", "sm")
         }
     });
 }
+
 function displayAssignedStudents(transportId) {
     var url = `${apiUrl}/Transports/get_all_students_by_transport_id/?transport_id=${transportId}`;
-    var tableBody = $('#assignedStudents'); 
+    var tableBody = $('#assignedStudents');
     if (tableBody.length === 0) {
         raiseErrorAlert('Table body not found.');
         return;
@@ -398,7 +394,7 @@ function displayAssignedStudents(transportId) {
             showLoader("studentformModal", "sm");
         },
         success: function (data) {
-            tableBody.empty(); 
+            tableBody.empty();
             if (data && data.status_code === 200 && data.response && data.response.length > 0) {
                 data.response.forEach(function (student) {
                     var row = $('<tr data-roll-number="' + student.roll_number + '">');
@@ -421,9 +417,10 @@ function displayAssignedStudents(transportId) {
         }
     });
 }
+
 function deleteStudent(button) {
     var roll_number = $(button).attr('data-student-id').trim();
-    var endpoint =`${apiUrl}/Transports/unassign_transport_to_student/?student_roll_number=${roll_number}`;
+    var endpoint = `${apiUrl}/Transports/unassign_transport_to_student/?student_roll_number=${roll_number}`;
     $.ajax({
         url: endpoint,
         type: 'PUT',
@@ -437,7 +434,6 @@ function deleteStudent(button) {
         success: function (data) {
             $('tr[data-roll-number="' + roll_number + '"]').remove();
             raiseSuccessAlert("Student deleted Successfully");
-
         },
         error: function (error) {
             raiseErrorAlert('Error deleting student:');
@@ -455,9 +451,11 @@ function showStaffDetails(button) {
     $('#staffModal').css("display", "block");
     displayAssignedStaff(id);
 }
+
 function closeStaffDetails() {
     $('#staffModal').css("display", "none");
 }
+
 function fetchStaffDetails() {
     var employee_id = $('#employee_id').val();
     var transportId = $('#trns-staff-id').attr('data-transport-id');
@@ -489,7 +487,7 @@ function fetchStaffDetails() {
             }
         },
         error: function (error) {
-            raiseErrorAlert("Enter the Staff Id ")
+            raiseErrorAlert("Enter the  valid Staff Id ")
         },
         complete: (e) => {
             removeLoader("staffformModal", "sm");
@@ -500,7 +498,7 @@ function fetchStaffDetails() {
 function displayAssignedStaff(transportId) {
     var url = `${apiUrl}/Transports/get_all_staffs_by_transport_id/?transport_id=${transportId}`;
     var tableBody = $('#assignedStaff');
-    if(tableBody.length===0){
+    if (tableBody.length === 0) {
         return;
     }
     $.ajax({
@@ -537,9 +535,10 @@ function displayAssignedStaff(transportId) {
         }
     });
 }
+
 function deleteStaff(button) {
     var employee_id = $(button).attr('data-employee-id').trim();
-    var url =`${apiUrl}/Transports/unassign_transport_to_staff/?employee_id=${employee_id}`;
+    var url = `${apiUrl}/Transports/unassign_transport_to_staff/?employee_id=${employee_id}`;
     $.ajax({
         url: url,
         type: 'PUT',
@@ -562,23 +561,4 @@ function deleteStaff(button) {
         }
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

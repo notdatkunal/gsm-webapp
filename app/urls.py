@@ -27,5 +27,7 @@ urlpatterns = [
     path('notice_create/', notice_create, name='notice_create'),
     path('notice_edit/<int:notice_id>/', notice_edit, name='notice_edit'),
     path('calendar/', calendar, name='calendar'), 
-
+    path('gradings/', views.gradings, name='gradings'),
+    path('accounts/', views.accounts, name='accounts'),
+    path('azure_upload/', views.azure_upload, name='azure_upload'),
 ]

@@ -33,7 +33,6 @@ function validateNoticeForm() {
         }
         try{
             const value = element.val();
-            console.log(value);
             if (value === '') {
                 element.focus().addClass('is-invalid');
                 isValid = false;
@@ -62,7 +61,6 @@ async function noticeSubmitForm() {
         "is_deleted": false,
     }; 
     var isEdit = $("#is_edit").val();
-    console.log("isEdit", isEdit);
     var method = isEdit === "1" ? "PUT" : "POST";
     var noticeId = $("#notice_id").val();  
     var noticeEndPoint = isEdit === "1" ? `/Notice/update_notice/?notice_id=${noticeId}` : `/Notice/create_notice/`;
