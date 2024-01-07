@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-md-12">
                     <label for="assignment_title" class="form-label">Assignment Title<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="assignment_title" name="assignment_title" minlength="1" maxlength="100">
+                    <input type="text" class="form-control" placeholder="Enter Assigment Title" id="assignment_title" name="assignment_title" minlength="1" maxlength="100">
                 </div>
                 <div class="col-md-12">
                     <label for="inputCity" class="form-label">Assignment Details <span style="color: red;">*</span></label>
@@ -78,9 +78,7 @@
         </div>
     </div>
 </div>
- 
- 
- 
+
 <div class="row">
     <div class="col-md-12" id="assignments_container">
         <table class="table table-striped table-hover table-sticky table_students" id="assignmentTable">
@@ -95,7 +93,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
- 
+
             <tbody class='tbl__bdy' id="assignments_info">
                 {% if assignment_data %}
                 {% for assign in assignment_data %}
@@ -142,7 +140,9 @@
                 <h5 class="modal-title" id="mySmallModalLabel">Assigment Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="assignment-modal-body"></div>
+            <div class="modal-body" id="assignment-modal-body">
+                <p style="word-wrap: break-word;"></p>
+            </div>
             </div>
         </div>
     </div>

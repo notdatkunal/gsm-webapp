@@ -90,7 +90,7 @@ function addTransport() {
                             <td class="text-break vehicle_number">${responseData.vehicle_number}</td>
                             <td class="text-break vehicle_details">${responseData.vehicle_details}</td>
                             <td class="register_date">${responseData.register_date}</td>
-                            <td class="transport_name">${responseData.transport_name}</td>
+                            <td class=" text-break transport_name">${responseData.transport_name}</td>
                             <td>
                                 <button class="btn btn-sm btn-dark rounded-pill" onclick="openstopDetails('stopForm','${responseData.transport_name}','${responseData.transport_id}')" data-id="${responseData.transport_id}"  data-bs-toggle="modal"
                                 data-bs-target="#stopFormModal">View</button>
@@ -117,7 +117,7 @@ function addTransport() {
             }
         },
         error: function (xhr, status, error) {
-            raiseErrorAlert(error.responseJSON.detail);
+            raiseErrorAlert(error.responseJSON);
         },
         complete: (e) => {
             removeLoader("transport", "lg");
@@ -575,4 +575,3 @@ function deleteStaff(button) {
         }
     });
 }
-

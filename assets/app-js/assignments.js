@@ -25,7 +25,7 @@ $(document).ready(() => {
 $('#assignmentTable').on('click', '.openAssignmentBtn', function () {
     var assignmentId = $(this).data('id');
     var assignmentDescription = $(this).data('description');
-    $('#assignment-view-modal #assignment-modal-body').html(`${assignmentDescription}`);
+    $('#assignment-view-modal #assignment-modal-body p').html(`${assignmentDescription}`);
     $('#assignment-view-modal').modal('show');
 });
 async function getSectionsByClass(classId) {
@@ -115,12 +115,12 @@ function addAssignment() {
                 const responseData = data.response; 
                 if (isUpdate) {
                     const tr = document.querySelector(`.tr-assign-${responseData.id}`);
-                    tr.find(".assignment_title").text(responseData.assignment_title);
-                    tr.find(".class_id").text(responseData.classes.class_name);
-                    tr.find(".section_id").text(responseData.sections.section_name);
-                    tr.find(".assignment_Date").text(responseData.assignment_Date);
-                    tr.find(".assignment_due_date").text(responseData.assignment_due_date);
-                    tr.find(".openAssignmentBtn").attr("data-description", responseData.assignment_details);
+                    tr.querySelector(".assignment_title").textContent = responseData.assignment_title;
+                    tr.querySelector(".class_id").textContent = responseData.classes.class_name;
+                    tr.querySelector(".section_id").textContent = responseData.sections.section_name;
+                    tr.querySelector(".assignment_Date").textContent = responseData.assignment_Date;
+                    tr.querySelector(".assignment_due_date").textContent = responseData.assignment_due_date;
+                    tr.querySelector(".openAssignmentBtn").setAttribute("data-description", responseData.assignment_details);
                     $("#assignment_id").val("");
                     $('#assignmentModal').addClass("model fade");
                     raiseSuccessAlert("Assignment Record Updated Successfully");
@@ -128,10 +128,10 @@ function addAssignment() {
                     const newRow = `
                     <tr class="tr-assign-${responseData.id}">
                         <td>${$("#assignments_info tr").length + 1}</td>
-                        <td class="assignment_title">${responseData.assignment_title}</td>
-                        <td>
+                        <td class="assignment_title text-break">${responseData.assignment_title}</td>
+                        <td class="text-break">
                         <span class="class_id">${responseData.classes.class_name}</span>-
-                        <span class="section_id">${responseData.sections.section_name}</span>
+                        <span class="section_id ">${responseData.sections.section_name}</span>
                     </td>
                         <td class="assignment_Date">${responseData.assignment_Date}</td>
                         <td class="assignment_due_date">${responseData.assignment_due_date}</td>

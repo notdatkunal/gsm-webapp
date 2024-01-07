@@ -1053,7 +1053,7 @@ async function loadCalendarDetails(selectedClassId) {
 
 function validateExamForm() {
   var isValid = true;
-  const fields = ["start_date", "end_date", "result_date", "parent_exam_name"];
+  const fields = ["start_date", "end_date", "result_date", "parent_exam_name","subject_Input"];
   for (const field of fields) {
     const element = $(`#${field}`);
     const value = element.val().trim();
