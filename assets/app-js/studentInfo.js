@@ -313,7 +313,7 @@ class StudentData {
                             <!-- Display record details here -->
                             <div class="card-body">
                                 <p class="card-title">Document Name:${document_name}</p>
-                                <p class="card-text">Document type:${docsName}</p>
+                                <p class="card-text">Document Type:${docsName}</p>
                                 
                             </div>
                             <div class="card-footer d-flex justify-content-evenly">
@@ -336,7 +336,7 @@ class StudentData {
             }
             else{
                 $(`.card-student-${docs.document_id}`).find(".card-title").text(`Document Name:${document_name}`)
-                $(`.card-student-${docs.document_id}`).find(".card-text").text(`Document type:${docsName}`)
+                $(`.card-student-${docs.document_id}`).find(".card-text").text(`Document Type:${docsName}`)
                 raiseSuccessAlert("Document Updated Successfully")
             }
         });

@@ -54,6 +54,8 @@ async function addPayroll(){
         }
         resetForm(payrollFieldNames);
         $("#payroll_detail").find(".no_data_found-tr").hide();
+        isUpdate = false;
+        
     });
 }
 async function displayNewPayroll(response) {
@@ -80,7 +82,7 @@ async function displayNewPayroll(response) {
     var tableBody = document.querySelector('.tbl__bdy');
     tableBody.innerHTML += newRow;
     resetForm(payrollFieldNames);
-    isUpdate = false
+    
 }
 
 
@@ -189,7 +191,7 @@ async function addDocuments() {
         if (isUpdate) {
             var updatedRow = $(`.card-staff-${documentId}`);
             updatedRow.find(".card-title").text(`Document Name:${document_name}`)
-            updatedRow.find(".card-text").text(`Document type:${docsName}`)
+            updatedRow.find(".card-text").text(`Document Type:${docsName}`)
             raiseSuccessAlert("Document Updated Successfully")
         } else {
             displayNewDocument(documentData);
@@ -207,7 +209,7 @@ async function displayNewDocument(response) {
             <div class="card mb-3">
                 <div class="card-body">
                     <p class="card-title">Document Name: ${response.document_name}</p>
-                    <p class="card-text">Document type: ${documentFile}</p>
+                    <p class="card-text">Document Type: ${documentFile}</p>
                 </div>
                 <div class="card-footer d-flex justify-content-evenly">
                     <button data-document-id="${response.document_id}" class="btn btn-sm btn-info" onclick="openDocumentForm(this)">
@@ -226,7 +228,7 @@ async function displayNewDocument(response) {
     $("#documentRow").append(newDocumentHTML);
     raiseSuccessAlert("Document Added Successfully")
     resetForm(documentFields);
-    isUpdate = false;
+    
     
     
 }
@@ -247,8 +249,17 @@ async function deleteDocuments(element){
             var endPoint = `/StaffDocuments/delete_staff_documents/?document_id=${documentId}`;
             var totalUrl = apiUrl + endPoint;
             $(`.card-staff-${documentId}`).remove()
-            if ($('#documentRow').length === 1 ) {
-                $("#documentRow").find("#no_data_found").show()
+            if ($('#documentRow').children().length === 1) {
+                $("#documentRow").find("#no_data_found").show();
+                if (!$("#documentRow").find("#no_data_found")) {
+                    $("#documentRow").html(
+                        `<tr class="">
+                            <td colspan="8" class="text-center">
+                                <img src="/assets/img/no_data_found.png" alt="No Image" class="no_data_found">
+                            </td>
+                        </tr>`
+                    );
+                }
             }
             ajaxRequest("DELETE", totalUrl, "","documentRow","lg",(response) => {
                 Swal.fire({
@@ -288,5 +299,3 @@ async function openDocumentForm(element) {
     });
     
 }
-
-
