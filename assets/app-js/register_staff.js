@@ -21,6 +21,7 @@ let fields = [
   "date_of_birth",
   "blood_group",
   "gender",
+  'staffPhoto',
   // contact Details
   "email",
   "phone_number",
@@ -65,9 +66,9 @@ async function staffSubmitForm() {
     "#state"
   ).val()}, ${$("#country").val()}, ${$("#pincode").val()}`;
   const staffData = {
+    photo: await uploadFile("staffPhoto","staff_profile"),
     institute_id: instituteId,
     staff_name: $("#staff_name").val(),
-    photo: "string",
     role: $("#role").val(),
     address: totalAddress,
     gender: $("#gender").val(),
@@ -106,7 +107,6 @@ async function staffSubmitForm() {
       showLoader("staffFormArea", "lg");
     },
     success: (response) => {
-      console.log("response", response);
       addPayrollStaff(response["response"].staff_id);
     },
     error: (error) => {

@@ -34,6 +34,9 @@ async function deleteStaff(staffId) {
                 },
                 success: (response) => {
                     raiseSuccessAlert(response.detail);
+                    if($('#staffTable tr').length == 1) {
+                        $(".no_data_found-tr").show()
+                    }
                 },
                 error: (error) => {
                     raiseErrorAlert(error.responseJSON.detail);
