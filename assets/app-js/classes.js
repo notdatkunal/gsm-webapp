@@ -1271,7 +1271,7 @@ async function addExam() {
             existingRow.find('td:eq(0)').text(formattedStartDate + ' - ' + formattedEndDate);
             existingRow.find('td:eq(1)').text(responseData.parent_exam_name);
           }
-          raiseSuccessAlert("Exam Updated Successfully");
+          raiseSuccessAlert("Examination Updated Successfully");
           $("#parent_exam_id").val("");
           resetExamForm();
         } else {
@@ -1309,7 +1309,7 @@ async function addExam() {
             },
           });
           await loadExams(classesId)
-          raiseSuccessAlert("Exam Added Successfully.");
+          raiseSuccessAlert("Examination Added Successfully.");
         }
         resetExamForm();
       }
@@ -1417,7 +1417,7 @@ async function deleteExam(element) {
           if ($('.upcomExam').length === 0 && $('.pastExam').length === 0) {
             $("#tabExam").html('<img src="/assets/img/no_data_found.png" class="no_data_found">');
           }
-          raiseSuccessAlert("Examination Data Deleted Successfully.");
+          raiseSuccessAlert("Examination Deleted Successfully.");
         },
         error: (error) => {
           raiseErrorAlert(error["responseJSON"]["detail"]);

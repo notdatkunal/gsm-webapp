@@ -25,7 +25,7 @@ $(document).ready(() => {
 $('#assignmentTable').on('click', '.openAssignmentBtn', function () {
     var assignmentId = $(this).data('id');
     var assignmentDescription = $(this).data('description');
-    $('#assignment-view-modal #assignment-modal-body p').html(`${assignmentDescription}`);
+    $('#assignment-view-modal #assignment-modal-body').html(`${assignmentDescription}`);
     $('#assignment-view-modal').modal('show');
 });
 async function getSectionsByClass(classId) {
@@ -113,25 +113,26 @@ function addAssignment() {
             $("#assignmentModal").modal("hide");
             if (data) {
                 const responseData = data.response; 
-                if (isUpdate) {
-                    const tr = document.querySelector(`.tr-assign-${responseData.id}`);
-                    tr.querySelector(".assignment_title").textContent = responseData.assignment_title;
-                    tr.querySelector(".class_id").textContent = responseData.classes.class_name;
-                    tr.querySelector(".section_id").textContent = responseData.sections.section_name;
-                    tr.querySelector(".assignment_Date").textContent = responseData.assignment_Date;
-                    tr.querySelector(".assignment_due_date").textContent = responseData.assignment_due_date;
-                    tr.querySelector(".openAssignmentBtn").setAttribute("data-description", responseData.assignment_details);
-                    $("#assignment_id").val("");
-                    $('#assignmentModal').addClass("model fade");
-                    raiseSuccessAlert("Assignment Record Updated Successfully");
+                    if (isUpdate) {
+                        const tr = document.querySelector(`.tr-assign-${responseData.id}`);
+                        tr.querySelector(".assignment_title").textContent = responseData.assignment_title;
+                        tr.querySelector(".class_id").textContent = responseData.classes.class_name;
+                        tr.querySelector(".section_id").textContent = responseData.sections.section_name;
+                        tr.querySelector(".assignment_Date").textContent = responseData.assignment_Date;
+                        tr.querySelector(".assignment_due_date").textContent = responseData.assignment_due_date;
+                        tr.querySelector(".openAssignmentBtn").setAttribute("data-description", responseData.assignment_details);
+                        $("#assignment_id").val("");
+                        $('#assignmentModal').addClass("model fade");
+                        raiseSuccessAlert("Assignment Updated Successfully");
+
                 } else {
                     const newRow = `
                     <tr class="tr-assign-${responseData.id}">
                         <td>${$("#assignments_info tr").length + 1}</td>
-                        <td class="assignment_title text-break">${responseData.assignment_title}</td>
+                        <td class="text-break assignment_title">${responseData.assignment_title}</td>
                         <td class="text-break">
                         <span class="class_id">${responseData.classes.class_name}</span>-
-                        <span class="section_id ">${responseData.sections.section_name}</span>
+                        <span class="section_id">${responseData.sections.section_name}</span>
                     </td>
                         <td class="assignment_Date">${responseData.assignment_Date}</td>
                         <td class="assignment_due_date">${responseData.assignment_due_date}</td>
@@ -154,7 +155,7 @@ function addAssignment() {
                 `;
                 $("#assignments_info").append(newRow);
                 $('#no_data_found').hide();
-                    raiseSuccessAlert("Assignment Record Added Successfully");
+                    raiseSuccessAlert("Assignment Added Successfully");
                 }
             }
         },
@@ -226,7 +227,7 @@ async function deleteAssignment(assignmentId) {
                     showLoader("body", "sm");
                 },
                 success: (response) => {
-                    raiseSuccessAlert(response.detail);
+                    raiseSuccessAlert("Assignment Deleted Successfully");
                     if ($('#assignments_info tr').length === 1) {
                         $('#no_data_found').show();
                     }
