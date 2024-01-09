@@ -49,13 +49,29 @@ async function deleteNotice(noticeId) {
                 success: (response) => {
                     raiseSuccessAlert('Notice Deleted Successfully');
                     removeLoader("noticeTable", "sm");
+                    checkNoRecords();
                 },
                 error: (error) => {
                     raiseErrorAlert(error.responseJSON.detail);
                 },
                 complete: (e) => {
+                    checkNoRecords();
                 }
             });
         }
     });
+}
+function checkNoRecords() {
+    var rowCount = $('#notice_details tr').length;
+    if (rowCount <= 0 ) {
+        $('#notice_details').html(
+            `<tr class="">
+                <td colspan="8" class="text-center ">
+                    <img src="/assets/img/no_data_found.png" alt="No Image" class="no_data_found">
+                </td>
+            </tr>`
+        )
+    } else {
+        $('.no_data_found-tr').hide();
+    }
 }

@@ -7,7 +7,6 @@
 <script src="{% static 'app-js/staffs.js' %}"></script>
 
 <div class="row" id="heading-row">
-    
     <div class="col-sm-12 col-md-8 col-xl-8" style="padding: 1rem">
         <h5>Staffs</h5>
         <quote>Teachers illuminate the path to knowledge, guiding minds to brilliance with each lesson they share.
@@ -41,12 +40,12 @@
 </div>
 <!-- Staff table start -->
 <section class="row">
+    {% if staff_data %}
     <div class="col-md-12 text-center">
-        {% if staff_data %}
-            <table class="table table-striped table-hover table-sticky table_students" id="staffTable">
+            <table class="table table-striped table-hover table-sticky table_students" id="staffsTable">
                 <thead class="thead-dark">
                     <tr>
-                        <th>S.No</th>
+                        <th>Photo</th>
                         <th>Staff Name</th>
                         <th>Emp ID</th>
                         <th>Role </th>
@@ -57,12 +56,14 @@
                         <th>Staff Action</th>
                     </tr>
                 </thead>
-                <tbody class="tbl__bdy">
+                <tbody class="tbl__bdy" id="staffTable">
                     {% for staff in staff_data %}
                     <tr class="tr-staff-{{staff.staff_id}}">
-                        <td>{{forloop.counter}}</td>
+                        <td>
+                            <img src="{{staff.photo}}" alt="" srcset="" height="50px" width="50px">
+                        </td>
                         <td class="staff_name">
-                            <a href="{% url 'staff_info' staff.slug %}" class="text-dark"> {{ staff.staff_name }} </a>
+                            <a href="{% url 'staff_info' staff.slug %}"> {{ staff.staff_name }} </a>
                         </td> 
                         <td class="employee_id">{{ staff.employee_id }}</td>
                         <td class="role">{{ staff.role }}</td>
@@ -85,17 +86,10 @@
                 </tbody>
             </table>
         {% else %}
-            <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
+            <div class="col-md-12 text-center">
+                <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
+            </div>
         {% endif %}
-    </div>
+</div>
 </section>
-<!-- student table end -->
-<!-- student Form Start -->
-
-
-<!-- create bootstrap accordian form  -->
-
-
-
-
 {% endblock %}

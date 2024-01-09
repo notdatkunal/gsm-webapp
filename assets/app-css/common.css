@@ -1,6 +1,9 @@
 body{
     background-color: #fcf5dc;;
 }
+.txt-color{
+    color:#332757;
+}
 @media (min-width: 1024.1px) {
     [data-layout="horizontal"] .container-fluid,[data-layout="horizontal"] .layout-width{
      max-width: 100%;
@@ -99,18 +102,21 @@ body{
 }
 .spinner-element-lg-overlay {
     position: absolute;
-    height:100%;
+    height: 100%;
     width: 100%;
-    z-index:1000;
-    top: 0%;
-    left: 0%;
-    right: 0%;
-    bottom: 0%;
-    background-color:rgba(255,255,255,0.5);
-    text-align: center;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.spinner-element-lg-overlay img{
-    margin-top: 25%;
+
+.spinner-element-lg-overlay img {
+    margin-top: 0; 
 }
  
 #spinner-element-sm {
@@ -118,18 +124,20 @@ body{
 }
 .spinner-element-sm-overlay {
     position: absolute;
-    height:100%;
+    height: 100%;
     width: 100%;
-    z-index:1000;
-    top: 0%;
-    left: 0%;
-    right: 0%;
-    bottom: 0%;
-    background-color:rgba(255,255,255,0.5);
-    text-align: center;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .spinner-element-sm-overlay img{
-    margin-top: 25%;
+    margin-top: 0; 
 }
 
 .bus-vehicle{
@@ -157,4 +165,23 @@ body{
 }
 #sidebarMore{
     background: var(--tb-vertical-menu-bg) !important;
+}
+#attendance-tab {
+    margin: 20px;
+}
+
+#AttendanceCalendar{
+    max-width: 600px;
+    /* background-color: red; */
+}
+.pie-chart{
+    max-width: 100% !important;
+    max-height: 90% !important;
+
+}
+.student-profile{
+    width: 100% !important;
+    height: 10rem !important;
+    object-fit: scale-down !important;
+    margin-top: 1rem;
 }
