@@ -11,6 +11,7 @@
     <div class="col-sm-12 col-md-8 col-xl-7.5" style="padding: 1rem">
         <div class="card">
             <form id="student-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <input type="hidden" name="" id="isEdit" value="{{is_edit}}">
                 <input type="hidden" name="" id="studentId" value="{{student_data.student_id}}">
                 <div class="card-header">
@@ -58,15 +59,22 @@
                                                 name="admission_date" value="{{student_data.admission_date}}">
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="photo" class="form-label">Photo</label>
+                                            <label for="studentPhoto" class="form-label">Photo</label>
                                             <input type="file" accept=".pdf,.jpg,.jpeg" placeholder="Seletct File"
-                                                class="form-control" id="photo" name="photo">
+                                                class="form-control" id="studentPhoto" name="studentPhoto">
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <label for="student_name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="student_name" name="student_name"
-                                        value="{{student_data.student_name}}" maxlength="255">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="student_name" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="student_name" name="student_name"
+                                            value="{{student_data.student_name}}" maxlength="255">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="roll_number" class="form-label">Roll Number</label>
+                                            <input type="text" class="form-control" id="roll_number" name="roll_number"
+                                            value="{{student_data.roll_number}}" maxlength="255">
+                                        </div>
                                     </div>
                                     <div class="row">
 
@@ -188,15 +196,12 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="section_id" class="form-label">Section</label>
-                                        <select id="section_id" class="form-select" name="section_id" data-section-id ="{{student.section_id}}">
+                                        <select id="section_id" class="form-select" name="section_id">
                                             <option value="">Select class first</option>
-                                            <option value="1">Section A</option>
-                                            <option value="2">Section B</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                           
                         </div>
                         <div class="col-md-12">
                             <code>Scroll up <i class="bi bi-arrow-up-short"></i> to Save changes.</code>

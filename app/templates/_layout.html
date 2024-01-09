@@ -28,7 +28,6 @@
     <script src="{% static 'app-js/common.js' %}"></script>
     <!--Sweet Alert-->
     <script src="{% static 'app-js/sweetalert.js' %}"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
@@ -47,6 +46,7 @@
     <input type="hidden" name="" id="apiUrl" value='{{url}}'>
     <input type="hidden" name="" id="jwtToken" value='{{jwt_token}}'>
     <input type="hidden" name="" id="instituteId" value='{{institute_id}}'>
+    {% csrf_token %}
     <!-- Begin page -->
     <div id="layout-wrapper">
 
@@ -139,7 +139,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link menu-link"> <i class="bi bi-journal-richtext"></i>
+                            <a href="{% url 'assignments' %}" class="nav-link menu-link"> <i class="bi bi-journal-richtext"></i>
                                 <span data-key="t-file-manager">Assignments</span> </a>
                         </li>
 
@@ -149,7 +149,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link menu-link"> <i class="bi bi-star-fill"></i>
+                            <a href="{% url "gradings" %}" class="nav-link menu-link"> <i class="bi bi-star-fill"></i>
                                 <span data-key="t-file-manager">Gradings</span> </a>
                         </li>
                         
@@ -180,7 +180,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link menu-link"> <i class="bi bi-cash-stack"></i>
+                            <a href="{% url 'accounts' %}" class="nav-link menu-link"> <i class="bi bi-cash-stack"></i>
                                 <span data-key="t-file-manager">Accounts</span> </a>
                         </li>
 

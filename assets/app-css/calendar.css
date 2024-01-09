@@ -73,3 +73,18 @@ tr {
     padding-top: 0;
     padding-bottom: 0;
 }
+
+#btnSearch{
+    margin-bottom: 6px;
+    height: 32px;
+    width: 72px;
+}
+
+.editable-cell {
+    cursor: pointer;
+}
+
+.no_data_found {
+    display: block;
+    margin: auto;
+  }

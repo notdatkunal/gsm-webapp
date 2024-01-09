@@ -1,3 +1,4 @@
+
 let apiUrl = ""
 let jwtToken = ""
 let instituteId = 0
@@ -68,6 +69,10 @@ function validateForm(fields) {
             const value = element.val().trim();
             if (value === '') {
                 element.focus().addClass('is-invalid');
+                // find parent accordion
+                const parentAccordion = element.parents(".accordion");
+                // open parent accordion
+                parentAccordion.find(".collapse").addClass("show");
                 isValid = false;
             }
         }  
@@ -87,20 +92,64 @@ function phoneNumber(fieldId) {
 
 // loader start
 function showLoader(loaderContainerElementId, size) {
-    if(loaderContainerElementId == "body"){
-        $("#spinner-element-"+size).show();
-    }
-    else{
-        $("#"+loaderContainerElementId).append($("#spinner-element-"+size).html());
+    if (loaderContainerElementId == "body") {
+        $("#spinner-element-" + size).show();
+    } else {
+        var loaderContainer = $("#" + loaderContainerElementId);
+        if (!loaderContainer.hasClass("modal")) {
+            loaderContainer.css("position", "relative");
+            loaderContainer.append($("#spinner-element-" + size).html());
+        } else {
+            loaderContainer.append($("#spinner-element-" + size).html());
+        }
     }
 }
+
+
 // loader stop
 function removeLoader(loaderContainerElementId, size) {
     if(loaderContainerElementId == "body"){
         $("#spinner-element-"+size).hide();
     }
     else{
+        $("#"+loaderContainerElementId).css("position", "")
         $("#"+loaderContainerElementId).find(".spinner-element-"+size+'-overlay').remove();
+    }
+}
+
+
+// azure blob upload
+async function uploadFile(fieldId,location) {
+    var defaultBlob = "https://gsmstore.blob.core.windows.net/student-profile-pictures/students.jpg";
+    var url = window.location.origin;
+    try{
+        const fileInput = document.getElementById(fieldId);
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        var csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val()
+        formData.append('file', file);
+        formData.append('location', location);
+        formData.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+        formData.append('file_name', file.name);
+        try {
+            const response = await $.ajax({
+                type: "POST",
+                url: `${url}/app/azure_upload/`,
+                data: formData,
+                processData: false,
+                contentType: false,
+            });
+            if(response.file_url){
+                return response.file_url;
+            }
+            return defaultBlob;
+        } catch (error) {
+            // Handle the error
+            return defaultBlob;
+        }
+    }
+    catch(e){
+        return defaultBlob;
     }
 }
 

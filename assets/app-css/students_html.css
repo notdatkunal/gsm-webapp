@@ -2,7 +2,6 @@
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #ddd;
-    height: 30vh !important;
     overflow:auto !important;
     /* background-color: #9b9898c8 !important; */
 }
