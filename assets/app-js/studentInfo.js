@@ -1,5 +1,3 @@
-// // importing pie chart function from utlity.js
-// import {genaratePieChart} from "./utlity.js";
 
 $(document).ready(e => {
     let studentInfo =JSON.parse($("#studentInfo").val());
@@ -20,6 +18,7 @@ $(document).ready(e => {
     studentData.getExamsData(studentInfo.classId)
     studentData.getStudentDocuments(studentInfo.studentId);
     loadCalendarDetails(studentInfo.classId, studentInfo.sectionId);
+    studentData.showStudentActivity();
     callPieChart();
 
     $("#btnSubmitAssignment").on('click', e => {
@@ -28,6 +27,15 @@ $(document).ready(e => {
     $("#btnstudentDocument").on('click', e => {
         studentData.uploadDocument(studentInfo.studentId);
     }) 
+    
+    $("#btnActivityForm").on('click', e => {
+        if (studentActivityForm() === true) {
+            studentData.saveActivity();
+        }
+        else{
+            restField()
+        }
+    });
 });
 
 function callPieChart(absent, present) {
@@ -256,6 +264,7 @@ class StudentData {
             callPieChart(absent,present)
         });
     }
+
     async submitAssignment(assignmentId,studentId){
         var endPoint = `/AssignmentSubmission/submit_assignment/`;
         var totalUrl = apiUrl + endPoint;
@@ -394,6 +403,74 @@ class StudentData {
         });
     }
 
+    async saveActivity(){
+        var activityId = $("#activity_id").val();
+        var postEndPoint = `/Activity/create_activity/`;
+        var updateEndPoint = `/Activityupdate_activity/?actity_id=${activityId}`;
+        var method = activityId ? "PUT" : "POST";
+        var endPoint = activityId ? updateEndPoint : postEndPoint;
+        var totalUrl = apiUrl + endPoint;
+        var payload = {
+            "institution_id":instituteId,
+            "activity_name": $("#activity_title").val(),
+            "activity_description":$("#activity_details").val(),
+            "activity_date":$("#activity_date").val(),
+            "activity_location":$("#activity_place").val(),
+            "is_deleted": false,
+            "student_id": 0
+        }
+        await this.ajaxCall(method, totalUrl, payload, "activityFormArea", "sm",(response) => {
+            $("#activityForm").find("input, textarea").val("");
+            $("#activityForm").modal('hide')
+            this.activityTable = $("#activityTable")
+            var activity = response.response
+            if(activityId){
+                $(`.tr-activity-${activityId}`).find(".activity_name").text(activity.activity_name)
+                $(`.tr-activity-${activityId}`).find(".activity_date").text(activity.activity_date)
+                $(`.tr-activity-${activityId}`).find(".activity_location").text(activity.activity_location)
+                $(`.tr-activity-${activityId}`).find(".activity_desc").html(`<button class="btn btn-dark btn-label right rounded-pill" onClick="showActivityDetailse('${activity.activity_name}','${activity.activity_description}')">
+                <i class="ri-eye-line label-icon align-middle rounded-pill fs-lg ms-2"></i>
+                    View
+                </button>`)
+                raiseSuccessAlert("Activity Updated Successfully");
+            }
+            else{
+                var tr = `
+                        <tr class="tr-activity-${activity.activity_id}">
+                        <td class="activity_name">${activity.activity_name}</td>
+                        <td class="activity_date">${activity.activity_date}</td>
+                        <td class="activity_desc">
+                            <button class="btn btn-dark btn-label right rounded-pill" onClick="showActivityDetailse()">
+                            <i class="ri-eye-line label-icon align-middle rounded-pill fs-lg ms-2"></i>
+                                View
+                            </button>
+                        </td>
+                        <td class="activity_location">${activity.activity_location}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onClick="editActivity(this)" data-activity_id ='${activity.activity_id}'>
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-activity_id ='${activity.activity_id}' onClick="deleteActivity(this)">
+                                    <i class="bi bi-trash3"></i>
+                            </button>
+                        <td>
+                    </tr>
+                    ` 
+                this.activityTable.append(tr);
+                raiseSuccessAlert("Activity Added Successfully");
+            }
+        });
+    }
+
+    async showStudentActivity(){
+        var endPoint = `/Activity/get_all_activity_by_institute/?institution_id=${instituteId}`;
+        var totalUrl = apiUrl + endPoint;
+        await this.ajaxCall("GET", totalUrl, "", "activites", "sm",(response) => {
+            var activity = response
+            this.displayActivityData(activity);
+        });
+    }
+
     async displayUpcomingExamsData(response){
         var upcomingExams = $("#UpComingExam")
         if(response.length > 0){
@@ -521,6 +598,39 @@ class StudentData {
         }
     }
 
+    async displayActivityData(response){
+        var table = $("#activityTable")
+        if(response.length > 0){
+            table.empty();
+            for (const key in response) {
+                var activity = response[key]
+                var title = activity.activity_name
+                var desc = activity.activity_description
+                var row = `
+                    <tr class="tr-activity-${activity.activity_id}">
+                        <td class="activity_name">${title}</td>
+                        <td class="activity_date">${activity.activity_date}</td>
+                        <td class="activity_desc">
+                            <button class="btn btn-dark btn-label right rounded-pill" onClick="showActivityDetailse('${title}','${desc}')">
+                            <i class="ri-eye-line label-icon align-middle rounded-pill fs-lg ms-2"></i>
+                                View
+                            </button>
+                        </td>
+                        <td class="activity_location">${activity.activity_location}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onClick="editActivity(this)" data-activity_id ='${activity.activity_id}'>
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-activity_id ='${activity.activity_id}' onClick="deleteActivity(this)">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        <td>
+                    </tr>
+                `;
+                table.append(row);
+            }
+        }
+    }
 }
 
 // delete student document
@@ -562,6 +672,34 @@ function openAssignmentDetails(response) {
     assignmentModel.find(".modal-title").text("Assignment Details")
     assignmentModel.find(".modal-desc").text(response)
 }
+// delete student activity
+async function deleteActivity(element){
+    var activityId = $(element).attr("data-activity_id");
+    var endPoint = `/Activity/delete_activity/?activity_id=${activityId}`;
+    var totalUrl = apiUrl + endPoint;
+
+    await Swal.fire({
+        title: 'Are you sure, do you want to delete this Record?',
+        text: 'This can\'t be reverted!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(`.tr-activity-${activityId}`).remove()
+            ajaxRequest("DELETE", totalUrl, "","activites","sm",(response) => {
+                raiseSuccessAlert();
+                if ($('#activityTable tr').length === 0) {
+                    $("#activityTable").find(".no_data_found").show()
+                }
+            })
+        }
+    });
+}
+
+
 // geting all student data
 
 function generatePieChart (id = "",parcenatge= [],labels = [],colors = []) {
@@ -671,4 +809,66 @@ async function loadCalendarDetails(ClassId,sectionId) {
       removeLoader("tabCalender", "sm");
     },
   });
+}
+
+// studentActivityForm
+function studentActivityForm(){
+    var isValid = true;
+    var activity_title = $("#activity_title");
+    var activity_description = $("#activity_details");
+    var activity_date = $("#activity_date");
+    var activity_location = $("#activity_place");
+    if(activity_title.val().trim() === ""){
+        activity_title.addClass("is-invalid");
+        isValid = false;
+    }
+    if(activity_description.val().trim() === ""){
+        activity_description.addClass("is-invalid");
+        isValid = false;
+    }
+    if(activity_date.val().trim() === ""){
+        activity_date.addClass("is-invalid");
+        isValid = false;
+    }
+    if(activity_location.val().trim() === ""){
+        activity_location.addClass("is-invalid");
+        isValid = false;
+    }
+    return isValid;
+}
+
+function restField(){
+    $(".is-invalid").on('input', function () {
+        if ($(this).val().trim().length > 2) {
+            $(this).removeClass("is-invalid");
+        }
+    }); 
+}
+
+// show activity details
+function showActivityDetailse(title,desc){
+    var activityModel = $("#activityDetailse")
+    activityModel.modal('show')
+    activityModel.find(".modal-title .activityName").text(title)
+    activityModel.find(".modal-body .activityDetailse").text(desc)
+}
+function editActivity(element){
+    var activityId = $(element).attr("data-activity_id");
+    var endPoint = `/Activity/get_activity_by_id/?activity_id=${activityId}`;
+    var totalUrl = apiUrl + endPoint;
+    ajaxRequest("GET", totalUrl, "","body","lg",(response) => {
+        var activityData = response.response;
+        $("#activityForm").modal('show')
+        $("#activity_id").val(activityData.activity_id)
+        $("#activity_title").val(activityData.activity_name)
+        $("#activity_details").val(activityData.activity_description)
+        $("#activity_date").val(activityData.activity_date)
+        $("#activity_place").val(activityData.activity_location)
+    })
+}
+
+function showDynamicFee(){
+    var table = $.create("table")
+    table.addClass("table table-striped table-hover table-sticky table_students table-center")
+    
 }
