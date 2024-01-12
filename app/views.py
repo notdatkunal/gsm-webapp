@@ -508,3 +508,40 @@ def fees(request):
         "message": request.COOKIES.get("message"),
     }
     return render(request,'fees.html',payload)
+
+
+def examination(request):
+    class_obj = Data(API_URL)
+    institite_id = request.COOKIES.get("institute_id")
+    exam_url = f"/ParentExams/get_all_parent_exam_by_institute_id?institute_id={institite_id}"
+    params = {"institute_id": institite_id}
+    access_token = request.COOKIES.get("access_token")
+    exam_data = class_obj.get_data_by_institute_id(
+        url=exam_url, params=params, jwt=access_token
+    )
+    payload = {
+        "exam_data": exam_data,
+        "jwt_token": access_token,
+        "url": API_URL,
+        "institute_id": institite_id,
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
+    }
+    return render(request, "examination.html", payload)
+
+
+def examinationInfo(request):
+    class_obj = Data(API_URL)
+    institite_id = request.COOKIES.get("institute_id")
+    params = {"institute_id": institite_id}
+    access_token = request.COOKIES.get("access_token")
+    exam_data = class_obj.get_data_by_institute_id(
+        params=params, jwt=access_token
+    )
+    payload = {
+        "exam_data": exam_data,
+        "jwt_token": access_token,
+        "url": API_URL,
+        "institute_id": institite_id,
+    }
+    return render(request, "examinationInfo.html", payload)
