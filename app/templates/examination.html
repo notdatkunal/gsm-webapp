@@ -92,33 +92,25 @@
                 </tr>
             </thead>
             <tbody class="tbl__bdy" id="examination_details">
-            {% if exam_data %}
                 {% for exam in exam_data %}
-                <tr class="tr-exam-{{exam.parent_exam_id}}" data-exams-id="{{exam.parent_exam_id}}">
-                    <td class="text-break">
-                        <span class="start_date">{{exam.start_date}}</span>-
-                        <span class="end_date">{{exam.end_date}}</span></td>
-                    <td class=" text-break parent_exam_name">{{ exam.parent_exam_name }}</td>
-                    <td class=" text-break result_date">{{exam.result_date}}</td>
-                    <td class=" text-break class_id" data-class-id="{{exam.classes.class_id}}">{{exam.classes.class_name}}</td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-info btnEditExam" data-id="{{exam.parent_exam_id}}">
-                            <i class="bi bi-pencil-square"></i>
-                        </button>
-                        <button type="button" class="btndelete btn btn-sm btn-danger" id="btndelete"
-                            data-id="{{exam.parent_exam_id}}">
-                            <i class="bi bi-trash3"></i>
-                        </button>
-                    </td>
-                </tr>                     
+                    <tr class="tr-exam-{{exam.parent_exam_id}}" data-exams-id="{{exam.parent_exam_id}}">
+                        <td class="text-break">
+                            <span class="start_date">{{exam.start_date}}</span>-
+                            <span class="end_date">{{exam.end_date}}</span></td>
+                        <td class=" text-break parent_exam_name">{{ exam.parent_exam_name }}</td>
+                        <td class=" text-break result_date">{{exam.result_date}}</td>
+                        <td class=" text-break class_id" data-class-id="{{exam.classes.class_id}}">{{exam.classes.class_name}}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-info btnEditExam" data-id="{{exam.parent_exam_id}}">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button type="button" class="btndelete btn btn-sm btn-danger" id="btndelete"
+                                data-id="{{exam.parent_exam_id}}">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
+                    </tr>                     
                 {% endfor %}
-            {% else %}
-            <tr class="no_data_found-tr" id="no_data_found">
-                <td colspan="7" class="text-center">
-                    <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found" id="no_data_found">
-                </td>
-            </tr>
-            {% endif %}
             </tbody>
         </table>
     </div>

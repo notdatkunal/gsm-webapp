@@ -6,9 +6,9 @@ $(document).ready(()=>{
     apiUrl = $("#apiUrl").val();
     jwtToken = $("#jwtToken").val();
     instituteId = $("#instituteId").val();
-    $('#noticeTable,#studentsTable,#staffsTable,#feeTable,#transportTable,#gradeTable').DataTable();
+    
     $(".btnCloseModel").on("click", function(e){
-        const parentModel = $(this).closest(".modal");
+        const parentModel = $(this).closest(".modal"); 
         parentModel.modal("hide");
         $("input, textarea, select",parentModel).val("");
     });
@@ -80,9 +80,7 @@ function validateForm(fields) {
                 // open parent accordion
                 parentAccordion.find(".collapse").addClass("show");
                 isValid = false;
-            }else{
-                element.focus().removeClass("is-invalid");
-              }
+            }
         }  
         catch(e){
         } 
@@ -160,4 +158,34 @@ async function uploadFile(fieldId,location) {
         return defaultBlob;
     }
 }
+// azure blob  download
+async function downloadFile(fileName,location) {
+    var url = window.location.origin;
+    const formData = new FormData();
+    var csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val()
+    formData.append('file_name', fileName);
+    formData.append('location', location);
+    formData.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+    window.location.href = `${url}/app/azure_download/`
+    try{
+        const response = await $.ajax({
+            type: "POST",
+            url: `${url}/app/azure_download/`,
+            data: formData,
+            processData: false,
+            contentType: false,
+        });
+        if(response){
+            console.log(response);
+            return response.file_url;
+        }
+        return "";
+    }
+    catch(e){
+        console.log(e);
+        return "";
+    }
+}
+
+
 

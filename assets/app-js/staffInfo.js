@@ -69,12 +69,7 @@ async function addPayroll(){
             displayNewPayroll(payrollData);
         }
         resetForm(payrollFieldNames);
-        // $("#payroll_detail").find(".no_data_found-tr").hide();
-        // var tableBody = $("#payroll_detail");
-        // var noDataImage = tableBody.find('.no_data_found-tr');
-        // if (noDataImage.length > 0) {
-        //   noDataImage.remove();
-        // }
+        
         $("#payroll_detail").find("#no_data_found").remove();
         isUpdate = false;
     });
@@ -104,8 +99,6 @@ async function displayNewPayroll(response) {
         </td>
     </tr>
     `;
-    // var tableBody = document.querySelector('.tbl__bdy');
-    // tableBody.innerHTML += newRow;
     resetForm(payrollFieldNames);
     $("#staffPayroll").DataTable().row.add($(newRow)).draw();
 }
@@ -198,41 +191,6 @@ async function deletePayroll(payrollId){
         }
     });
 }
-
-
-// async function deletePayroll(payrollId){
-//     await Swal.fire({
-//         title: 'Are you sure, do you want to delete this Record?',
-//         text: 'This can\'t be reverted!',
-//         icon: 'warning',
-//         showCancelButton: true,
-//         confirmButtonColor: '#3085d6',
-//         cancelButtonColor: '#d33',
-//         confirmButtonText: 'Yes, delete it!'
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             $(`.tr-payroll-${payrollId}`).remove()
-//             if ($('#staffPayroll').length === 1) {
-//                 $("#payroll_detail").find(".no_data_found-tr").show()
-//             }
-//             var endPoint = `/StaffPayrole/delete_payroll/?payroll_id=${payrollId}`
-//             var totalUrl = apiUrl+endPoint;
-//             ajaxRequest("DELETE",totalUrl, "","payrollFormId","lg", (response) => {  
-//             })
-//             Swal.fire({
-//                 title: 'Deleted!',
-//                 text: 'Your file has been deleted.',
-//                 icon: 'success',
-//                 customClass: {
-//                     title: 'swal-title',
-//                     content: 'swal-text',
-//                     confirmButton: 'swal-confirm-button',
-//                 },
-//             });
-//         }
-//     });
-
-// }
 // documentsss
 async function addDocument() {
     var documentData = {
@@ -409,43 +367,30 @@ async function deleteStaff(element) {
 
 function deleteStaff(element) {
     var staffId = element.getAttribute("data-id");
-    Swal.fire({
-        title: 'Are you sure want to delete this Staff?',
-        text: 'You won\'t be able to revert this!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                type: "DELETE",
-                url: `https://gsm-fastapi.azurewebsites.net/Staff/delete_staff/?staff_id=${staffId}`,
-                headers: {
-                    'Authorization': `Bearer ${jwtToken}`,
-                    'Content-Type': 'application/json',
-                },
-                success: function (response) {
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: 'Staff has been deleted.',
-                        icon: 'success'
-                    }).then(() => {
-                        window.location.href = `/app/staffs/`;
-                    });
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Error deleting staff.',
-                        icon: 'error'
-                    });
-                    console.log(xhr.responseText);
-                }
-            });
-        }
-    });
+    var confirmation = confirm("Are you sure you want to delete this staff?");
+    
+    if (confirmation) {
+        $.ajax({
+            type: "DELETE",
+            url: `https://gsm-fastapi.azurewebsites.net/Staff/delete_staff/?staff_id=${staffId}`,
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`,
+                'Content-Type': 'application/json',
+            },
+            success: function(response) {
+                // Optional: Remove the staff entry from the UI
+                // $(element).closest('.col-sm-12').remove();
+                alert("Staff deleted successfully!");
+                // Reload the page after successful deletion
+                window.location.href = `/app/staffs/`;
+                
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                alert("Error deleting staff.");
+                console.log(xhr.responseText);
+            }
+        });
+    }
 }
 
 // Staff attendance 
@@ -589,5 +534,5 @@ class StaffData {
         } finally {
             removeLoader("tabCalender", "sm");
         }
-    }
+    } 
 }

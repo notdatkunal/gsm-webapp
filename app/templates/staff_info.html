@@ -2,7 +2,7 @@
 {% block title %} Staff Selection {% endblock %} 
 {% load static %} 
 {% block content %}
-<link rel="stylesheet" href="{% static 'app-css/common.css' %}" />
+<link rel="stylesheet" href="{% static 'app-css/staff_info.css' %}" />
 <script src="{% static 'app-js/staffInfo.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -230,14 +230,7 @@
                                               </tr>
                                           </thead>
                                           <tbody class='attendanceTbody' id="attendance_data">
-                                              {% if attendance_data %}
-                                              {% else %}
-                                                  <tr>
-                                                      <td colspan="7" class="text-center">
-                                                          <img src="{% static 'img/no_data_found.png' %}" alt="No Image" class="no_data_found">
-                                                      </td>
-                                                  </tr>
-                                              {% endif %}
+                                              
                                           </tbody>
                                       </table>
                                   </div>
@@ -484,7 +477,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"></h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close btnCloseModel" data-bs-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body">
@@ -502,7 +495,7 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal">
-                    <i class="ri-close-line me-1 align-middle"></i> Close
+                    <i class="ri-close-line me-1 align-middle btnCloseModel"></i> Close
                 </a>
                 <button type="submit" class="btn btn-primary" id="btnstaffDocument">
                     Save

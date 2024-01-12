@@ -30,6 +30,7 @@ urlpatterns = [
     path('gradings/', views.gradings, name='gradings'),
     path('accounts/', views.accounts, name='accounts'),
     path('azure_upload/', views.azure_upload, name='azure_upload'),
+    path('azure_download/<str:file_name>/<str:location>/', views.azure_download, name='azure_download'),
     path('fees/',fees,name='fees'),
     path('examination/',examination,name='examination'),
     path('examinationInfo/',examinationInfo,name="examinationinfo")

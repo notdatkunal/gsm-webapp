@@ -1,3 +1,5 @@
+import mimetypes
+from anyio import Path
 from django.shortcuts import render
 from django.urls import reverse
 from django.conf import settings
@@ -13,7 +15,9 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import asyncio
-from .azure_blob import upload_to_blob
+from .azure_blob import upload_to_blob,download_blob
+from django.http import FileResponse
+from django.utils.encoding import smart_str
 
 API_URL = settings.API_ENDPOINT
 Subscription_URL = settings.SUBSCRIPTION_URL
@@ -32,6 +36,21 @@ def azure_upload(request):
                 return JsonResponse({"file_url": ""})
         else:
             return JsonResponse({"file_url": "http"})
+        
+def azure_download(request, file_name, location):
+    try:
+        file_content = download_blob(filename=file_name, location=location)
+        # Create a Django HttpResponse object
+        ext = Path(file_name).suffix
+        response = HttpResponse(file_content, content_type=mimetypes.guess_type(ext))
+        response["Content-Disposition"] = f'attachment; filename="{file_name}"'
+        return response
+    except FileNotFoundError:
+        # Handle the case where the blob does not exist
+        return HttpResponse("File not found", status=404)
+    except Exception as e:
+        # Handle other exceptions as needed
+        return HttpResponse(f"Error: {str(e)}", status=500)
 
 
 def calendar(request):
@@ -424,7 +443,6 @@ def staff_info(request, staff_slug):
     if staff_slug:
         staff = StaffInfo(api_url=API_URL, slug=staff_slug, jwt=access_token)
         staff_data = asyncio.run(staff.get_all_data(staff_slug))
-        print("staffslug", staff_slug)
         payload = {
             "url": API_URL,
             "jwt_token": access_token,
