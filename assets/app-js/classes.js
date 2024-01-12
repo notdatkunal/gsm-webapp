@@ -1144,7 +1144,7 @@ async function loadExams(selectedClassId) {
             '<tr>' +
             '<th>Exam Date</th>' +
             '<th>Name of Exams</th>' +
-            '<th>Result Announced Date</th>'+
+            '<th>Result Date</th>'+
             '<th>Action</th>' +
             '</tr>' +
             '</thead>' +
@@ -1183,7 +1183,7 @@ async function loadExams(selectedClassId) {
             '<tr>' +
             '<th>Exam Date</th>' +
             '<th>Name of Exams</th>' +
-            '<th>Result Announced Date</th>' +
+            '<th>Result Date</th>' +
             '</tr>' +
             '</thead>' +
             '<tbody class="tbl__bdy">';
@@ -1312,7 +1312,7 @@ async function addExam() {
                   '<tr>' +
                   '<th>Exam Date</th>' +
                   '<th>Name of Exams</th>' +
-                  '<th>Result Announced Date</th>' +
+                  '<th>Result Date</th>' +
                   '<th>Action</th>' +
                   '</tr>' +
                   '</thead>' +

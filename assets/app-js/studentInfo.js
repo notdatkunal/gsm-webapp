@@ -451,6 +451,11 @@ class StudentData {
         var totalUrl = apiUrl + endPoint;
         await this.ajaxCall("GET", totalUrl, "", "fee", "sm",async(response) => {
             var fee = response.fee_data[0]
+            if(!fee){
+                $("#btnFeeForm").attr('disabled', 'disabled')
+                $("#discount").attr('readonly', 'readonly')
+                $("#installment_type").attr('disabled', 'disabled')
+            }
             var installment = response.student_fee
             var isFeeFixed = false
             if(response.discount){
@@ -471,7 +476,7 @@ class StudentData {
     async saveActivity(){
         var activityId = $("#activity_id").val();
         var postEndPoint = `/Activity/create_activity/`;
-        var updateEndPoint = `/Activityupdate_activity/?actity_id=${activityId}`;
+        var updateEndPoint = `/Activity/update_activity/?actity_id=${activityId}`;
         var method = activityId ? "PUT" : "POST";
         var endPoint = activityId ? updateEndPoint : postEndPoint;
         var totalUrl = apiUrl + endPoint;
@@ -983,10 +988,10 @@ function editActivity(element){
     var activityId = $(element).attr("data-activity_id");
     var endPoint = `/Activity/get_activity_by_id/?activity_id=${activityId}`;
     var totalUrl = apiUrl + endPoint;
-    ajaxRequest("GET", totalUrl, "","body","lg",(response) => {
+    $("#activityForm").modal('show')
+    ajaxRequest("GET", totalUrl, "","activityFormArea","sm",(response) => {
         var activityData = response.response;
-        $("#activityForm").modal('show')
-        $("#activity_id").val(activityData.activity_id)
+        $("#activity_id").val(activityId)
         $("#activity_title").val(activityData.activity_name)
         $("#activity_details").val(activityData.activity_description)
         $("#activity_date").val(activityData.activity_date)
@@ -998,12 +1003,6 @@ function showDynamicFee(installment){
     showLoader("installmentTable","sm")
     var installmentTable = $("#installmentTable");
     installmentTable.empty();
-    // var installments = {
-    //     'Monthly':12,
-    //     'Quarterly':4,
-    //     'Half Yearly':2,
-    //     'Yearly':1
-    // }
     var totalFee = $("#total_insta_amount").val();
     installmentTable.empty();
     var noInstallment = parseInt(installment);
