@@ -20,7 +20,6 @@ class Data:
         self.response = requests.get(
             url=self.total_url, params=params, headers=self.headers
         )
-        print(self.response)
         if self.response.status_code == 200:
             return self.response.json()
         else:

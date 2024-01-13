@@ -424,10 +424,12 @@ def staff_info(request, staff_slug):
     if staff_slug:
         staff = StaffInfo(api_url=API_URL, slug=staff_slug, jwt=access_token)
         staff_data = asyncio.run(staff.get_all_data(staff_slug))
+        print("staffslug", staff_slug)
         payload = {
             "url": API_URL,
             "jwt_token": access_token,
             "staff_data": staff_data["staff_data"],
+            "staff_slug": staff_slug,
             "payroll_data" : staff_data["staff_payroll_data"],
             "transport_data": staff_data["staff_transport_data"],
             "documents": staff_data["get_staff_documents_data"],
@@ -435,7 +437,6 @@ def staff_info(request, staff_slug):
             "message": request.COOKIES.get("message"),
         }
     return render(request, "staff_info.html", payload)
-
 # gradeing
 def gradings(request):
     institute_id = request.COOKIES.get('institute_id')
@@ -488,3 +489,22 @@ def accounts(request):
             "message": request.COOKIES.get("message"),
         }
     return render(request,'accounts.html', payload)
+
+def fees(request):
+    fee_obj = Data(API_URL)
+    institite_id = request.COOKIES.get("institute_id")
+    fee_url = f"/Fees/get_all_fees_by_institute/?institution_id={institite_id}"
+    params = {"institute_id": institite_id}
+    access_token = request.COOKIES.get("access_token")
+    fees_data = fee_obj.get_data_by_institute_id(
+        url=fee_url, params=params, jwt=access_token
+    )
+    payload = {
+        "fees_data": fees_data,
+        "jwt_token": access_token,
+        "url": API_URL,
+        "institute_id": institite_id,
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
+    }
+    return render(request,'fees.html',payload)

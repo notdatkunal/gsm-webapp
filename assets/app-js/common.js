@@ -6,6 +6,12 @@ $(document).ready(()=>{
     apiUrl = $("#apiUrl").val();
     jwtToken = $("#jwtToken").val();
     instituteId = $("#instituteId").val();
+    $('#noticeTable,#studentsTable,#feeTable,#staffsTable,#transportTable,#gradeTable').DataTable();
+    $(".btnCloseModel").on("click", function(e){
+        const parentModel = $(this).closest(".modal");
+        parentModel.modal("hide");
+        $("input, textarea, select",parentModel).val("");
+    });
 })
 function raiseErrorAlert(msg) {
     toastr.options = {
@@ -74,7 +80,9 @@ function validateForm(fields) {
                 // open parent accordion
                 parentAccordion.find(".collapse").addClass("show");
                 isValid = false;
-            }
+            }else{
+                element.focus().removeClass("is-invalid");
+              }
         }  
         catch(e){
         } 

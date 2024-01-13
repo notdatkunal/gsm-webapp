@@ -1,0 +1,14 @@
+#installment_dropdown,.classDropdown {
+    padding-top: 7px;
+    padding-left: 1.7rem;
+    font-size: 1rem;
+}
+#getClassId{
+    height: 2.5rem;
+}
+.installment{
+    margin-right: 1.5rem;
+}
+#classId{
+    margin-left: 1.2rem;
+}

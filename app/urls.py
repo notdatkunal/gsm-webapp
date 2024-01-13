@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import dashboard, students, register_student,\
-staffs, register_staff,staff_info, edit_staff, login, logout, registration, classes, user, assignments, transportation, notice, notice_create,notice_edit, calendar,edit_student
+staffs, register_staff,staff_info, edit_staff, login, logout, registration, classes,fees, user, assignments, transportation, notice, notice_create,notice_edit, calendar,edit_student
 from . import views
 
 urlpatterns = [
@@ -30,4 +30,5 @@ urlpatterns = [
     path('gradings/', views.gradings, name='gradings'),
     path('accounts/', views.accounts, name='accounts'),
     path('azure_upload/', views.azure_upload, name='azure_upload'),
+    path('fees/',fees,name='fees'),
 ]
