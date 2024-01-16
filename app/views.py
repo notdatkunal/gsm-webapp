@@ -1,3 +1,5 @@
+import mimetypes
+from anyio import Path
 from django.shortcuts import render
 from django.urls import reverse
 from django.conf import settings
@@ -13,7 +15,9 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import asyncio
-from .azure_blob import upload_to_blob
+from .azure_blob import upload_to_blob,download_blob
+from django.http import FileResponse
+from django.utils.encoding import smart_str
 
 API_URL = settings.API_ENDPOINT
 Subscription_URL = settings.SUBSCRIPTION_URL
@@ -32,6 +36,21 @@ def azure_upload(request):
                 return JsonResponse({"file_url": ""})
         else:
             return JsonResponse({"file_url": "http"})
+        
+def azure_download(request, file_name, location):
+    try:
+        file_content = download_blob(filename=file_name, location=location)
+        # Create a Django HttpResponse object
+        ext = Path(file_name).suffix
+        response = HttpResponse(file_content, content_type=mimetypes.guess_type(ext))
+        response["Content-Disposition"] = f'attachment; filename="{file_name}"'
+        return response
+    except FileNotFoundError:
+        # Handle the case where the blob does not exist
+        return HttpResponse("File not found", status=404)
+    except Exception as e:
+        # Handle other exceptions as needed
+        return HttpResponse(f"Error: {str(e)}", status=500)
 
 
 def calendar(request):
@@ -428,6 +447,7 @@ def staff_info(request, staff_slug):
             "url": API_URL,
             "jwt_token": access_token,
             "staff_data": staff_data["staff_data"],
+            "staff_slug": staff_slug,
             "payroll_data" : staff_data["staff_payroll_data"],
             "transport_data": staff_data["staff_transport_data"],
             "documents": staff_data["get_staff_documents_data"],
@@ -435,7 +455,6 @@ def staff_info(request, staff_slug):
             "message": request.COOKIES.get("message"),
         }
     return render(request, "staff_info.html", payload)
-
 # gradeing
 def gradings(request):
     institute_id = request.COOKIES.get('institute_id')
@@ -480,11 +499,69 @@ def accounts(request):
     account_data=requests.get(url=url,headers=header)
     if account_data.status_code==200:
         payload={
-            'accounts':account_data.json(),
+            'accounts':account_data.json()["transactions"],
+            'summary':account_data.json()["summary"],
             'jwt_token':request.COOKIES.get('access_token'),
             'institute_id':institute_id,
             'url':API_URL,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
         }
+        print(payload["accounts"])
     return render(request,'accounts.html', payload)
+
+def fees(request):
+    fee_obj = Data(API_URL)
+    institite_id = request.COOKIES.get("institute_id")
+    fee_url = f"/Fees/get_all_fees_by_institute/?institution_id={institite_id}"
+    params = {"institute_id": institite_id}
+    access_token = request.COOKIES.get("access_token")
+    fees_data = fee_obj.get_data_by_institute_id(
+        url=fee_url, params=params, jwt=access_token
+    )
+    payload = {
+        "fees_data": fees_data,
+        "jwt_token": access_token,
+        "url": API_URL,
+        "institute_id": institite_id,
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
+    }
+    return render(request,'fees.html',payload)
+
+
+def examination(request):
+    class_obj = Data(API_URL)
+    institite_id = request.COOKIES.get("institute_id")
+    exam_url = f"/ParentExams/get_all_parent_exam_by_institute_id?institute_id={institite_id}"
+    params = {"institute_id": institite_id}
+    access_token = request.COOKIES.get("access_token")
+    exam_data = class_obj.get_data_by_institute_id(
+        url=exam_url, params=params, jwt=access_token
+    )
+    payload = {
+        "exam_data": exam_data,
+        "jwt_token": access_token,
+        "url": API_URL,
+        "institute_id": institite_id,
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
+    }
+    return render(request, "examination.html", payload)
+
+
+def examinationInfo(request):
+    class_obj = Data(API_URL)
+    institite_id = request.COOKIES.get("institute_id")
+    params = {"institute_id": institite_id}
+    access_token = request.COOKIES.get("access_token")
+    exam_data = class_obj.get_data_by_institute_id(
+        params=params, jwt=access_token
+    )
+    payload = {
+        "exam_data": exam_data,
+        "jwt_token": access_token,
+        "url": API_URL,
+        "institute_id": institite_id,
+    }
+    return render(request, "examinationInfo.html", payload)
