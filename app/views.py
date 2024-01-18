@@ -175,6 +175,7 @@ def registration(request):
                 return render(request, "registration.html")
     return render(request, "registration.html")
 
+
 def login(request):
     if request.method == "POST":
         email = request.POST.get("phone_number")
@@ -198,14 +199,17 @@ def login(request):
             )
             institite_id = auth_response.json().get("institution_id")
             institite_url = (
-                f"{API_URL}/Institute/Institute/?institute_id={institite_id}"
+                f"{API_URL}/Institute/get_institute_by_id/?institute_id={institite_id}"
             )
-            institite_response = requests.get(institite_url)
-            subscriber_id = institite_response.json().get("subscribers_id")
-            Account_url = (
-                f"{Subscription_URL}api/AccountValidation?subscriber_id={subscriber_id}"
-            )
+            header = {
+                "accept": "application/json",
+                "Authorization": f"Bearer {auth_response.json().get('access_token', '')}"
+            }
+            institute_response = requests.get(url=institite_url, headers=header)
+            subscriber_id = institute_response.json().get("subscribers_id")
+            Account_url = f"{Subscription_URL}api/AccountValidation?subscriber_id={subscriber_id}"
             Account_response = requests.get(Account_url)
+            print(Account_response.json(), "Account_response")
             data = Account_response.json()
             if len(data) > 0:
                 organization_name = data[0].get("OrganizationName")
@@ -217,6 +221,7 @@ def login(request):
             messages.error(request, "Invalid credentials")
             return render(request, "registration.html")
     return render(request, "registration.html")
+
 
 def logout(request):
     response = HttpResponseRedirect(reverse("registration"))
