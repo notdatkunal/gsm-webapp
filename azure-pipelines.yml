@@ -3,10 +3,10 @@ trigger:
 
 variables:
   azureServiceConnection: 'AlongX-Azure-Account-Development'
-  webAppName: 'gsm-webapp'
-  resourceGroupName: 'Development'
+  webAppName: 'gurukul-web-prod-si-as'
+  resourceGroupName: 'gurukul-prod-si-rg'
   vmImageName: 'ubuntu-latest'
-  environmentName: 'gsm-webapp'
+  environmentName: 'gurukul-prod-si-rg'
   projectRoot: $(System.DefaultWorkingDirectory)
   pythonVersion: '3.12'
   isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/develop')]
