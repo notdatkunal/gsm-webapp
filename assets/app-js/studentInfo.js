@@ -1,5 +1,7 @@
 $(document).ready(() => {
     let studentInfo =JSON.parse($("#studentInfo").val());
+    // student calendar
+    loadCalendarDetails(studentInfo.classId, studentInfo.sectionId);
     // 
     const studentAttendance = new StudentAttendance();
     studentAttendance.getAttendance();
@@ -660,11 +662,10 @@ function showDiscount(element){
 }
 function showInstallments(element) {
     let installmentTable = $("#installmentTable").DataTable();
+    installmentTable.clear().destroy();
     var installmentCount = $(element).val();
     var totalFee = $("#total_insta_amount").val();
     var installmentAmount = (parseFloat(totalFee) / installmentCount).toFixed(2);
-    installmentTable.clear().draw();
-
     for (let i = 1; i <= installmentCount; i++) {
         var color = "bg-danger";
         var statusMsg = "Unpaid";
@@ -682,9 +683,11 @@ function showInstallments(element) {
                 </td>
             </tr>
         `;
-        installmentTable.row.add($(row)).draw();
+        installmentTable.row.add($(row)).draw()
     }
+    installmentTable.draw();
 }
+
 async function editInstallment(element){
     var installmentId = $(element).attr("data-installment_id");
     $("#editInstallment").modal('show');
@@ -1202,3 +1205,170 @@ async function editeDocument(element){
         $("#document_id").val(documentData.document_id)
     })
 }
+// Student Calendar
+// async function loadCalendarDetails(class_id, section_id) {
+//     var searchUrl = `${apiUrl}/Calender/get_calender_by_class&section/?class_id=${class_id}&section_id=${section_id}`;
+
+//     try {
+//         const calendarData = await $.ajax({
+//             type: 'GET',
+//             url: searchUrl,
+//             mode: 'cors',
+//             crossDomain: true,
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 Authorization: `Bearer ${jwtToken}`,
+//             },
+//             beforeSend: () => {
+//                 showLoader('calenderTable', 'sm');
+//             },
+//             success: function (calendarData) {
+//                 console.log(calendarData);
+
+//                 var calendarTable = $('#calenderTable');
+//                 calendarTable.empty();
+//                 var responseData = calendarData.response || calendarData;
+
+//                 if (!responseData || (responseData.length === 0)) {
+//                     $('.no_data_found').show();
+//                     calendarTable.hide();
+//                     return;
+//                 }
+//                 calendarTable.show();
+//                 var data = responseData;
+//                 var className = [...new Set(data.map((item) => item.classes.class_name))];
+//                 var sectionName = [...new Set(data.map((item) => item.sections.section_name))];
+//                 var classSectionRow = $('<tr>');
+//                 classSectionRow.append(
+//                     `<td colspan="8" class="col" id="column"><center><b>${className} - ${sectionName}</b></center></td>`
+//                 );
+//                 calendarTable.append(classSectionRow);
+
+//                 var staticHeaderRow = $('<tr class="col">');
+//                 staticHeaderRow.append('<th>Time</th>');
+//                 var daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+//                 daysOfWeek.forEach(day => {
+//                     staticHeaderRow.append(`<th>${day}</th>`);
+//                 });
+//                 calendarTable.append(staticHeaderRow);
+
+//                 var timeDayMap = {};
+//                 data.forEach((item) => {
+//                     var timeKey = `${item.start_time}-${item.end_time}`;
+//                     if (!timeDayMap[timeKey]) {
+//                         timeDayMap[timeKey] = {};
+//                     }
+//                     timeDayMap[timeKey][item.day] = {
+//                         subject: item.subjects.subject_name,
+//                         staff: item.staffs.staff_name,
+//                         calender_id: item.calender_id
+//                     };
+//                 });
+//                 for (var timeKey in timeDayMap) {
+//                     var timeSlotRow = $('<tr class="rowData">');
+//                     timeSlotRow.append(`<td class="mod" id="tdData">${timeKey}</td>`);
+//                     daysOfWeek.forEach((day) => {
+//                         var cellData = timeDayMap[timeKey][day];
+//                         var cell = $('<td class="editable-cell text-center"></td>');
+//                         if (cellData && cellData.subject && cellData.staff) {
+//                             cell.html(`${cellData.subject} <br> (${cellData.staff})`);
+//                             cell.attr('data-id', cellData.calender_id);
+//                             cell.on('click', function () {
+//                                 openEditForm(cellData);
+//                             });
+//                         }
+//                         timeSlotRow.append(cell);
+//                     });
+//                     calendarTable.append(timeSlotRow);
+//                 }
+//             }
+//         });
+//     } catch (error) {
+//         $('.no_data_found').show();
+//         raiseErrorAlert(error.message || 'An error occurred.');
+//     } finally {
+//         removeLoader('calenderTable', 'sm');
+//     }
+// }
+// //_______GET Calender_______
+async function loadCalendarDetails(class_id, section_id) {
+    try {
+    var searchUrl = `${apiUrl}/Calender/get_calender_by_class&section/?class_id=${class_id}&section_id=${section_id}`;
+      const calendarData = await $.ajax({
+        type: "GET",
+        url: searchUrl,
+        mode: "cors",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        beforeSend: (e) => {
+            showLoader('calenderTable', 'sm');
+        },
+      });
+  
+      var calendarDetailsContainer = $("#calendar");
+      var calendarTable = calendarDetailsContainer.find("#calenderTable");
+      var noDataImage = calendarDetailsContainer.find('.no_data_found');
+  
+      if (!calendarData.response || calendarData.response.length === 0) {
+        noDataImage.show();
+        calendarTable.hide();
+      } else {
+        noDataImage.hide();
+        calendarTable.show();
+  
+        var data = calendarData.response;
+        var className = [...new Set(data.map(item => item.classes.class_name))];
+        var sectionName = [...new Set(data.map(item => item.sections.section_name))];
+        var classSectionRow = $("<tr>");
+        classSectionRow.append(`<td colspan="8" class="col" id="column"><center><b>${className} - ${sectionName}</b></center></td>`);
+        calendarTable.empty().append(classSectionRow);
+  
+        var headerRow = $("<tr class='col' id='column'>");
+        headerRow.append("<th>Time</th>");
+  
+        const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        var uniqueDays = [...new Set(data.map(item => item.day))];
+        uniqueDays.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+  
+        uniqueDays.forEach(day => {
+          headerRow.append(`<th>${day}</th>`);
+        });
+        calendarTable.append(headerRow);
+  
+        var timeDayMap = {};
+        data.forEach(item => {
+          var timeKey = `${item.start_time}-${item.end_time}`;
+          if (!timeDayMap[timeKey]) {
+            timeDayMap[timeKey] = {};
+          }
+          timeDayMap[timeKey][item.day] = {
+            subject: item.subjects.subject_name,
+            staff: item.staffs.staff_name,
+          };
+        });
+  
+        for (var timeKey in timeDayMap) {
+          var timeSlotRow = $("<tr class='rowData'>");
+          timeSlotRow.append(`<td class="mod" id="tdData">${timeKey}</td>`);
+  
+          uniqueDays.forEach(day => {
+            var cellData = timeDayMap[timeKey][day];
+            if (cellData) {
+              timeSlotRow.append(`<td id="tableData">${cellData.subject} <br> (${cellData.staff})</td>`);
+            } else {
+              timeSlotRow.append('<td id="tableData"></td>');
+            }
+          });
+          calendarTable.append(timeSlotRow);
+        }
+      }
+    } catch (error) {
+        console.log(error);
+      raiseErrorAlert(error.responseJSON.detail);
+    } finally {
+      removeLoader("calenderTable", "sm");
+    }
+  }

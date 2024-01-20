@@ -261,18 +261,22 @@ async function readExcelData(file, parentExamId, examSubjects, gradeData) {
 }
 
 // creating barchat
-function createBarChart(label,data,backgroundColor,chartId) {
+function createBarChart(label, data, backgroundColor, chartId) {
+    var existingChart = Chart.getChart(chartId);
+    if (existingChart) {
+        existingChart.destroy();
+    }
     var ctx = document.getElementById(chartId).getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
-        labels:"Grade",
+        labels: "Grade",
         data: {
-            labels:label,
+            labels: label,
             datasets: [{
-                label:"No of Students in Grade",
+                label: "No of Students in Grade",
                 data: data,
-                backgroundColor:backgroundColor,
-                borderColor: 'rgba(75, 192, 192, 1)', 
+                backgroundColor: backgroundColor,
+                borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
         },
@@ -287,7 +291,6 @@ function createBarChart(label,data,backgroundColor,chartId) {
         }
     });
 }
-
 async function getGrade(percentage,gradeData){
     for (const key in gradeData) {
         if (Object.hasOwnProperty.call(gradeData, key)) {

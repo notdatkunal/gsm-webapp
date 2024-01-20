@@ -81,7 +81,7 @@ $(document).ready(function () {
         }
       },
       error: (error) => {
-        raiseErrorAlert(error["responseJSON"]["detail"]);
+        raiseErrorAlert(error.responseJSON.detail);
       },
       complete: (e) => {
         removeLoader("class-form-area", "sm");
@@ -125,7 +125,7 @@ $(document).ready(function () {
             raiseSuccessAlert(response.msg);
           },
           error: (error) => {
-            raiseErrorAlert(error["responseJSON"]["detail"]);
+            raiseErrorAlert(error.responseJSON.detail);
           },
           complete: (e) => {
             removeLoader("body", "sm");
@@ -259,7 +259,7 @@ async function addClass() {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("class-form-area", "sm");
@@ -379,7 +379,7 @@ async function loadSectionDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabSection", "sm");
@@ -426,7 +426,7 @@ async function addSection() {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("section-form-area", "sm");
@@ -460,7 +460,7 @@ async function editSection(element) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("section-form-area", "sm");
@@ -502,7 +502,7 @@ async function deleteSection(element) {
           await loadSectionDetails(class_Id);
         },
         error: (error) => {
-          raiseErrorAlert(error["responseJSON"]["detail"]);
+          raiseErrorAlert(error.responseJSON.detail);
         },
         complete: (e) => {
           removeLoader("body", "sm");
@@ -561,7 +561,7 @@ async function loadSubjectDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabSubject", "sm");
@@ -612,7 +612,7 @@ async function addSubject() {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("subject-form-area", "sm");
@@ -646,7 +646,7 @@ async function editSubject(element) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("subject-form-area", "sm");
@@ -688,7 +688,7 @@ async function deleteSubject(element) {
           await loadSubjectDetails(classsId);
         },
         error: (error) => {
-          raiseErrorAlert(error["responseJSON"]["detail"]);
+          raiseErrorAlert(error.responseJSON.detail);
         },
         complete: (e) => {
           removeLoader("body", "sm");
@@ -759,7 +759,7 @@ async function loadStudentDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabStudent", "sm");
@@ -811,7 +811,7 @@ async function loadGradeDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabGrading", "sm");
@@ -862,7 +862,7 @@ async function addGrade() {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("grade-form-area", "sm");
@@ -939,7 +939,7 @@ async function editGrading(element) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("grade-form-area", "sm");
@@ -981,7 +981,7 @@ async function deleteGrading(element) {
           await loadGradeDetails(classsesId);
         },
         error: (error) => {
-          raiseErrorAlert(error["responseJSON"]["detail"]);
+          raiseErrorAlert(error.responseJSON.detail);
         },
         complete: (e) => {
           removeLoader("body", "sm");
@@ -1068,7 +1068,7 @@ async function loadCalendarDetails(selectedClassId) {
       }
     }
   } catch (error) {
-    raiseErrorAlert(error);
+    raiseErrorAlert(error.responseJSON.detail);
   } finally {
     removeLoader("tabCalender", "sm");
   }
@@ -1213,7 +1213,7 @@ async function loadExams(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabExam", "sm");
@@ -1340,7 +1340,7 @@ async function addExam() {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("exam-form-area", "sm");
@@ -1475,7 +1475,7 @@ async function editExam(element) {
       });
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
   });
 }
@@ -1517,7 +1517,7 @@ async function deleteExam(element) {
                   raiseSuccessAlert(data.msg);
               },
               error: (error) => {
-                  raiseErrorAlert(error["responseJSON"]["detail"]);
+                  raiseErrorAlert(error.responseJSON.detail);
               },
               complete: (e) => {
                   removeLoader("body", "sm");
@@ -1599,7 +1599,7 @@ async function loadInstallment() {
       });
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabFees", "sm");
@@ -1707,7 +1707,7 @@ async function loadFeeDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabFees", "sm");

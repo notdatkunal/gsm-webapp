@@ -191,9 +191,9 @@ async function addUser() {
                     <button type="button" class="btn btn-sm btn-dark btnPasswordReset" data-user-id="${responseData.user_id}">
                     <i class="bi bi-lock-fill"></i></button>
                 <button type="button" class="btn btn-sm btn-info btnEditUser" data-user-id="${responseData.user_id}">
-                    <i class="bi bi-pencil-square"></i>
+                    <i class="bi bi-pencil-square"></i></button>
                 <button type="button" class="btn btn-sm btn-danger btnDeleteUser" data-user-id="${responseData.user_id}">
-                    <i class="bi bi-trash3"></i>
+                    <i class="bi bi-trash3"></i></button>
             </td>
                   </tr>`;               
                     $('#userTable').DataTable().row.add($(newRow)).draw();  
