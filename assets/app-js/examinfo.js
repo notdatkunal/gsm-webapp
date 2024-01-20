@@ -237,13 +237,13 @@ async function readExcelData(file, parentExamId, examSubjects, gradeData) {
                 var subjectMarks = {
                     "subject_name": subject,
                     "full_mark": examSubject.full_marks,
-                    "obtained_mark": mark,
+                    "obtained_mark": mark?mark:0,
                     "percentage": parseFloat((mark / examSubject.full_marks) * 100).toFixed(2),
                     "grade": await getGrade(parseFloat((mark / examSubject.full_marks) * 100).toFixed(2), gradeData)
                 };
 
                 studentData.result["marks"].push(subjectMarks);
-                total_obtained_marks += parseFloat(mark);
+                total_obtained_marks += mark?parseFloat(mark):0;
                 total_full_marks += parseFloat(examSubject.full_marks);
             }
 

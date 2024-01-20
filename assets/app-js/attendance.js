@@ -10,7 +10,10 @@ $(document).ready(function () {
             addStudentAttendance();
         }
     });
-    initializeClass();
+    $("#btnStudentOpenForm").on("click", async (e) => {
+        $("#attedanceModal").modal("show");
+        initializeClass();
+    })
     getStudentAttendanceDetails();
     $("#class_id").on("change", async () => {
         const selectedClassId = $("#class_id").val();
@@ -127,6 +130,8 @@ async function getStudentAttendanceDetails() {
             var studentAttendanceData = response.attendance_data;
             var absent = response.attendance_percentage.absent_percentage;
             var present = response.attendance_percentage.present_percentage;
+            localStorage.setItem("studentAbsent", JSON.stringify(absent));
+            localStorage.setItem("studentPresent", JSON.stringify(present));
             callingPieChart(absent, present);
             studentAttendanceData.forEach(entry => {
                 var style = '';
@@ -191,6 +196,8 @@ async function initializeClass() {
             "Content-Type": "application/json",
         },
         success: (response) => {
+            $("#class_id,#class_id_id").empty();
+            $("#class_id,#class_id_id").append(`<option value="">Select Class</option>`);
             for (const classes of response) {
                 $("#class_id").append(`<option value="${classes.class_id}">${classes.class_name}</option>`);
                 $("#class_id_id").append(`<option value="${classes.class_id}">${classes.class_name}</option>`);
@@ -226,8 +233,25 @@ function addStudentAttendance() {
                     raiseSuccessAlert(data.msg);
                 } else {
                     const responseDataArray = data.response;
+                var absentPercentage = JSON.parse(localStorage.getItem("studentAbsent")) || 0;
+                var presentPercentage = JSON.parse(localStorage.getItem("studentPresent")) || 0;
+
+                var totalAbsent = $("#studentAttendanceTab tbody tr").length;
+
+                // Calculate new absent and present counts
+                var newAbsent = (absentPercentage * totalAbsent) / 100;
+                var newPresent = (presentPercentage * totalAbsent) / 100;
+
+                // Calculate new total
+                var newTotal = totalAbsent + responseDataArray.length;
                     if (Array.isArray(responseDataArray)) {
                         responseDataArray.forEach((responseData) => {
+                            if (responseData.attendance_status === 'Present') {
+                                newPresent++;
+                            } else {
+                                newAbsent++;
+                            }
+                            if (responseData.attendance_status === 'Present') {}
                             const style = responseData.attendance_status === 'Present' ? 'background-color: green; color: white;' : 'background-color: red; color: white;';
                             const studentnewRow = `<tr class="tr-attendance-${responseData.id}">
                                 <td>${responseData.attendance_date}</td>
@@ -246,6 +270,13 @@ function addStudentAttendance() {
                         raiseSuccessAlert("Attendance Added Successfully.");
                         resetStudentAttendanceForm();
                         resetStudentTable();
+                        var newAbsentPercentage = (newAbsent * 100) / newTotal;
+                        var newPresentPercentage = (newPresent * 100) / newTotal;
+
+                        // Save the new percentages to localStorage
+                        localStorage.setItem("studentAbsent", JSON.stringify(newAbsentPercentage));
+                        localStorage.setItem("studentPresent", JSON.stringify(newPresentPercentage));
+                        callingPieChart(newAbsentPercentage, newPresentPercentage);
                     } else {
                         raiseErrorAlert('Invalid response data format. Expected an array. Actual:', responseDataArray);
                     }
@@ -514,8 +545,17 @@ async function getStaffAttendanceDetails() {
                 var staffAttendanceData = response.attendance_data;
                 var absent = response.attendance_percentage.absent_percentage;
                 var present = response.attendance_percentage.present_percentage;
-                callingStaffPieChart(absent, present);
+                localStorage.setItem("staffAbsent", JSON.stringify(absent));
+                localStorage.setItem("staffPresent", JSON.stringify(present));
+                var newAbsent = JSON.parse(localStorage.getItem("staffAbsent")) || 0;
+                var newPresent = JSON.parse(localStorage.getItem("staffPresent")) || 0;
+                var newTotal = $("#staffAttendanceTab tbody tr").length;
                 staffAttendanceData.forEach(staffEntry => {
+                    if (staffEntry.attendance_status === 'Present') {
+                        newPresent++;
+                    } else {
+                        newAbsent++;
+                    }
                     const style = staffEntry.attendance_status === 'Present' ? 'background-color: green; color: white;' : 'background-color: red; color: white;';
                     const newRow = `<tr class='tr-staff-attendance-${staffEntry.id} staff-attendance-row' data-staff-day='${staffEntry.attendance_date}' data-attendance-status="${staffEntry.attendance_status}">
                         <td>${staffEntry.attendance_date}</td>
@@ -530,6 +570,14 @@ async function getStaffAttendanceDetails() {
                     </tr>`;
                     $('#staffAttendanceTab').DataTable().row.add($(newRow)).draw();
                 });
+                var newAbsentPercentage = (newAbsent * 100) / newTotal;
+                var newPresentPercentage = (newPresent * 100) / newTotal;
+
+                        // Save the new percentages to localStorage
+                localStorage.setItem("staffAbsent", JSON.stringify(newAbsentPercentage));
+                localStorage.setItem("staffPresent", JSON.stringify(newPresentPercentage));
+                callingStaffPieChart(newAbsentPercentage, newPresentPercentage);
+                
             },
             complete: (e) => {
                 removeLoader("body", "sm");

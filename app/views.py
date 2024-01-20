@@ -229,7 +229,6 @@ def login(request):
             response.set_cookie(key="subscribers_id", value=subscriber_id)
             Account_url = f"{Subscription_URL}api/AccountValidation?subscriber_id={subscriber_id}"
             Account_response = requests.get(Account_url)
-            print(Account_response.json(), "Account_response")
             data = Account_response.json()
             if len(data) > 0:
                 organization_name = data[0].get("OrganizationName")

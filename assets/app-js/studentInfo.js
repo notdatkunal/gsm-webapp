@@ -1,5 +1,6 @@
 $(document).ready(() => {
     let studentInfo =JSON.parse($("#studentInfo").val());
+
     // student calendar
     loadCalendarDetails(studentInfo.classId, studentInfo.sectionId);
     // 
@@ -40,6 +41,10 @@ $(document).ready(() => {
             $("#document_name").addClass("is-invalid");
         }
     });
+
+    $(".dataTables_empty").html(
+        `<img src="/assets/img/no_data_found.png" alt="No Image" class="no_data_found" id="no_data_found">`
+    )
 });
 // --------------------------Base AJax Request--------------------------
 async function ajaxRequest(type, url, data,loaderId,loaderSize,successCallback) {
@@ -1046,7 +1051,9 @@ class StudentAssignment{
             }
         }
         $("#assginmentTable").DataTable()
+        noDataImage()
     }
+
 }
 function openAssignmentDetails(response) {
     var assignmentModel =  $("#assignmentDetailse")
@@ -1151,6 +1158,7 @@ class StudentDocuments {
         var totalUrl = apiUrl + endPoint;
 
         await this.ajaxRequest(method, totalUrl, payload, "documentFormArea", "sm",(response) => {
+            noDataImage()
             $("#documentForm").find("input,select,textarea").val("")
             $("#documentForm").modal('hide')
             this.docuemntRow = $("#documentRow")
@@ -1300,6 +1308,17 @@ async function loadCalendarDetails(class_id, section_id) {
           calendarTable.append(timeSlotRow);
         }
       }
+    if(calendarData.response.length == 0){
+        $("#calendar").html(
+          `
+            <div class="row">
+            <div class="text-center" id="no_data_found">
+            <img src="/assets/img/no_data_found.png" alt="No Image" class="no_data_found" id="no_data_found">
+            </div>
+            </div>
+            `
+        );
+    }
     } catch (error) {
         console.log(error);
       raiseErrorAlert(error.responseJSON.detail);
@@ -1307,3 +1326,9 @@ async function loadCalendarDetails(class_id, section_id) {
       removeLoader("calenderTable", "sm");
     }
   }
+function noDataImage(){
+    $(".dataTables_empty").html(
+        `<img src="/assets/img/no_data_found.png" alt="No Image" class="no_data_found" id="no_data_found">`
+    )
+}
+noDataImage()

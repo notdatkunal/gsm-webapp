@@ -28,7 +28,7 @@ class Institute:
 
     def create_institute(self, end_point="", data={}):
         self.user = {
-            "user_name": data.get("point_of_contact"),
+            "user_name": "Admin",
             "user_password": data.get("password"),
             "user_email": data.get("institute_email"),
             "user_phone_number": data.get("institute_phone"),
@@ -47,7 +47,6 @@ class Institute:
         )
         if self.responce.status_code == 200:
             user = self.create_user(end_point="/Users/create_user/", data=self.user)
-
             if user["status"]:
                 return {"status": True, "data": self.responce.json()}
             return {"status": False, "data": user["data"]}
@@ -89,18 +88,18 @@ class Institute:
                     "id": data.get("institution_id"),
                     "subscribers_id": self.responce.json()["id"],
                     "institute_name": data.get("institution_name"),
-                    "institute_address": "string",
-                    "institute_city": "string",
-                    "institute_state": "string",
-                    "institute_country": "string",
-                    "institute_pincode": "string",
+                    "institute_address": "",
+                    "institute_city": "",
+                    "institute_state": "",
+                    "institute_country": "",
+                    "institute_pincode": "",
                     "institute_phone": data.get("institute_phone"),
                     "institute_email": data.get("institute_email"),
                     "institute_logo": "string",
                     "institute_fav_icon": "string",
-                    "institute_tag_line": "string",
-                    "institute_website": "string",
-                    "point_of_contact": "string",
+                    "institute_tag_line": "",
+                    "institute_website": "",
+                    "point_of_contact": "",
                     "date_of_registration": datetime.today().date().isoformat(),
                     "is_deleted": False,
                 }

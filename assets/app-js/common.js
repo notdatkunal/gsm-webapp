@@ -189,13 +189,11 @@ async function downloadFile(fileName,location) {
             contentType: false,
         });
         if(response){
-            console.log(response);
             return response.file_url;
         }
         return "";
     }
     catch(e){
-        console.log(e);
         return "";
     }
 }
@@ -254,7 +252,6 @@ function getNotifications() {
     var method = "GET";
     subscribers_id= $("#subscriberId").val();
     var totalUrl =subscriptionUrl + `api/Notifications?product_id=2&subscriber_id=${subscribers_id}`;
-console.log(totalUrl);
     $.ajax({
         type: method,
         url: totalUrl,
@@ -277,7 +274,7 @@ console.log(totalUrl);
             });
         },
         error: function (error) {
-            console.error("Error:", error);
+            raiseErrorAlert(error);
         }
     });
 }
