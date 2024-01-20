@@ -180,3 +180,6 @@ AZURE_CONTAINERS = {
     "institute_logo": "institute-logo",
     "fav_icon": "fav-icon",
 }
+
+RAZOR_KEY_ID = 'rzp_test_zHYLFNKQEQRRrc'
+RAZOR_KEY_SECRET = 'FpcYza0wTVpxd99CpYoGyhP8'
