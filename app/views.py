@@ -580,21 +580,39 @@ def examination(request):
     }
     return render(request, "examination.html", payload)
 
-def examinationInfo(request):
+def examinationInfo(request,exam_slug):
     class_obj = Data(API_URL)
     institite_id = request.COOKIES.get("institute_id")
     params = {"institute_id": institite_id}
     access_token = request.COOKIES.get("access_token")
-    exam_data = class_obj.get_data_by_institute_id(
-        params=params, jwt=access_token
-    )
+    url = f"/ParentExams/get_parent_exam_by_slug?parent_exam_slug={exam_slug}"
+    exam_data = class_obj.get_data_by_institute_id(url=url,params=params, jwt=access_token)
     payload = {
-        "exam_data": exam_data,
+        "exam_data": exam_data.get("response",{}),
         "jwt_token": access_token,
         "url": API_URL,
         "institute_id": institite_id,
     }
     return render(request, "examinationInfo.html", payload)
+ 
+ 
+# create download of excel file
+ 
+def generate_excel_file_for_result(request, parent_exam_id):
+    access_token = request.COOKIES.get("access_token")
+    exam = ExamInfo(base_url=API_URL, jwt=access_token, exam_id=parent_exam_id)
+    data = asyncio.run(exam.call_functions())
+    df = data["data"]
+    file_name = data["file_name"]
+    excel_file = BytesIO()
+    df.to_excel(excel_file, index=False, engine="xlsxwriter")
+    excel_file.seek(0)
+ 
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={file_name}.xlsx'
+    response.write(excel_file.read())
+ 
+    return response
 
 client = razorpay.Client(auth=("RAZOR_KEY_ID", "RAZOR_KEY_SECRET"))
 import uuid
