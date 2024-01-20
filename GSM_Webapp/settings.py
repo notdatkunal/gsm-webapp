@@ -157,9 +157,9 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-API_ENDPOINT="https://gsm-fastapi.azurewebsites.net"
+API_ENDPOINT="https://gurukul-api-prod-si-as.azurewebsites.net"
 # API_ENDPOINT="http://127.0.0.1:8000"
-SUBSCRIPTION_URL = "https://subscription-management-api.azurewebsites.net/"
+SUBSCRIPTION_URL = "https://alongx-subscriptionapi-prod-si-as.azurewebsites.net/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

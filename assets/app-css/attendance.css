@@ -1,0 +1,31 @@
+.present-label {
+    color: green;
+}
+
+.absent-label {
+    color: red;
+}
+
+
+#studentpiechat{
+    margin-right: 23rem;
+    height: 17rem;
+}
+
+#staffpiechat{
+    margin-right: 10rem;
+    margin-top: -2rem;
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: left;
+    margin-top: 1rem;
+}
+div.dataTables_wrapper div.dataTables_length label {
+    font-weight: normal;
+    text-align: left;
+    white-space: nowrap;
+    margin-top: 1rem;
+}

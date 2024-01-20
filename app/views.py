@@ -73,6 +73,8 @@ def calendar(request):
         'institute_id':institute_id,
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
     }
     return render(request, 'calendar.html', payload)
 
@@ -80,6 +82,8 @@ def dashboard(request):
     payload = {
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
     }
     return render(request, "dashboard.html", payload)
 
@@ -95,10 +99,12 @@ def students(request):
     payload = {
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
         "student_data": student_data,
         "url": API_URL,
         "jwt_token": access_token,
         "institute_id": institite_id,
+        "subscriptionUrl" : Subscription_URL,
     }
     return render(request, "students.html", payload)
 
@@ -120,6 +126,9 @@ def register_student(request):
         "url": API_URL,
         "jwt_token": request.COOKIES.get("access_token"),
         "institute_id": request.COOKIES.get("institute_id"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
+
     }
     return render(request, "register_student.html", payload)
 
@@ -138,6 +147,8 @@ def staffs(request):
         "jwt_token": access_token,
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
     }
     return render(request, "staffs.html", payload)
 
@@ -149,6 +160,8 @@ def register_staff(request):
         "institute_id": request.COOKIES.get("institute_id"),
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
     }
     return render(request, "register_staff.html", payload)
 
@@ -265,6 +278,8 @@ def classes(request):
         "class_id": class_id,
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
     }
     return render(request, "classes.html", payload)
 
@@ -283,6 +298,8 @@ def user(request):
         "url": API_URL,
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
         "institute_id": institite_id,
         }
     return render(request, "user.html", payload)
@@ -303,6 +320,8 @@ def assignments(request):
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
         "institute_id": institute_id,
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
     }
     return render(request, "assignments.html", payload)
 def assignmentInfo(request,assignment_slug):
@@ -321,6 +340,8 @@ def assignmentInfo(request,assignment_slug):
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
         "institute_id": institute_id,
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL, 
     }
     return render(request, "assignmentinfo.html", payload)
 
@@ -330,7 +351,6 @@ def transportation(request):
     transport_url =f"{API_URL}/Transports/get_all_transports_by_institute/?institute_id={institute_id}"
     header = {"accept": "application/json", "Authorization": f"Bearer {access_token}"}
     transport_data = requests.get(url=transport_url, headers=header)
-    print(transport_data)
     if transport_data.status_code == 200:
         payload = {
             "transportation": transport_data.json(),
@@ -339,6 +359,8 @@ def transportation(request):
             "institute_id": institute_id,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"), 
+            "subscriptionUrl" : Subscription_URL,
         }
         return render(request, "transport.html", payload)
     else:
@@ -346,7 +368,9 @@ def transportation(request):
             "jwt_token": access_token,
             "institute_id": institute_id,
             "organization_name": request.COOKIES.get("organization_name"),
-            "message": request.COOKIES.get("message"), 
+            "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"), 
+            "subscriptionUrl" : Subscription_URL, 
         }
         return render(request, "transport.html",payload)
 
@@ -369,6 +393,8 @@ def notice(request):
             'url':API_URL,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"), 
+            "subscriptionUrl" : Subscription_URL,
         }
         return render(request,'notice.html', payload)
     
@@ -380,6 +406,8 @@ def notice_create(request):
         'institute_id': request.COOKIES.get('institute_id'),
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"), 
+        "subscriptionUrl" : Subscription_URL,
     }
     return render(request, 'notice_create.html', payload)
 
@@ -398,6 +426,8 @@ def notice_edit(request,notice_id):
             'institute_id': institute_id,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"),
+            "subscriptionUrl" : Subscription_URL, 
         }
     return render(request, 'notice_create.html', payload)
 
@@ -419,6 +449,8 @@ def edit_student(request, student_slug):
             "institute_id": institute_id,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"), 
+            "subscriptionUrl" : Subscription_URL,
         }
     return render(request, "register_student.html", payload)
 
@@ -445,6 +477,8 @@ def student_info(request, student_slug):
             "transport_data": transport_data,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"), 
+            "subscriptionUrl" : Subscription_URL,
         }
     return render(request, "student_info.html", payload)
 
@@ -470,6 +504,8 @@ def edit_staff(request, staff_slug):
             "institute_id": institute_id,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"), 
+            "subscriptionUrl" : Subscription_URL,
         }
     return render(request, "register_staff.html", payload)
 
@@ -489,6 +525,8 @@ def staff_info(request, staff_slug):
             "documents": staff_data["get_staff_documents_data"],
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"),
+            "subscriptionUrl" : Subscription_URL,
         }
     return render(request, "staff_info.html", payload)
 
@@ -519,6 +557,8 @@ def gradings(request):
             'url':API_URL,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"), 
+            "subscriptionUrl" : Subscription_URL,
         }
     return render(request,'gradings.html',payload) 
 # accounts
@@ -542,6 +582,8 @@ def accounts(request):
             'url':API_URL,
             "organization_name": request.COOKIES.get("organization_name"),
             "message": request.COOKIES.get("message"),
+            "subscriber_id": request.COOKIES.get("subscribers_id"),
+            "subscriptionUrl" : Subscription_URL, 
         }
         print(payload["accounts"])
     return render(request,'accounts.html', payload)
@@ -562,6 +604,8 @@ def fees(request):
         "institute_id": institite_id,
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL, 
     }
     return render(request,'fees.html',payload)
 
@@ -582,10 +626,13 @@ def examination(request):
         "institute_id": institite_id,
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL, 
     }
     return render(request, "examination.html", payload)
 
 def examinationInfo(request,exam_slug):
+
     class_obj = Data(API_URL)
     institite_id = request.COOKIES.get("institute_id")
     params = {"institute_id": institite_id}
@@ -593,10 +640,14 @@ def examinationInfo(request,exam_slug):
     url = f"/ParentExams/get_parent_exam_by_slug?parent_exam_slug={exam_slug}"
     exam_data = class_obj.get_data_by_institute_id(url=url,params=params, jwt=access_token)
     payload = {
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
         "exam_data": exam_data.get("response",{}),
         "jwt_token": access_token,
         "url": API_URL,
         "institute_id": institite_id,
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL, 
     }
     return render(request, "examinationInfo.html", payload)
  
@@ -650,12 +701,17 @@ def settings(request):
     access_token = request.COOKIES.get("access_token")
     institute_id = request.COOKIES.get("institute_id")
     institution_url = f"/Institute/get_institute_by_id/?institute_id={institute_id}"
+    education_url = f"/EducationYear/get_education_year_by_institute_id/?institute_id={institute_id}"
     params = {"institute_id": institute_id}
     institution_data = institution_obj.get_data_by_institute_id(
         url=institution_url, params=params, jwt=access_token
     )
+    education_data = institution_obj.get_data_by_institute_id(
+        url=education_url, params=params, jwt=access_token
+    )
     payload = {
         "institution_data": institution_data,
+        "education_data":education_data["response"],
         "subscribers_id": institution_data["subscribers_id"],
         "url": API_URL,
         "jwt_token": access_token,
@@ -663,6 +719,7 @@ def settings(request):
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
         "subscriptionUrl" : Subscription_URL,
+        "subscriber_id": request.COOKIES.get("subscribers_id"), 
     }
     return render(request, "settings.html", payload)
 
@@ -682,5 +739,32 @@ def profile(request):
         "organization_name": request.COOKIES.get("organization_name"),
         "message": request.COOKIES.get("message"),
         "user_data": user_data,
+        "subscriber_id": request.COOKIES.get("subscribers_id"),
+        "subscriptionUrl" : Subscription_URL,
+
     }
     return render(request, "profile.html",payload)
+
+def attendance(request):
+    class_obj = Data(API_URL)
+    institute_id = request.COOKIES.get("institute_id")
+   
+    params = {"institute_id": institute_id}
+    access_token = request.COOKIES.get("access_token")
+   
+    attendance_data = class_obj.get_data_by_institute_id( params=params, jwt=access_token
+    )
+   
+    payload = {
+        "attendance_data": attendance_data,
+        "jwt_token": access_token,
+        "url": API_URL,
+        "institute_id": institute_id,
+        "organization_name": request.COOKIES.get("organization_name"),
+        "message": request.COOKIES.get("message"),
+        "subscriber_id": request.COOKIES.get("subscribers_id"), 
+        "subscriptionUrl" : Subscription_URL,
+
+    }
+ 
+    return render(request, "attendance.html", payload)

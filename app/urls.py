@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import dashboard, students, register_student,\
-staffs, register_staff,staff_info, edit_staff, login, logout, registration, classes,fees, user, assignments, transportation, notice, notice_create,notice_edit, calendar,edit_student,examination,examinationInfo
+staffs, register_staff,staff_info, edit_staff, login, logout, registration,classes,fees, user, assignments, transportation, notice, notice_create,notice_edit, calendar,edit_student,examination,examinationInfo
 from . import views
 from django.views.generic import TemplateView
 
@@ -41,5 +41,6 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('success/', TemplateView.as_view(template_name='success.html'), name='success'),
     path('error/', TemplateView.as_view(template_name='error.html'), name='error'),
-    path('create_order/', views.create_order, name='create_order')
+    path('create_order/', views.create_order, name='create_order'),
+    path('attendance/',views.attendance,name='attendance')
 ]

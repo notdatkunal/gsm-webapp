@@ -7,10 +7,14 @@ $(document).ready(()=>{
     jwtToken = $("#jwtToken").val();
     instituteId = $("#instituteId").val();
     subscriptionUrl = $("#subscriptionUrl").val();
+    // subscribers_id= $("#subscriberId").val();
     $(".btnCloseModel").on("click", function(e){
         const parentModel = $(this).closest(".modal"); 
         parentModel.modal("hide");
         $("input, textarea, select",parentModel).val("");
+    });
+    $("#notificationDropdown").on("click", function(e){
+        getNotifications();
     });
 })
 function raiseErrorAlert(msg) {
@@ -132,7 +136,9 @@ function removeLoader(loaderContainerElementId, size) {
 
 
 // azure blob upload
-async function uploadFile(fieldId,location) {
+async function uploadFile(showActivity,location) {
+    var modelArea = $("#showActivity").closest(".modal-content");
+    showLoader(modelArea.attr("id"), "sm");
     var defaultBlob = "https://gsmstore.blob.core.windows.net/student-profile-pictures/students.jpg";
     var url = window.location.origin;
     try{
@@ -240,6 +246,38 @@ function fetchDetailsBasedOnPincode(pincode, stateInput, cityInput, countryInput
         },
         error: function(error) {
             raiseErrorAlert(error);
+        }
+    });
+}
+
+function getNotifications() {
+    var method = "GET";
+    subscribers_id= $("#subscriberId").val();
+    var totalUrl =subscriptionUrl + `api/Notifications?product_id=2&subscriber_id=${subscribers_id}`;
+console.log(totalUrl);
+    $.ajax({
+        type: method,
+        url: totalUrl,
+        success: function (response) {
+            var notificationTabContent = $("#notificationItemsTabContent");
+            notificationTabContent.empty();
+            response.forEach(function (notification) {
+                var notificationItem = $("<div class='text-reset notification-item d-block dropdown-item position-relative unread-message'>");
+                var content = `
+                    <div class='d-flex'>
+                        <div class='flex-grow-1'>
+                            <h6 class='text-overflow text-muted fs-sm my-2 text-uppercase notification-title'>${notification.notification_title}</h6>
+                            <div>${notification.description}</div>
+                            <div>Date: ${notification.date}</div>
+                        </div>
+                    </div>
+                `;
+                notificationItem.append(content);
+                notificationTabContent.append(notificationItem);
+            });
+        },
+        error: function (error) {
+            console.error("Error:", error);
         }
     });
 }

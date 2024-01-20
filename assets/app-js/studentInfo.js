@@ -33,8 +33,13 @@ $(document).ready(() => {
     const studentDocuments = new StudentDocuments(studentInfo.studentId);
     studentDocuments.getStudentDocuments();
     $("#btnstudentDocument").on("click", async (e) => {
-        await studentDocuments.uploadStudentDocument();
-    })
+        var docsName = $("#document_name").val();
+        if (docsName.trim().length >= 2) {
+            await studentDocuments.uploadStudentDocument();
+        } else {
+            $("#document_name").addClass("is-invalid");
+        }
+    });
 });
 // --------------------------Base AJax Request--------------------------
 async function ajaxRequest(type, url, data,loaderId,loaderSize,successCallback) {
@@ -186,6 +191,7 @@ class StudentParent {
     }
 
     async addNewParent(response) {
+        $("#parentRow").find("#no_data_found").hide();
         var parentData = response;
         var parentRow = $("#parentRow");
         var img = parentData.parent_gender === 'Male' ?'/assets/img/male.png' :'/assets/img/female.png'
@@ -764,8 +770,13 @@ class StudentActivity{
         if(await this.validateStudentActivityForm() === true){
             await this.ajaxRequest(method, totalUrl, activityData, "activityFormArea", "sm",async(response) => {
                 var studentActivity = response.response;
-                activityId ? updateActivity(studentActivity):updateActivity(studentActivity);
-                this.activityTable.row.add($(showActivity(studentActivity))).draw();
+                if(activityId){
+                    updateActivity(studentActivity)
+                }
+                else{
+                    var row = showActivity(studentActivity)
+                    this.activityTable.row.add($(row)).draw()
+                }
                 function showActivity(response){
                     var activity = response
                     var title = activity.activity_name
@@ -795,6 +806,7 @@ class StudentActivity{
                 }
                 function updateActivity(response){
                     var activityTr = $(`.tr-activity-${activityId}`);
+                    $("#activityForm").modal('hide');
                     var activity = response
                     var title = activity.activity_name
                     var desc = activity.activity_description
@@ -901,9 +913,11 @@ async function deleteActivity(element){
             var totalUrl = apiUrl+endPoint;
             ajaxRequest("DELETE",totalUrl, "","activityTable","sm",(response) => {
                 $(`.tr-activity-${activityId}`).remove()
+
             })
         }
     });
+
 }
 function editActivity(element){
     var activityId = $(element).attr("data-activity_id");
@@ -1034,6 +1048,12 @@ class StudentAssignment{
         $("#assginmentTable").DataTable()
     }
 }
+function openAssignmentDetails(response) {
+    var assignmentModel =  $("#assignmentDetailse")
+    assignmentModel.modal('show')
+    assignmentModel.find(".modal-title").text("Assignment Details")
+    assignmentModel.find(".modal-desc").text(response)
+}
 // ----------------------------------studentAssignment----------------------------------------
 // ----------------------------------studentDocument----------------------------------------
 class StudentDocuments {
@@ -1131,6 +1151,7 @@ class StudentDocuments {
         var totalUrl = apiUrl + endPoint;
 
         await this.ajaxRequest(method, totalUrl, payload, "documentFormArea", "sm",(response) => {
+            $("#documentForm").find("input,select,textarea").val("")
             $("#documentForm").modal('hide')
             this.docuemntRow = $("#documentRow")
             var docs = response.response
@@ -1205,92 +1226,6 @@ async function editeDocument(element){
         $("#document_id").val(documentData.document_id)
     })
 }
-// Student Calendar
-// async function loadCalendarDetails(class_id, section_id) {
-//     var searchUrl = `${apiUrl}/Calender/get_calender_by_class&section/?class_id=${class_id}&section_id=${section_id}`;
-
-//     try {
-//         const calendarData = await $.ajax({
-//             type: 'GET',
-//             url: searchUrl,
-//             mode: 'cors',
-//             crossDomain: true,
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: `Bearer ${jwtToken}`,
-//             },
-//             beforeSend: () => {
-//                 showLoader('calenderTable', 'sm');
-//             },
-//             success: function (calendarData) {
-//                 console.log(calendarData);
-
-//                 var calendarTable = $('#calenderTable');
-//                 calendarTable.empty();
-//                 var responseData = calendarData.response || calendarData;
-
-//                 if (!responseData || (responseData.length === 0)) {
-//                     $('.no_data_found').show();
-//                     calendarTable.hide();
-//                     return;
-//                 }
-//                 calendarTable.show();
-//                 var data = responseData;
-//                 var className = [...new Set(data.map((item) => item.classes.class_name))];
-//                 var sectionName = [...new Set(data.map((item) => item.sections.section_name))];
-//                 var classSectionRow = $('<tr>');
-//                 classSectionRow.append(
-//                     `<td colspan="8" class="col" id="column"><center><b>${className} - ${sectionName}</b></center></td>`
-//                 );
-//                 calendarTable.append(classSectionRow);
-
-//                 var staticHeaderRow = $('<tr class="col">');
-//                 staticHeaderRow.append('<th>Time</th>');
-//                 var daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-//                 daysOfWeek.forEach(day => {
-//                     staticHeaderRow.append(`<th>${day}</th>`);
-//                 });
-//                 calendarTable.append(staticHeaderRow);
-
-//                 var timeDayMap = {};
-//                 data.forEach((item) => {
-//                     var timeKey = `${item.start_time}-${item.end_time}`;
-//                     if (!timeDayMap[timeKey]) {
-//                         timeDayMap[timeKey] = {};
-//                     }
-//                     timeDayMap[timeKey][item.day] = {
-//                         subject: item.subjects.subject_name,
-//                         staff: item.staffs.staff_name,
-//                         calender_id: item.calender_id
-//                     };
-//                 });
-//                 for (var timeKey in timeDayMap) {
-//                     var timeSlotRow = $('<tr class="rowData">');
-//                     timeSlotRow.append(`<td class="mod" id="tdData">${timeKey}</td>`);
-//                     daysOfWeek.forEach((day) => {
-//                         var cellData = timeDayMap[timeKey][day];
-//                         var cell = $('<td class="editable-cell text-center"></td>');
-//                         if (cellData && cellData.subject && cellData.staff) {
-//                             cell.html(`${cellData.subject} <br> (${cellData.staff})`);
-//                             cell.attr('data-id', cellData.calender_id);
-//                             cell.on('click', function () {
-//                                 openEditForm(cellData);
-//                             });
-//                         }
-//                         timeSlotRow.append(cell);
-//                     });
-//                     calendarTable.append(timeSlotRow);
-//                 }
-//             }
-//         });
-//     } catch (error) {
-//         $('.no_data_found').show();
-//         raiseErrorAlert(error.message || 'An error occurred.');
-//     } finally {
-//         removeLoader('calenderTable', 'sm');
-//     }
-// }
-// //_______GET Calender_______
 async function loadCalendarDetails(class_id, section_id) {
     try {
     var searchUrl = `${apiUrl}/Calender/get_calender_by_class&section/?class_id=${class_id}&section_id=${section_id}`;
