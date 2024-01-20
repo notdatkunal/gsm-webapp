@@ -1,6 +1,6 @@
 $(document).ready(function () {
   hideContent();
-  $("#class_list").change(async function () {
+  $("#class_list").change(function () {
     var selectedClassId = $(this).val();
     var selectedClassName = "Select Class";
     if (selectedClassId !== "0") {
@@ -14,7 +14,7 @@ $(document).ready(function () {
       }, 10);
       return;
     }
-    await fetchDropdownValue(selectedClassId, selectedClassName);
+     fetchDropdownValue(selectedClassId, selectedClassName);
     $("#sectionByClass").on("change", function () {
       var selectedSectionId = $(this).val();
       if (selectedSectionId) {
@@ -28,18 +28,17 @@ $(document).ready(function () {
       $('#start_date,#end_date,#result_date,#parent_exam_id,#parent_exam_name,#subject_Input',parentModel).val("");
   });
   });
-  const installmentDropdown = document.getElementById("installment-dropdown");
+  const installmentDropdown = document.getElementById("installment_dropdown");
   installmentDropdown.addEventListener("change", function () {
       const selectedInstallment = this.options[this.selectedIndex];
       const installmentNumber = selectedInstallment.getAttribute("data-install-number");
       $("#installment_display").val(installmentNumber);
-      console.log("Selected Installment Number:", installmentNumber);
-      var installment = $("#installment-dropdown").val()
+      var installment = $("#installment_dropdown").val()
       if(installment.trim() != ""){
           showDynamicFee(installment)
       }
       else{
-          $("#Installment tbody").empty()
+          $("#Installment tbody").empty();
       }
   });
   $('#total_fee, #fee_admission').on('input', updateInstallAmount);
@@ -82,7 +81,7 @@ $(document).ready(function () {
         }
       },
       error: (error) => {
-        raiseErrorAlert(error["responseJSON"]["detail"]);
+        raiseErrorAlert(error.responseJSON.detail);
       },
       complete: (e) => {
         removeLoader("class-form-area", "sm");
@@ -123,10 +122,10 @@ $(document).ready(function () {
 
             $("#selected_class_name").text("None");
             hideContent();
-            raiseSuccessAlert("Class Deleted Successfully.");
+            raiseSuccessAlert(response.msg);
           },
           error: (error) => {
-            raiseErrorAlert(error["responseJSON"]["detail"]);
+            raiseErrorAlert(error.responseJSON.detail);
           },
           complete: (e) => {
             removeLoader("body", "sm");
@@ -247,20 +246,20 @@ async function addClass() {
           selectedOption.text(responseData.class_name);
           $("#selected_class_name").text(responseData.class_name);
           $("#class_id").val("");
-          raiseSuccessAlert("Class Updated Successfully");
+          raiseSuccessAlert(data.msg);
         } else {
           $dropdown.append(
             `<option value="${responseData.class_id}">${responseData.class_name}</option>`
           );
           // $dropdown.val(responseData.class_id);
          await addSectionInClass(responseData.class_id)
-          raiseSuccessAlert("Class Added Successfully.");
+          raiseSuccessAlert(data.msg);
         }
         resetFormFields("class");
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("class-form-area", "sm");
@@ -380,7 +379,7 @@ async function loadSectionDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabSection", "sm");
@@ -416,18 +415,18 @@ async function addSection() {
         $("#section_creation_modal").modal("hide");
         const responseData = data["response"];
         if (isUpdate) {
-          raiseSuccessAlert("Section Updated Successfully");
+          raiseSuccessAlert(data.msg);
           await loadSectionDetails(responseData.class_id);
           $("#section_id").val("");
         } else {
-          raiseSuccessAlert("Section Added Successfully.");
+          raiseSuccessAlert(data.msg);
           await loadSectionDetails(responseData.class_id);
         }
         resetFormFields("section");
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("section-form-area", "sm");
@@ -461,7 +460,7 @@ async function editSection(element) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("section-form-area", "sm");
@@ -499,11 +498,11 @@ async function deleteSection(element) {
         success: async function (data) {
           var parentDiv = $(element).closest(`#section-${sectionId}`);
           parentDiv.remove();
-          raiseSuccessAlert("Section Deleted Successfully.");
+          raiseSuccessAlert(data.msg);
           await loadSectionDetails(class_Id);
         },
         error: (error) => {
-          raiseErrorAlert(error["responseJSON"]["detail"]);
+          raiseErrorAlert(error.responseJSON.detail);
         },
         complete: (e) => {
           removeLoader("body", "sm");
@@ -562,7 +561,7 @@ async function loadSubjectDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabSubject", "sm");
@@ -602,18 +601,18 @@ async function addSubject() {
         const subjectData = data["response"];
         $("#subject_creation_modal").modal("hide");
         if (isEdit) {
-          raiseSuccessAlert("Subject Updated Successfully");
+          raiseSuccessAlert(data.msg);
           await loadSubjectDetails(subjectData.class_id);
           $("#subject_id").val("");
         } else {
-          raiseSuccessAlert("Subject Added Successfully.");
+          raiseSuccessAlert(data.msg);
           await loadSubjectDetails(subjectData.class_id);
         }
         resetFormFields("subject");
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("subject-form-area", "sm");
@@ -647,7 +646,7 @@ async function editSubject(element) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("subject-form-area", "sm");
@@ -685,11 +684,11 @@ async function deleteSubject(element) {
         success: async function (data) {
           var parentDiv = $(element).closest(`#subject-${subjectId}`);
           parentDiv.remove();
-          raiseSuccessAlert("Subject Deleted Successfully.");
+          raiseSuccessAlert(data.msg);
           await loadSubjectDetails(classsId);
         },
         error: (error) => {
-          raiseErrorAlert(error["responseJSON"]["detail"]);
+          raiseErrorAlert(error.responseJSON.detail);
         },
         complete: (e) => {
           removeLoader("body", "sm");
@@ -760,7 +759,7 @@ async function loadStudentDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabStudent", "sm");
@@ -812,7 +811,7 @@ async function loadGradeDetails(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabGrading", "sm");
@@ -852,18 +851,18 @@ async function addGrade() {
         $("#grade_creation_modal").modal("hide");
         const responseData = data.response;
         if (editGrade) {
-          raiseSuccessAlert("Grade Updated Successfully");
+          raiseSuccessAlert(data.msg);
           await loadGradeDetails(classId);
           $("#grade_id").val("");
         } else {
-          raiseSuccessAlert("Grade Added Successfully.");
+          raiseSuccessAlert(data.msg);
           await loadGradeDetails(classId);
         }
         resetGradeForm();
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("grade-form-area", "sm");
@@ -940,7 +939,7 @@ async function editGrading(element) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("grade-form-area", "sm");
@@ -976,13 +975,13 @@ async function deleteGrading(element) {
           showLoader("body", "sm");
         },
         success: async function (data) {
-          raiseSuccessAlert("Grade Deleted Successfully.");
+          raiseSuccessAlert(data.msg);
           var parentDiv = $(element).closest(`#grade-${gradeId}`);
           parentDiv.remove();
           await loadGradeDetails(classsesId);
         },
         error: (error) => {
-          raiseErrorAlert(error["responseJSON"]["detail"]);
+          raiseErrorAlert(error.responseJSON.detail);
         },
         complete: (e) => {
           removeLoader("body", "sm");
@@ -1069,7 +1068,7 @@ async function loadCalendarDetails(selectedClassId) {
       }
     }
   } catch (error) {
-    raiseErrorAlert(error);
+    raiseErrorAlert(error.responseJSON.detail);
   } finally {
     removeLoader("tabCalender", "sm");
   }
@@ -1214,7 +1213,7 @@ async function loadExams(selectedClassId) {
       }
     },
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabExam", "sm");
@@ -1290,7 +1289,7 @@ async function addExam() {
             existingRow.find('td:eq(1)').text(responseData.parent_exam_name);
             existingRow.find('td:eq(2)').text(formattedResultDate);
           }
-          raiseSuccessAlert("Examination Updated Successfully");
+          raiseSuccessAlert(data.msg);
           $("#parent_exam_id").val("");
           resetExamForm();
         } else {
@@ -1335,13 +1334,13 @@ async function addExam() {
               '</td>' +
               '</tr>';
           upcomingTable.row.add($(upcomingExamHtml)).draw();    
-          raiseSuccessAlert("Examination Added Successfully.");
+          raiseSuccessAlert(data.msg);
         }
         resetExamForm();
       }
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("exam-form-area", "sm");
@@ -1476,7 +1475,7 @@ async function editExam(element) {
       });
     },
     error: (error) => {
-      raiseErrorAlert(error["responseJSON"]["detail"]);
+      raiseErrorAlert(error.responseJSON.detail);
     },
   });
 }
@@ -1515,10 +1514,10 @@ async function deleteExam(element) {
                   if (dataTable.rows().count() === 0) {
                       $("#tabExam").html('<img src="/assets/img/no_data_found.png" class="no_data_found">');
                   }
-                  raiseSuccessAlert("Examination Deleted Successfully.");
+                  raiseSuccessAlert(data.msg);
               },
               error: (error) => {
-                  raiseErrorAlert(error["responseJSON"]["detail"]);
+                  raiseErrorAlert(error.responseJSON.detail);
               },
               complete: (e) => {
                   removeLoader("body", "sm");
@@ -1530,19 +1529,17 @@ async function deleteExam(element) {
 
 function showDynamicFee(installment){
   showLoader("installment_table","sm")
-  // var installments = {
-  //     'Monthly':12,
-  //     'Quarterly':4,
-  //     'Half Yearly':2,
-  //     'Yearly':1
-  // }
+  var installmentTable = $("#installment_table").DataTable();
+  if (installmentTable !== undefined) {
+    installmentTable.destroy();
+  }
   var totalInstallmentAmount = $("#install_amount").val();
   var installmentNumber = $("#installment_display").val();
-  var installmentAmount =parseInt(totalInstallmentAmount/installmentNumber);
+  var installmentAmount = parseInt(totalInstallmentAmount / installmentNumber);
   var installmentTable = $("#feeInstallmentTable");
   installmentTable.empty();
   var noInstallment = parseInt(installment);
-  var trList = []
+  var trList = [];
   for (let index = 1; index <= noInstallment; index++) {
     var dueDate = new Date();
     dueDate.setMonth(dueDate.getMonth() + index);
@@ -1550,7 +1547,6 @@ function showDynamicFee(installment){
     var month = String(dueDate.getMonth() + 1).padStart(2, '0');
     var year = dueDate.getFullYear();
     var formattedDueDate = `${day}-${month}-${year}`;
-
       var row = `
           <tr>
               <td>Installment-${index}</td>
@@ -1560,8 +1556,11 @@ function showDynamicFee(installment){
       `
       trList.push(row);
   }
-  removeLoader("installment_table","sm")
   installmentTable.append(trList);
+  $('#installment_table').DataTable({
+    "order": [],
+  });
+  removeLoader("installment_table","sm")
 }
 function updateInstallAmount() {
   var totalFee = parseFloat($('#total_fee').val()) || 0;
@@ -1575,7 +1574,38 @@ function getSelectedOption(dropdownId) {
   var selectedOption = dropdown.options[dropdown.selectedIndex];
   return selectedOption;
 }
-
+async function loadInstallment() {
+  const installmentUrl = apiUrl + "/Fees/get_all_installments/";
+  let data;
+  data = await $.ajax({
+    type: "GET",
+    url: installmentUrl,
+    mode: "cors",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${jwtToken}`,
+    },
+    beforeSend: (e) => {
+      showLoader("tabFees", "sm"); 
+    },
+    data: JSON.stringify(data),
+    success: function (responseData) {
+      const dropdown = $(".installmentDropdown");
+      dropdown.empty();
+      dropdown.append("<option value='' hidden>Select one</option>");
+      responseData.forEach(option => {
+        dropdown.append(`<option value="${option.installment_id}" data-install-number=${option.installment_number}>${option.installment_name}</option>`);
+      });
+    },
+    error: (error) => {
+      raiseErrorAlert(error.responseJSON.detail);
+    },
+    complete: (e) => {
+      removeLoader("tabFees", "sm");
+    },
+  });
+}
 async function loadFeeDetails(selectedClassId) {
   var loadFeeUrl = apiUrl + "/Fees/get_all_fees_by_class/?class_id=" + selectedClassId;
   const feeData = await $.ajax({
@@ -1588,45 +1618,147 @@ async function loadFeeDetails(selectedClassId) {
       Authorization: `Bearer ${jwtToken}`,
     },
     beforeSend: (e) => {
-      showLoader("tabFees", "sm"); 
+      showLoader("tabFees", "sm");
     },
     success: async function (feeData) {
       var feeInfoContainer = $("#installment_table tbody");
-      var dropdown = $("#installment-dropdown");
-      
+      var dropdown = $("#installment_dropdown");
+      var multiSelectDropdown = $(".installmentDropdown");
+      var text = $(".labelText");
+      var btnFeeChange = $("#btnFeeChange");
+      var btnUpdateFee = $("#btnUpdateFee");
+      var installmentNo = $("#installmentNo");
+
       if (feeData.length === 0) {
         feeInfoContainer.html('<tr><td colspan="3"><img src="/assets/img/no_data_found.png" class="no_data_found"></td></tr>');
         $("#total_fee").val('');
+        $("#fee_id").val('');
         $("#fee_admission").val('');
         $("#install_amount").val('');
         $("#installment_display").val('');
         dropdown.empty();
+        btnFeeChange.hide();
+        btnUpdateFee.hide();
+        installmentNo.hide();
+        singleSelectDropdown.show();
+        multiSelectDropdown.hide();
+        text.hide();
       } else {
         feeInfoContainer.empty();
-        var fee = feeData[0]; 
+        var fee = feeData[0];
         var installments = fee.class_installments;
         dropdown.empty();
+
         for (var i = 0; i < installments.length; i++) {
           var installment = installments[i];
           dropdown.append(`<option value="${installment.installment_number}" data-install-id=${installment.installment_id} data-install-number=${installment.installment_number}>${installment.installment_name}</option>`);
         }
-        var selectedOption = getSelectedOption("installment-dropdown");
+        var selectedOption = getSelectedOption("installment_dropdown");
         var selectedInstallmentNumber = $(selectedOption).data("install-number");
-        
+        $("#fee_id").val(fee.fee_id);
         $("#total_fee").val(fee.fee_total);
         $("#fee_admission").val(fee.fee_admission);
         $("#install_amount").val(fee.total_installments);
         $("#installment_display").val(selectedInstallmentNumber);
-        $("#installment-dropdown").val(selectedOption.value);
+        $("#installment_dropdown").val(selectedOption.value);
         showDynamicFee(selectedInstallmentNumber);
+        btnFeeChange.show();
+        btnUpdateFee.hide();
+        installmentNo.show();
+        multiSelectDropdown.hide();
+        text.hide();
+
+        let feeChangeClicked = false;
+        btnFeeChange.off().on("click", function () {
+          if (!feeChangeClicked) {
+            alert("Change the Fee details according to your requirements");
+            feeChangeClicked = true; 
+        } else {
+          feeChangeClicked = false;
+        }
+          $(".feesDiv input").not("#installment_display").prop("readonly", false);
+          loadInstallment();
+          dropdown.hide();
+          installmentNo.hide();
+          multiSelectDropdown.show();
+          text.show();
+          btnFeeChange.hide();
+          btnUpdateFee.show();
+        });
+        
+        btnUpdateFee.off().on("click",async function (e) {
+            $("#btnUpdateFee").removeClass("btn-shake")
+            e.preventDefault();
+            if (validateForm(feesField) === false) {
+              $("#btnUpdateFee").addClass("btn-shake")
+              return false;
+            } else {
+              await updateFees();
+            }
+          $(".feesDiv input").not("#installment_display").prop("readonly", true);
+          loadInstallment();
+          dropdown.show();
+          installmentNo.show();
+          multiSelectDropdown.hide();
+          text.hide();
+          btnFeeChange.show();
+          btnUpdateFee.hide();
+        });
       }
     },
-  
     error: (error) => {
-      raiseErrorAlert(error);
+      raiseErrorAlert(error.responseJSON.detail);
     },
     complete: (e) => {
       removeLoader("tabFees", "sm");
     },
   });
 }
+
+let feesField=['fee_total','fee_admission','installment_dropdown','getClassId','install_amount']
+
+async function updateFees(){
+  classId = $("#classes_id").val();
+  const selectedInstallments = $("#installmentDropdown").val();
+  const data = {
+      institution_id: instituteId,
+      class_id: classId,
+      fee_id: $("#fee_id").val(),
+      fee_total: $("#total_fee").val(),
+      fee_admission: $("#fee_admission").val(),
+      installment_id:selectedInstallments,
+      total_installments: $("#install_amount").val(),
+  };
+  console.log(data);
+  const feeUpdateUrl = apiUrl + "/Fees/update_fees/?fee_id=" + data.fee_id ;
+  await $.ajax({
+      type: "PUT",
+      url: feeUpdateUrl,
+      mode: "cors",
+      crossDomain: true,
+      headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${jwtToken}`,
+      },
+      data: JSON.stringify(data),
+      beforeSend: (e) => {
+          showLoader("tabFees", "sm");
+      },
+      success: async function (data) {
+          if (data && data.response) {
+              const fee = data.response[0];
+              await loadFeeDetails(fee.class_id);
+              raiseSuccessAlert(data.msg);
+          }
+      },
+      error: function (error) {
+        console.error("Error updating fees:", error);
+        raiseErrorAlert(error.responseJSON ? error.responseJSON.detail : "Unknown error occurred");
+      },      
+      complete: (e) => {
+          removeLoader("tabFees", "sm");
+      },
+  });
+}
+
+

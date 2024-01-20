@@ -6,11 +6,15 @@ $(document).ready(()=>{
     apiUrl = $("#apiUrl").val();
     jwtToken = $("#jwtToken").val();
     instituteId = $("#instituteId").val();
-    
+    subscriptionUrl = $("#subscriptionUrl").val();
+    // subscribers_id= $("#subscriberId").val();
     $(".btnCloseModel").on("click", function(e){
         const parentModel = $(this).closest(".modal"); 
         parentModel.modal("hide");
         $("input, textarea, select",parentModel).val("");
+    });
+    $("#notificationDropdown").on("click", function(e){
+        getNotifications();
     });
 })
 function raiseErrorAlert(msg) {
@@ -54,6 +58,13 @@ function raiseInfoAlert(msg) {
         "extendedTimeOut": "2000"
     };
     toastr.info(msg, 'Information');
+}
+function showInvalidPincodeAlert() {
+    Swal.fire({
+        icon: 'error',
+        title: 'Invalid Pincode',
+        text: 'Please enter a valid pincode.',
+    });
 }
 // form reset
 function resetForm(fields) {
@@ -125,7 +136,9 @@ function removeLoader(loaderContainerElementId, size) {
 
 
 // azure blob upload
-async function uploadFile(fieldId,location) {
+async function uploadFile(showActivity,location) {
+    var modelArea = $("#showActivity").closest(".modal-content");
+    showLoader(modelArea.attr("id"), "sm");
     var defaultBlob = "https://gsmstore.blob.core.windows.net/student-profile-pictures/students.jpg";
     var url = window.location.origin;
     try{
@@ -176,16 +189,92 @@ async function downloadFile(fileName,location) {
             contentType: false,
         });
         if(response){
-            console.log(response);
             return response.file_url;
         }
         return "";
     }
     catch(e){
-        console.log(e);
         return "";
     }
 }
+function ajaxRequest(type, url, data,loaderId,loaderSize,successCallback) {
+    $.ajax({
+        type: type,
+        url: url,
+        data: JSON.stringify(data),
+        mode: "cors",
+        crossDomain: true,
+        headers: {
+            "Authorization": `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+        },
+        contentType: "application/json",
+        dataType: "json",
+        beforeSend: () => {
+            showLoader(loaderId,loaderSize);
+        },
+        success: (response) => {
+            successCallback(response);
+        },
+        error: (error) => {
+            raiseErrorAlert(error.responseJSON);
+        },
+        complete: () => {
+            removeLoader(loaderId, loaderSize);
+        }
+    });
+}
+// Fetching Details based on pincode
+function fetchDetailsBasedOnPincode(pincode, stateInput, cityInput, countryInput) {
+    $.ajax({
+        type: 'GET',
+        url: 'https://api.postalpincode.in/pincode/' + pincode,
+        success: function(response) {
+            if (response && Array.isArray(response) && response.length > 0 &&
+                response[0].PostOffice && Array.isArray(response[0].PostOffice) && response[0].PostOffice.length > 0) {
+                var state = response[0].PostOffice[0].State;
+                var city = response[0].PostOffice[0].District;
+                var country = response[0].PostOffice[0].Country;    
+                stateInput.val(state);
+                cityInput.val(city);
+                countryInput.val(country);
+            } else {
+                showInvalidPincodeAlert();
+            }
+        },
+        error: function(error) {
+            raiseErrorAlert(error);
+        }
+    });
+}
 
-
-
+function getNotifications() {
+    var method = "GET";
+    subscribers_id= $("#subscriberId").val();
+    var totalUrl =subscriptionUrl + `api/Notifications?product_id=2&subscriber_id=${subscribers_id}`;
+    $.ajax({
+        type: method,
+        url: totalUrl,
+        success: function (response) {
+            var notificationTabContent = $("#notificationItemsTabContent");
+            notificationTabContent.empty();
+            response.forEach(function (notification) {
+                var notificationItem = $("<div class='text-reset notification-item d-block dropdown-item position-relative unread-message'>");
+                var content = `
+                    <div class='d-flex'>
+                        <div class='flex-grow-1'>
+                            <h6 class='text-overflow text-muted fs-sm my-2 text-uppercase notification-title'>${notification.notification_title}</h6>
+                            <div>${notification.description}</div>
+                            <div>Date: ${notification.date}</div>
+                        </div>
+                    </div>
+                `;
+                notificationItem.append(content);
+                notificationTabContent.append(notificationItem);
+            });
+        },
+        error: function (error) {
+            raiseErrorAlert(error);
+        }
+    });
+}

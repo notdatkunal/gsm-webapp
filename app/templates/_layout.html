@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="en" data-layout="horizontal" data-sidebar="dark" data-sidebar-size="lg" data-preloader="disable"
+<html lang="en" data-layout="vertical" data-sidebar="dark" data-sidebar-size="lg" data-preloader="disable"
     data-theme="creative" data-bs-theme="light">
     <meta charset="utf-8">
     <title>Gurukul - {% block title %}School Automation{% endblock %}</title>
@@ -34,6 +34,8 @@
     <!-- DataTables JS -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     {% block js_module %}
         
     {% endblock js_module %}
@@ -53,6 +55,9 @@
     <input type="hidden" name="" id="apiUrl" value='{{url}}'>
     <input type="hidden" name="" id="jwtToken" value='{{jwt_token}}'>
     <input type="hidden" name="" id="instituteId" value='{{institute_id}}'>
+    <input type="hidden" name="" id="subscriptionUrl" value='{{subscriptionUrl}}'>
+    <input type="hidden" name="" id="subscriberId" value='{{subscriber_id}}'>
+
     {% csrf_token %}
     <!-- Begin page -->
     <div id="layout-wrapper">
@@ -141,7 +146,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link menu-link"> <i class="bi bi-card-checklist"></i>
+                            <a href="{% url 'attendance' %}" class="nav-link menu-link"> <i class="bi bi-card-checklist"></i>
                                 <span data-key="t-file-manager">Attendance</span> </a>
                         </li>
 
@@ -189,6 +194,11 @@
                         <li class="nav-item">
                             <a href="{% url 'accounts' %}" class="nav-link menu-link"> <i class="bi bi-cash-stack"></i>
                                 <span data-key="t-file-manager">Accounts</span> </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{% url 'settings' %}" class="nav-link menu-link"> <i class="bi bi-gear"></i>
+                                <span data-key="t-kanaban-board">Settings</span> </a>
                         </li>
 
                         <li class="nav-item">
@@ -299,9 +309,6 @@
                                                 <h6 class="mb-0 fs-lg fw-semibold"> Notifications <span
                                                         class="badge bg-danger-subtle text-danger fs-sm notification-badge">
                                                         4</span></h6>
-                                                <p class="fs-md text-muted mt-1 mb-0">You have <span
-                                                        class="fw-semibold notification-unread">3</span> unread messages
-                                                </p>
                                             </div>
                                             <div class="col-auto dropdown">
                                                 <a href="javascript:void(0);" data-bs-toggle="dropdown"
@@ -326,139 +333,17 @@
                                         <div
                                             class="text-reset notification-item d-block dropdown-item position-relative unread-message">
                                             <div class="d-flex">
-                                                <div class="avatar-xs me-3 flex-shrink-0">
-                                                    <span
-                                                        class="avatar-title bg-success-subtle text-success rounded-circle fs-lg">
-                                                        <i class='ti ti-gift'></i>
-                                                    </span>
-                                                </div>
+                                                
                                                 <div class="flex-grow-1">
-                                                    <a href="#!" class="stretched-link">
-                                                        <h6 class="mt-0 fs-md mb-2 lh-base">Your <b>Elite</b> author
-                                                            Graphic
-                                                            Optimization <span class="text-secondary">reward</span> is
-                                                            ready!
-                                                        </h6>
-                                                    </a>
-                                                    <p class="mb-0 fs-xs fw-medium text-uppercase text-muted">
-                                                        <span><i class="ti ti-clock-hour-4"></i> Just 30 sec ago</span>
-                                                    </p>
-                                                </div>
-                                                <div class="px-2 fs-base">
-                                                    <div class="form-check notification-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="all-notification-check01">
-                                                        <label class="form-check-label"
-                                                            for="all-notification-check01"></label>
-                                                    </div>
+                                                   
+                                                
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div
-                                            class="text-reset notification-item d-block dropdown-item position-relative unread-message">
-                                            <div class="d-flex">
-                                                <div class="position-relative me-3 flex-shrink-0">
-                                                    <img src="{% static 'theme/images/users/avatar-2.jpg' %}"
-                                                        class="rounded-circle avatar-xs" alt="user-pic">
-                                                    <span
-                                                        class="active-badge position-absolute start-100 translate-middle p-1 bg-success rounded-circle">
-                                                        <span class="visually-hidden">New alerts</span>
-                                                    </span>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    <a href="#!" class="stretched-link">
-                                                        <h6 class="mt-0 mb-1 fs-md fw-semibold">Angela Bernier</h6>
-                                                    </a>
-                                                    <div class="fs-sm text-muted">
-                                                        <p class="mb-1">Answered to your comment on the cash flow
-                                                            forecast's graph 🔔.</p>
-                                                    </div>
-                                                    <p class="mb-0 fs-xs fw-medium text-uppercase text-muted">
-                                                        <span><i class="ti ti-clock-hour-4"></i> 48 min ago</span>
-                                                    </p>
-                                                </div>
-                                                <div class="px-2 fs-base">
-                                                    <div class="form-check notification-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="all-notification-check02">
-                                                        <label class="form-check-label"
-                                                            for="all-notification-check02"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       
 
-                                        <div
-                                            class="text-reset notification-item d-block dropdown-item position-relative unread-message">
-                                            <div class="d-flex">
-                                                <div class="avatar-xs me-3 flex-shrink-0">
-                                                    <span
-                                                        class="avatar-title bg-danger-subtle text-danger rounded-circle fs-lg">
-                                                        <i class='ti ti-message-2'></i>
-                                                    </span>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    <a href="#!" class="stretched-link">
-                                                        <h6 class="mt-0 mb-2 fs-md lh-base">You have received <b
-                                                                class="text-success">20</b> new messages in the
-                                                            conversation
-                                                        </h6>
-                                                    </a>
-                                                    <p class="mb-0 fs-xs fw-medium text-uppercase text-muted">
-                                                        <span><i class="ti ti-clock-hour-4"></i> 2 hrs ago</span>
-                                                    </p>
-                                                </div>
-                                                <div class="px-2 fs-base">
-                                                    <div class="form-check notification-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="all-notification-check03">
-                                                        <label class="form-check-label"
-                                                            for="all-notification-check03"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <h6
-                                            class="text-overflow text-muted fs-sm my-2 text-uppercase notification-title">
-                                            Read Before</h6>
-
-                                        <div
-                                            class="text-reset notification-item d-block dropdown-item position-relative">
-                                            <div class="d-flex">
-
-                                                <div class="position-relative me-3 flex-shrink-0">
-                                                    <img src="{% static 'theme/images/users/avatar-8.jpg' %}"
-                                                        class="rounded-circle avatar-xs" alt="user-pic">
-                                                    <span
-                                                        class="active-badge position-absolute start-100 translate-middle p-1 bg-warning rounded-circle">
-                                                        <span class="visually-hidden">New alerts</span>
-                                                    </span>
-                                                </div>
-
-                                                <div class="flex-grow-1">
-                                                    <a href="#!" class="stretched-link">
-                                                        <h6 class="mt-0 mb-1 fs-md fw-semibold">Maureen Gibson</h6>
-                                                    </a>
-                                                    <div class="fs-sm text-muted">
-                                                        <p class="mb-1">We talked about a project on linkedin.</p>
-                                                    </div>
-                                                    <p class="mb-0 fs-xs fw-medium text-uppercase text-muted">
-                                                        <span><i class="ti ti-clock-hour-4"></i> 4 hrs ago</span>
-                                                    </p>
-                                                </div>
-                                                <div class="px-2 fs-base">
-                                                    <div class="form-check notification-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="all-notification-check04">
-                                                        <label class="form-check-label"
-                                                            for="all-notification-check04"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                       
                                     <div class="notification-actions" id="notification-actions">
                                         <div class="d-flex text-muted justify-content-center align-items-center">
                                             Select <div id="select-content" class="text-body fw-semibold px-1">0</div>
@@ -482,7 +367,7 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
                                 <h6 class="dropdown-header">Welcome User!</h6>
-                                <a class="dropdown-item fs-sm" href="#"><i
+                                <a class="dropdown-item fs-sm" href="/app/profile/"><i
                                         class="bi bi-person-circle text-muted align-middle me-1"></i> <span
                                         class="align-middle">Profile</span></a>
                                 <a class="dropdown-item fs-sm" href="#"><i
